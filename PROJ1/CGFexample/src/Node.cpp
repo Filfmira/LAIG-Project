@@ -12,9 +12,9 @@ Node::~Node(void)
 
 Node::Node(string id)
 {
-	printf("estou a por um fucking id que é %s\n\n",id);
+	//printf("estou a por um fucking id que é %s\n\n",id);
 	this->id=id;
-	printf("estou a por um fucking id que é %s\n\n",id);
+	//printf("estou a por um fucking id que é %s\n\n",id);
 }
 
 Node::Node(string id, CGFobject* primitiva, CGFappearance * aparencia,float matrix[][4])

@@ -1,6 +1,12 @@
 #include "XMLSceneMod.h"
 
 #include "Graph.h"
+using namespace std;
+#include <iostream>
+#include "glui.h"
+#include "glut.h"
+#include "GL/glui.h"
+#include "GL/glut.h"
 //#include "Node.h"
 
 XMLSceneMod::XMLSceneMod(char *filename)
@@ -25,7 +31,6 @@ XMLSceneMod::XMLSceneMod(char *filename)
 		printf("Main anf block element not found! Exiting!\n");
 		exit(1);
 	}
-
 
 	globalsElement = dgxElement->FirstChildElement( "globals" );
 	//camerasElement = dgxElement->FirstChildElement( "cameras" );
@@ -195,7 +200,6 @@ XMLSceneMod::XMLSceneMod(char *filename)
 	
 	/////////////////GRAPH///////////////
 	//in progess
-	int gggg=0;
 
 	if (graphElement == NULL)
 		printf("Graph block not found!\n");
@@ -212,12 +216,12 @@ XMLSceneMod::XMLSceneMod(char *filename)
 		{
 			printf("-Node id: %s\n",node->Attribute("id"));
 			char* charString=(char *)node->Attribute("id");
+
 			string s=string(charString);
-			printf("%s...\n",charString);
+			//cout<<s;
 			Node n= Node(s);
-			printf("%string: %s\n",s);
-			printf("id no nó %s\n\n",n.getId());
-			
+			//cout<<"id do no"+n.getId();
+
 			TiXmlElement *transforms  = node->FirstChildElement();
 			if (!transforms){
 				printf("	Error: Transforms block not found!\n");
@@ -225,30 +229,60 @@ XMLSceneMod::XMLSceneMod(char *filename)
 			}
 			printf("	Transforms:\n");
 			TiXmlElement *transform = transforms->FirstChildElement("transform");  
+			
+			//inicia a matriz com a matriz identidade
+			glMatrixMode(GL_MODELVIEW);
+			glLoadIdentity();
 			while (transform)
 			{
+
 				char* tipo = (char*) transform->Attribute("type");
 							
 				
 				if (strcmp(tipo,"translate") == 0){
 					char* to = (char*) transform->Attribute("to");
 					printf("	-Type: %s -> %s\n", tipo, to);
+
+					float x,y,z;
+					readXYZcoord(to,x,y,z);
+					glTranslatef(x,y,z);
 				} 
 				else if (strcmp(tipo,"rotate") == 0){					
 					char* axis = (char*) transform->Attribute("axis");
 					char* angle = (char*) transform->Attribute("angle");
 					printf("	-Type: %s -> axis: %s, angle: %s\n", tipo, axis, angle);
+
+
+					float angulo;
+					sscanf(angle,"%f",&angulo);
+					if(axis=="xx")
+						glRotatef(angulo, 1,0,0);
+					else if(axis=="yy")
+						glRotatef(angulo, 0,1,0);
+					else if(axis=="zz")
+						glRotatef(angulo, 0,0,1);
 				} 
+
 				else if (strcmp(tipo,"scale") == 0){
 					char* factor = (char*) transform->Attribute("factor");
 					printf("	-Type: %s -> %s\n", tipo, factor);
+
+					float x,y,z;
+					readXYZcoord(factor,x,y,z);
+
+					glScalef(x,y,z);
+
 				} 
 				else printf("	Missing/invalid transform\n");
 				
-
+				
 				transform = transform->NextSiblingElement();
 			}
 
+			//por a matriz final em m e dpeois atribuir m à matriz transformação do nó
+			float m[16];
+			//glGetFloat(GL_MODELVIEW_MATRIX,m);
+			
 			TiXmlElement *appearanceref  = node->FirstChildElement("appearanceref");
 			if (!appearanceref){
 				printf("	Error: Appearances block not found!\n");

@@ -17,6 +17,8 @@ using std::exception;
 
 int main(int argc, char* argv[]) {
 	//XMLScene temp = XMLScene("demograph.xml");
+	CGFapplication app = CGFapplication();
+	app.init(&argc, argv);
 	XMLSceneMod temp = XMLSceneMod("anfFile.xml");
 	cin.get();
 
