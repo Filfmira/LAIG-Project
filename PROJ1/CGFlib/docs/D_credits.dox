@@ -1,0 +1,25 @@
+/*! 
+\page credits_page Credits
+\tableofcontents
+
+ - Coordinator
+   - Rui Rodrigues
+
+ - Original authors
+   - Rui Rodrigues
+   - Tiago Marques
+   - Jo&atilde;o Jacob
+
+ - Contributors
+   - Andr&eacute; Ferreira, Pedro Machado (testing, documenting)
+   - Alexandre Carvalho (Eclipse builds)
+   - Multiple MIEIC students for commenting and debugging, including (but not limited to): Daniel Nora, Gustavo Lira 
+
+ - The library includes/depends on the following libraries and code
+   - GLUT
+   - GLUI
+   - GLEW
+   - Shader class based on sample code from Swiftless (http://www.swiftless.com)
+   - image reading and writing functions from stb libraries by Sean Barrett  (http://nothings.org)
+
+*/

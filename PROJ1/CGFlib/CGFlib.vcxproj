@@ -1,0 +1,122 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{7C3B8635-62AF-46F8-A618-B654D431CC8A}</ProjectGuid>
+    <RootNamespace>CGFlib</RootNamespace>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <IncludePath>include;$(VCInstallDir)include;$(VCInstallDir)atlmfc\include;$(WindowsSdkDir)include;$(FrameworkSDKDir)\include;</IncludePath>
+    <OutDir>$(SolutionDir)$(ProjectName)\lib\</OutDir>
+    <IntDir>..\buildtemp\$(ProjectName)\</IntDir>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>_MBCS;%(PreprocessorDefinitions);_CRT_SECURE_NO_WARNINGS</PreprocessorDefinitions>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+    <Lib>
+      <OutputFile>$(OutDir)$(TargetName)$(TargetExt)</OutputFile>
+    </Lib>
+    <PostBuildEvent>
+      <Command>md "$(ProjectDir)..\CGFExample\include\CGF"
+
+md "$(ProjectDir)..\CGFExample\lib"
+
+copy "$(ProjectDir)include\CGF*.*" "$(ProjectDir)..\CGFExample\include\CGF"
+
+copy "$(ProjectDir)lib\*.lib" "$(ProjectDir)..\CGFExample\lib"</Command>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClInclude Include="include\CGFappearance.h" />
+    <ClInclude Include="include\CGFapplication.h" />
+    <ClInclude Include="include\CGFaxis.h" />
+    <ClInclude Include="include\CGFcamera.h" />
+    <ClInclude Include="include\CGFinterface.h" />
+    <ClInclude Include="include\CGFlight.h" />
+    <ClInclude Include="include\CGFobject.h" />
+    <ClInclude Include="include\CGFscene.h" />
+    <ClInclude Include="include\CGFshader.h" />
+    <ClInclude Include="include\CGFtexture.h" />
+    <ClInclude Include="include\imagetools.h" />
+    <ClInclude Include="include\stb_image_write.h" />
+    <ClInclude Include="include\version.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\CGFappearance.cpp" />
+    <ClCompile Include="src\CGFapplication.cpp" />
+    <ClCompile Include="src\CGFaxis.cpp" />
+    <ClCompile Include="src\CGFcamera.cpp" />
+    <ClCompile Include="src\CGFinterface.cpp" />
+    <ClCompile Include="src\CGFlight.cpp" />
+    <ClCompile Include="src\CGFobject.cpp" />
+    <ClCompile Include="src\CGFscene.cpp" />
+    <ClCompile Include="src\CGFshader.cpp" />
+    <ClCompile Include="src\CGFtexture.cpp" />
+    <ClCompile Include="src\imagetools.cpp" />
+    <ClCompile Include="src\stb_image.c" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="docs\0_main.dox" />
+    <None Include="docs\1_basicproject.dox" />
+    <None Include="docs\2_helperclasses.dox" />
+    <None Include="docs\3_animation.dox" />
+    <None Include="docs\4_example.dox" />
+    <None Include="docs\A_deps.dox" />
+    <None Include="docs\B_projsetup.dox" />
+    <None Include="docs\C_downloads.dox" />
+    <None Include="docs\D_credits.dox" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

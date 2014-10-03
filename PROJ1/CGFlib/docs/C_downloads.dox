@@ -1,0 +1,35 @@
+/*! 
+\page downloads_page Downloads
+
+ - Library and example projects (CGFlib v2.3, 2013/02/18)
+  - [Example project and pre-compiled CGFlib for Visual Studio 2010 (<1.5MB) (ONLY for Windows/Visual Studio)) ](http://paginas.fe.up.pt/~ruirodrig/pub/sw/cgflib/CGFlib_v2.3-win32.zip)
+  - [CGFlib and example Source Code (<1.5MB) (RECOMMENDED for Windows/Eclipse, Linux/Eclipse, Linux/GCC/Make)](http://paginas.fe.up.pt/~ruirodrig/pub/sw/cgflib/CGFlib_v2.3-src.zip)
+
+ - Dependencies
+  - [Visual Studio 2010 pre-compiled dependencies (~26MB)](http://paginas.fe.up.pt/~ruirodrig/pub/sw/cgflib/OpenGLLibsVS2010.zip)
+  - *Visual Studio 2012 pre-compiled dependencies* (under update)
+  - [Eclipse/MinGW (Windows) pre-compiled dependencies (~5.1MB)](http://paginas.fe.up.pt/~ruirodrig/pub/sw/cgflib/OpenGLLibsMinGW.zip)
+
+ - Additional documentation
+   - [GLUI documentation](http://sourceforge.net/projects/glui/files/Documentation/GLUI%202/)
+   - [GLUT documentation](http://www.opengl.org/resources/libraries/glut/spec3/spec3.html)
+
+ - Older versions
+   - CGFlib v2.2.2, 2012/10/15
+     - [Example project and pre-compiled CGFlib for Visual Studio 2010 (<1.5MB) (ONLY for Windows/Visual Studio)) ](http://paginas.fe.up.pt/~ruirodrig/pub/sw/cgflib/CGFlib_v2.2.2-win32.zip)
+     - [CGFlib and example Source Code (<1.5MB) (RECOMMENDED for Windows/Eclipse, Linux/Eclipse, Linux/GCC/Make)](http://paginas.fe.up.pt/~ruirodrig/pub/sw/cgflib/CGFlib_v2.2.2-src.zip)
+ 
+   - CGFlib v2.2.1, 2012/09/27
+     - [Example project and pre-compiled CGFlib for Visual Studio 2010 (<1.5MB) (ONLY for Windows/Visual Studio)) ](http://paginas.fe.up.pt/~ruirodrig/pub/sw/cgflib/CGFlib_v2.2.1-win32.zip)
+     - [CGFlib and example Source Code (<1.5MB) (RECOMMENDED for Windows/Eclipse, Linux/Eclipse, Linux/GCC/Make)](http://paginas.fe.up.pt/~ruirodrig/pub/sw/cgflib/CGFlib_v2.2.1-src.zip)
+   
+   - CGFlib v2.2, 2012/09/25
+     - [Example project and pre-compiled CGFlib for Visual Studio 2010 (<1.5MB) (ONLY for Windows/Visual Studio)) ](http://paginas.fe.up.pt/~ruirodrig/pub/sw/cgflib/CGFlib_v2.2-win32.zip)
+     - [CGFlib and example Source Code (<1.5MB) (RECOMMENDED for Windows/Eclipse, Linux/Eclipse, Linux/GCC/Make)](http://paginas.fe.up.pt/~ruirodrig/pub/sw/cgflib/CGFlib_v2.2-src.zip)
+   
+   - CGFlib v2.1, 2012/09/18
+     - [Example project and pre-compiled CGFlib for Visual Studio 2010 (<1.5MB) (ONLY for Windows/Visual Studio)) ](http://paginas.fe.up.pt/~ruirodrig/pub/sw/cgflib/CGFlib_v2.1-win32.zip)
+     - [CGFlib and example Source Code (<1.5MB) (RECOMMENDED for Windows/Eclipse, Linux/Eclipse, Linux/GCC/Make)](http://paginas.fe.up.pt/~ruirodrig/pub/sw/cgflib/CGFlib_v2.1-src.zip)
+   
+   
+*/
