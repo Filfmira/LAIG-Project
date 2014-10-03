@@ -68,7 +68,9 @@
   <ItemGroup>
     <ClCompile Include="src\DemoScene.cpp" />
     <ClCompile Include="src\ExampleObject.cpp" />
+    <ClCompile Include="src\Graph.cpp" />
     <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\Node.cpp" />
     <ClCompile Include="src\XMLScene.cpp" />
     <ClCompile Include="src\XMLSceneMod.cpp" />
   </ItemGroup>
@@ -79,6 +81,8 @@
     <ClInclude Include="include\XMLSceneMod.h" />
     <ClInclude Include="src\DemoScene.h" />
     <ClInclude Include="src\ExampleObject.h" />
+    <ClInclude Include="src\Graph.h" />
+    <ClInclude Include="src\Node.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

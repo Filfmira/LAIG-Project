@@ -1,10 +1,14 @@
 #include "XMLSceneMod.h"
 
+#include "Graph.h"
+//#include "Node.h"
+
 XMLSceneMod::XMLSceneMod(char *filename)
 {
 
 	// Read XML from file
-
+	Graph g = Graph();
+	Node n =Node();
 	doc=new TiXmlDocument( filename );
 	bool loadOkay = doc->LoadFile();
 
@@ -191,7 +195,7 @@ XMLSceneMod::XMLSceneMod(char *filename)
 	
 	/////////////////GRAPH///////////////
 	//in progess
-
+	int gggg=0;
 
 	if (graphElement == NULL)
 		printf("Graph block not found!\n");
@@ -207,7 +211,12 @@ XMLSceneMod::XMLSceneMod(char *filename)
 		while (node)
 		{
 			printf("-Node id: %s\n",node->Attribute("id"));
-			
+			char* charString=(char *)node->Attribute("id");
+			string s=string(charString);
+			printf("%s...\n",charString);
+			Node n= Node(s);
+			printf("%string: %s\n",s);
+			printf("id no nó %s\n\n",n.getId());
 			
 			TiXmlElement *transforms  = node->FirstChildElement();
 			if (!transforms){
