@@ -35,6 +35,7 @@ XMLSceneMod::XMLSceneMod(char *filename)
 	globalsElement = dgxElement->FirstChildElement( "globals" );
 	//camerasElement = dgxElement->FirstChildElement( "cameras" );
 	graphElement = dgxElement->FirstChildElement( "graph" );
+	appearancesElement=dgxElement->FirstChildElement("appearances");
 
 	/////////////globals/////////////////
 	if (globalsElement == NULL)
@@ -190,6 +191,60 @@ XMLSceneMod::XMLSceneMod(char *filename)
 
 	/////////////////APPEARANCES///////////////
 
+	cout<<"\nParcing appearances:\n";
+
+	if(appearancesElement==NULL)
+		printf("appearances block not found!\n");
+
+
+
+	TiXmlElement * appearances = appearancesElement->FirstChildElement("appearance");
+	CGFappearance * appearance;
+	string id,textureref;
+	float shininess;
+
+	while(appearances){
+
+		//read the appearance's id
+		id = string(appearances->Attribute("id"));
+		if(id != ""){
+			cout<<"id:"<<id<<endl;
+		}
+		else cout<<"Error parsing appearance: missing id\n";
+
+		//read the appearance's shininess
+		char* ss = (char*)appearances->Attribute("shininess");
+			sscanf(ss,"%f",&shininess);
+		if(ss != ""){
+			cout<<"shininess:"<<shininess<<endl;
+		}
+		else cout<<"Error parsing appearance: missing shininess\n";
+
+		//read the appearance's textured reference
+		textureref = string(appearances->Attribute("textureref"));
+		if(textureref != ""){
+			cout<<"textureref:"<<textureref<<endl;
+		}
+		else cout<<"Error parsing appearance: missing textureref\n";
+
+		TiXmlElement *component = appearances->FirstChildElement("component");  
+
+		string type;
+		float floatVector[4];
+		while(component)
+		{
+			
+			type = string(component->Attribute("type"));
+			cout<<"type:"<<type;
+			cout<<"  values: "<<(char*)component->Attribute("value")<<endl;
+			readFloatArray((char*)component->Attribute("value"),floatVector);
+			component=component->NextSiblingElement();
+		}
+
+		cout<<endl;
+	appearances = appearances->NextSiblingElement("appearance");
+}
+	cout<<"-------------********------------\n\n";
 
 	///////////////END OF APPEARANCES/////////
 
@@ -279,10 +334,16 @@ XMLSceneMod::XMLSceneMod(char *filename)
 				transform = transform->NextSiblingElement();
 			}
 
-			//por a matriz final em m e dpeois atribuir m à matriz transformação do nó
+
+			//por a matriz final em m e depois atribuir m à matriz transformação do nó
 			float m[16];
-			//glGetFloat(GL_MODELVIEW_MATRIX,m);
+			glGetFloatv(GL_MODELVIEW_MATRIX,m);
+			n.setMatrix(&m[0]);
 			
+			cout<<n.mostrarNo();
+			cout<<"\n\n";
+
+
 			TiXmlElement *appearanceref  = node->FirstChildElement("appearanceref");
 			if (!appearanceref){
 				printf("	Error: Appearances block not found!\n");
@@ -508,6 +569,11 @@ bool XMLSceneMod::readXYcoord (char* rawString, float &x, float &y){
 
 bool XMLSceneMod::readXYZcoord (char* rawString, float &x, float &y, float &z){
 	return (sscanf(rawString,"%f %f %f",&x, &y, &z) == 3);
+}
+
+bool XMLSceneMod::readFloatArray(char* rawString, float (&a)[4])
+{
+	return(sscanf(rawString,"%f %f %f %f",&a[0],&a[1],&a[2],&a[3]));
 }
 
 XMLSceneMod::~XMLSceneMod()

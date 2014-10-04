@@ -11,7 +11,7 @@ private:
 	vector<Node *> descendentes;
 	CGFobject * primitiva;
 	CGFappearance * aparencia;
-	float matrix[4][4];
+	float matrix[16];
 
 
 
@@ -19,11 +19,14 @@ public:
 	Node(void);
 	~Node(void);
 	Node(string id);
-	Node(string id, CGFobject* primitiva, CGFappearance * aparencia,float matrix[][4]);
+	Node(string id, CGFobject* primitiva, CGFappearance * aparencia,float matrix[16]);
+
 	void addDescendente(Node * n);
 	void setPrimitiva(CGFobject * primitiva);
 	void setAparencia(CGFappearance * aparencia);
-	void setMatrix(float matrix[][4] );
+	void setMatrix(float matrix[16] );
 	string getId(){return id;}
+
+	string mostrarNo();
 };
 

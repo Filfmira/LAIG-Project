@@ -60,7 +60,12 @@
         <!-- deve existir um ou mais blocos "appearance" -->
         <!-- IMPORTANTE: -->
         <!--   textureref e opcional, a utilizar caso haja textura associada a esta aparencia -->
-        <appearance id="ss" shininess="ff" textureref="ss" >
+        <appearance id="ss" shininess="1" textureref="ss" >
+               <component type="ambient" value="ff ff ff ff" />
+               <component type="diffuse" value="ff ff ff ff" />
+               <component type="specular" value="ff ff ff ff" />
+        </appearance>
+		<appearance id="ll" shininess="1" textureref="ss" >
                <component type="ambient" value="ff ff ff ff" />
                <component type="diffuse" value="ff ff ff ff" />
                <component type="specular" value="ff ff ff ff" />

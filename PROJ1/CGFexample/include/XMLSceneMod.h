@@ -14,6 +14,7 @@ public:
 	bool readRGBcomponents (char* rawString, float &R, float &G, float &B, float &A);
 	bool readXYcoord (char* rawString, float &x, float &y);
 	bool readXYZcoord (char* rawString, float &x, float &y, float &z);
+	bool readFloatArray(char* rawString,  float (&a)[4]);
 protected:
 
 	TiXmlDocument* doc;
@@ -22,7 +23,7 @@ protected:
 	TiXmlElement* globalsElement;
 	TiXmlElement* camerasElement;
 	TiXmlElement* graphElement;
-
+	TiXmlElement* appearancesElement;
 	//////////////////////////////////////
 
 
