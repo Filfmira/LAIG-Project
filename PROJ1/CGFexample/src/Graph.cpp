@@ -5,7 +5,7 @@ void Graph::addNode(Node * noPai, string novoId)
 		Node novo= Node(novoId);
 		nodes.push_back(novo);
 		Node * n=&nodes.at(nodes.size()-1);
-		noPai->addDescendente(n);
+		//noPai->addDescendente(n);
 }
 
 void Graph::addNode(string paiId, string novoId)
@@ -17,7 +17,7 @@ void Graph::addNode(Node * noPai,string novoID, CGFobject* primitiva, CGFappeara
 	Node novo= Node(novoID,primitiva,aparencia,matrix);
 	nodes.push_back(novo);
 	Node * n=&nodes.at(nodes.size()-1);
-	noPai->addDescendente(n);
+//	noPai->addDescendente(n);
 }
 
 void Graph::addNode(string novoId, CGFobject* primitiva, CGFappearance * aparencia,float matrix[16]){

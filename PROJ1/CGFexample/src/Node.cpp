@@ -27,13 +27,13 @@ Node::Node(string id, CGFobject* primitiva, CGFappearance * aparencia,float matr
 }
 
 
-
+/*
 void Node::addDescendente(Node *n)
 {	
 	this->descendentes.push_back(n);
 }
 
-
+*/
 void Node::setMatrix(float m[16] )				
 {
 	for(int i=0;i<16;i++)
@@ -69,7 +69,7 @@ string Node::mostrarNo(){
 
 	s<<"Descendentes:";
 	for(int i=0;i<this->descendentes.size();i++)
-		s<<descendentes.at(i)->getId()<<" , ";
+		s<<descendentes.at(i)<<" , ";
 	s<<"\n";
 
 

@@ -9,12 +9,15 @@ using namespace std;
 #include "GL/glut.h"
 //#include "Node.h"
 
+//como vamos guardar os Appearances? talvez uma especia de map, tabela tipo <id,CGFappearance>
+//é preciso por os nos com links entre eles?!?*****
+
 XMLSceneMod::XMLSceneMod(char *filename)
 {
 
 	// Read XML from file
 	Graph g = Graph();
-	Node n =Node();
+	
 	doc=new TiXmlDocument( filename );
 	bool loadOkay = doc->LoadFile();
 
@@ -205,10 +208,12 @@ XMLSceneMod::XMLSceneMod(char *filename)
 
 	while(appearances){
 
+		CGFappearance appearanceObject= CGFappearance();
+
 		//read the appearance's id
 		id = string(appearances->Attribute("id"));
 		if(id != ""){
-			cout<<"id:"<<id<<endl;
+			cout<<"-Appearance id: "<<id<<endl;
 		}
 		else cout<<"Error parsing appearance: missing id\n";
 
@@ -216,35 +221,69 @@ XMLSceneMod::XMLSceneMod(char *filename)
 		char* ss = (char*)appearances->Attribute("shininess");
 			sscanf(ss,"%f",&shininess);
 		if(ss != ""){
-			cout<<"shininess:"<<shininess<<endl;
+			cout<<"        Shininess: "<<shininess<<endl;
 		}
-		else cout<<"Error parsing appearance: missing shininess\n";
+		else cout<<"        Error parsing appearance: missing shininess\n";
+
+		appearanceObject.setShininess(shininess);
 
 		//read the appearance's textured reference
 		textureref = string(appearances->Attribute("textureref"));
 		if(textureref != ""){
-			cout<<"textureref:"<<textureref<<endl;
+			cout<<"        Textureref: "<<textureref<<endl;
 		}
-		else cout<<"Error parsing appearance: missing textureref\n";
+		else cout<<"        Error parsing appearance: missing textureref\n";
 
+		//appearanceObject.setTexture(textureref);									//é preciso descomentar para por a textura
+
+		//read the appearence's elements(ambient,diffuse,specular)
 		TiXmlElement *component = appearances->FirstChildElement("component");  
-
 		string type;
 		float floatVector[4];
+		bool a,d,s;
+		a=d=s=false;
 		while(component)
 		{
 			
+
 			type = string(component->Attribute("type"));
-			cout<<"type:"<<type;
-			cout<<"  values: "<<(char*)component->Attribute("value")<<endl;
-			readFloatArray((char*)component->Attribute("value"),floatVector);
+			cout<<"        Type:"<<type;
+			cout<<"-> "<<(char*)component->Attribute("value")<<endl;
+			if(!readFloatArray((char*)component->Attribute("value"),floatVector))
+				cout<<"        Error reading values"<<endl;
+			if(type=="ambient")
+			{
+				a=true;
+				
+
+				appearanceObject.setAmbient(&floatVector[0]);
+			}
+			else if(type=="diffuse")
+			{
+				d=true;
+				appearanceObject.setDiffuse((&floatVector)[0]);
+			}
+			else if(type=="specular")
+			{
+				s=true;
+				appearanceObject.setSpecular((&floatVector)[0]);
+			}
+
 			component=component->NextSiblingElement();
 		}
 
+		//If all the elements(ambient, diffuse, specular) are present
+		if(a&&d&&s)
+		{
+			
+		}
+		else
+			cout<<"        One or more atributes couldn't be found\n";
+
 		cout<<endl;
-	appearances = appearances->NextSiblingElement("appearance");
+		appearances = appearances->NextSiblingElement("appearance");
 }
-	cout<<"-------------********------------\n\n";
+
 
 	///////////////END OF APPEARANCES/////////
 
@@ -340,8 +379,6 @@ XMLSceneMod::XMLSceneMod(char *filename)
 			glGetFloatv(GL_MODELVIEW_MATRIX,m);
 			n.setMatrix(&m[0]);
 			
-			cout<<n.mostrarNo();
-			cout<<"\n\n";
 
 
 			TiXmlElement *appearanceref  = node->FirstChildElement("appearanceref");
@@ -422,13 +459,46 @@ XMLSceneMod::XMLSceneMod(char *filename)
 					}
 					else printf("		Invalid primitive detected\n");
 
+					
+
 					primitive = primitive->NextSiblingElement();
 				}
+				
+
+
+			TiXmlElement *descendants  = node->FirstChildElement("descendants");
+			if (!descendants){
+				printf("	Error: Descendants block not found!\n");
+				break;
 			}
+
+			TiXmlElement *noderef = descendants->FirstChildElement("noderef");  
+
+			string idDesc;
+			cout<<"	Descendentes: ";
+			while(noderef)
+				{
+					idDesc = string(noderef->Attribute("id"));
+					n.addDescendente(idDesc);
+					cout<<idDesc<<"  ";
+					noderef=noderef->NextSiblingElement();
+				}
+			cout<<endl;
+			}
+			g.addNode(n);
 			node = node->NextSiblingElement();
 		}
 		//ao sair do while, é preciso verificar se existe pelo menos um nó
 	}
+
+	//mostrar dois nos
+/*
+	cout<<g.searchForNode("root")->mostrarNo();
+	cout<<g.searchForNode("root")->getDescendentes().size();
+
+	cout<<g.searchForNode("second")->mostrarNo();
+	cout<<g.searchForNode("second")->getDescendentes().size();
+	*/
 
 	///////////////END OF GRAPH/////////
 
