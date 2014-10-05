@@ -8,6 +8,9 @@ Node::Node(void)
 
 Node::~Node(void)
 {
+	for (unsigned int i = 0; i < primitivas.size(); i++){
+		delete(primitivas[i]);
+	}
 }
 
 Node::Node(string id)
@@ -17,10 +20,10 @@ Node::Node(string id)
 	//printf("estou a por um fucking id que é %s\n\n",id);
 }
 
-Node::Node(string id, CGFobject* primitiva, CGFappearance * aparencia,float matrix[16])
+Node::Node(string id, vector<Primitive*> primitivas, CGFappearance * aparencia,float matrix[16])
 {
 	this->id=id;
-	this->primitiva=primitiva;
+	this->primitivas=primitivas;
 	this->aparencia=aparencia;
 	this->setMatrix(matrix);
 
@@ -37,13 +40,13 @@ void Node::addDescendente(Node *n)
 void Node::setMatrix(float m[16] )				
 {
 	for(int i=0;i<16;i++)
-			matrix[i]=m[i];
+		matrix[i]=m[i];
 }
 
 
-void Node::setPrimitiva(CGFobject * primitiva)		
+void Node::addPrimitiva(Primitive* primitiva)
 {
-	this->primitiva=primitiva;
+	this->primitivas.push_back(primitiva);
 }
 
 void Node::setAparencia(CGFappearance * aparencia)	
@@ -73,7 +76,14 @@ string Node::mostrarNo(){
 	s<<"\n";
 
 
-	s<<"\n\n=================";
+	s<<"\n\n=================\n";
 	return s.str();
 
+}
+
+
+Primitive* Node::getPrimitiva(int i){
+	if (i < 0 || i >= primitivas.size())
+		return NULL;
+	return primitivas[i];
 }

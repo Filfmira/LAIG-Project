@@ -2,9 +2,9 @@
 
 void Graph::addNode(Node * noPai, string novoId)
 {
-		Node novo= Node(novoId);
+		Node* novo= new Node(novoId);
 		nodes.push_back(novo);
-		Node * n=&nodes.at(nodes.size()-1);
+		Node * n = nodes.at(nodes.size()-1);//???
 		//noPai->addDescendente(n);
 }
 
@@ -13,15 +13,15 @@ void Graph::addNode(string paiId, string novoId)
 	addNode(searchForNode(paiId),novoId);
 }
 
-void Graph::addNode(Node * noPai,string novoID, CGFobject* primitiva, CGFappearance * aparencia,float matrix[16]){
-	Node novo= Node(novoID,primitiva,aparencia,matrix);
+void Graph::addNode(Node * noPai,string novoID, vector<Primitive*> primitivas, CGFappearance * aparencia,float matrix[16]){
+	Node* novo= new Node(novoID,primitivas,aparencia,matrix);
 	nodes.push_back(novo);
-	Node * n=&nodes.at(nodes.size()-1);
+	Node * n= nodes.at(nodes.size()-1); //???
 //	noPai->addDescendente(n);
 }
 
-void Graph::addNode(string novoId, CGFobject* primitiva, CGFappearance * aparencia,float matrix[16]){
-	Node novo= Node(novoId,primitiva,aparencia,matrix);
+void Graph::addNode(string novoId, vector<Primitive*> primitivas, CGFappearance * aparencia,float matrix[16]){
+	Node* novo= new Node(novoId,primitivas,aparencia,matrix);
 	nodes.push_back(novo);
 }
 
@@ -29,7 +29,15 @@ void Graph::addNode(string novoId, CGFobject* primitiva, CGFappearance * aparenc
 Node* Graph::searchForNode(string id)
 {
 	for(int i =0;i<this->nodes.size();i++)
-		if(nodes.at(i).getId()==id)
-			return &nodes.at(i);
+		if(nodes.at(i)->getId()==id)
+			return nodes.at(i);
 	return NULL;
 }
+
+Node* Graph::searchForNode(int num){
+	if (num < 0 || num >= nodes.size())
+		return NULL;
+	return nodes[num];
+}
+
+void Graph::addNode(Node* n) {nodes.push_back(n);}

@@ -1,7 +1,4 @@
-/* 
- * G0_Base: projeto inicial de CGra
- * 
- */
+
 
 #include <iostream>
 #include <exception>
@@ -10,6 +7,8 @@
 #include "DemoScene.h"
 #include "XMLScene.h"
 #include "XMLSceneMod.h"
+#include "TPinterface.h"
+#include "ProjectScene.h"
 
 using std::cout;
 using std::exception;
@@ -17,22 +16,26 @@ using std::exception;
 
 int main(int argc, char* argv[]) {
 	//XMLScene temp = XMLScene("demograph.xml");
-	CGFapplication app = CGFapplication();
+	/*CGFapplication app = CGFapplication();
 	app.init(&argc, argv);
 	XMLSceneMod temp = XMLSceneMod("anfFile.xml");
-	cin.get();
+	cin.get();*/
 
 
-	/*
+	
 	CGFapplication app = CGFapplication();
 
 	try {
 		app.init(&argc, argv);
 
-		app.setScene(new DemoScene());
-		app.setInterface(new CGFinterface());
+		//app.setScene(new DemoScene());
+		//app.setInterface(new CGFinterface());
+		app.setScene(new ProjectScene());
+		app.setInterface(new TPinterface());
 		
 		//parser deve ser chamado aqui
+		//	XMLSceneMod temp = XMLSceneMod("anfFile.xml");
+		////////////////////
 
 		app.run();
 	}
@@ -45,7 +48,7 @@ int main(int argc, char* argv[]) {
 		return -1;
 	}
 
-	*/
+	
 
 	return 0;
 }

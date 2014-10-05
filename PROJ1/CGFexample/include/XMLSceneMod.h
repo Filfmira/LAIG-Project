@@ -2,11 +2,12 @@
 #define _XMLSCENEMOD_H_
 
 #include "tinyxml.h"
+#include "Graph.h"
 
 class XMLSceneMod
 {
 public:
-	XMLSceneMod(char *filename);
+	XMLSceneMod(char *filename, Graph* gr);
 	~XMLSceneMod();
 
 	static TiXmlElement *findChildByAttribute(TiXmlElement *parent,const char * attr, const char *val);
@@ -15,10 +16,18 @@ public:
 	bool readXYcoord (char* rawString, float &x, float &y);
 	bool readXYZcoord (char* rawString, float &x, float &y, float &z);
 	bool readFloatArray(char* rawString,  float (&a)[4]);
+
+	bool readGlobals(TiXmlElement* dgxElement);
+	bool readCameras(TiXmlElement* dgxElement);
+	bool readLights(TiXmlElement* dgxElement);
+	bool readTextures(TiXmlElement* dgxElement);
+	bool readAppearances(TiXmlElement* dgxElement);
+	bool readGraph(TiXmlElement* dgxElement);
+
 protected:
 
 	TiXmlDocument* doc;
-
+	Graph* destinationGraph;
 	/////////////Projecto LAIG////////////
 	TiXmlElement* globalsElement;
 	TiXmlElement* camerasElement;

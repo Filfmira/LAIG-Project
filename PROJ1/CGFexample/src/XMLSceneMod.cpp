@@ -1,22 +1,24 @@
 #include "XMLSceneMod.h"
 
-#include "Graph.h"
 using namespace std;
 #include <iostream>
 #include "glui.h"
 #include "glut.h"
 #include "GL/glui.h"
 #include "GL/glut.h"
+#include <stdlib.h>     /* strtol */
+#include <cstdlib>
 //#include "Node.h"
 
 //como vamos guardar os Appearances? talvez uma especia de map, tabela tipo <id,CGFappearance>
 //é preciso por os nos com links entre eles?!?*****
 
-XMLSceneMod::XMLSceneMod(char *filename)
+XMLSceneMod::XMLSceneMod(char *filename, Graph* gr): destinationGraph(gr)
 {
 
 	// Read XML from file
-	Graph g = Graph();
+	
+	//Graph graph = Graph();
 	
 	doc=new TiXmlDocument( filename );
 	bool loadOkay = doc->LoadFile();
@@ -35,14 +37,82 @@ XMLSceneMod::XMLSceneMod(char *filename)
 		exit(1);
 	}
 
+
+	/////////////////GLOBALS/////////////////
+	readGlobals(dgxElement);
+	/////////////// END GLOBALS //////////////
+
+
+	///////////////CAMERAS/////////////////
+	readCameras(dgxElement);
+	//////////////END OF CAMERAS////////////
+
+
+	/////////////////LIGHTS///////////////
+	readLights(dgxElement);
+	///////////////END OF LIGHTS/////////
+
+
+	/////////////////TEXTURES///////////////
+	readTextures(dgxElement);
+	///////////////END OF TEXTURES/////////
+
+
+	/////////////////APPEARANCES///////////////
+	readAppearances(dgxElement);	
+	///////////////END OF APPEARANCES/////////
+
+
+		
+	/////////////////GRAPH///////////////
+	readGraph(dgxElement);
+	///////////////END OF GRAPH/////////
+
+}
+
+bool XMLSceneMod::readRGBcomponents (char* rawString, float &R, float &G, float &B, float &A){
+	if (sscanf(rawString,"%f %f %f %f",&R, &G, &B, &A) != 4)
+		return false;
+	if ( R>1 || G>1 || B>1 || A>1 )
+		return false;
+	if ( R<0 || G<0 || B<0 || A<0 )
+		return false;
+	return true;
+}
+
+bool XMLSceneMod::readXYcoord (char* rawString, float &x, float &y){
+	return (sscanf(rawString,"%f %f",&x, &y) == 2);
+}
+
+bool XMLSceneMod::readXYZcoord (char* rawString, float &x, float &y, float &z){
+	return (sscanf(rawString,"%f %f %f",&x, &y, &z) == 3);
+}
+
+bool XMLSceneMod::readFloatArray(char* rawString, float (&a)[4])
+{
+	return(sscanf(rawString,"%f %f %f %f",&a[0],&a[1],&a[2],&a[3]));
+}
+
+XMLSceneMod::~XMLSceneMod()
+{
+	delete(doc);
+}
+
+
+
+bool XMLSceneMod::readGlobals(TiXmlElement* dgxElement){
+
+
 	globalsElement = dgxElement->FirstChildElement( "globals" );
 	//camerasElement = dgxElement->FirstChildElement( "cameras" );
-	graphElement = dgxElement->FirstChildElement( "graph" );
-	appearancesElement=dgxElement->FirstChildElement("appearances");
+	
+	
 
 	/////////////globals/////////////////
-	if (globalsElement == NULL)
+	if (globalsElement == NULL){
 		printf("globals block not found!\n");
+		return false;
+	}
 	else
 	{
 		printf("Processing globals:\n");
@@ -162,42 +232,33 @@ XMLSceneMod::XMLSceneMod(char *filename)
 		/////////////////end lighting ////////////////////////
 	}
 
+	return true;
 	////////////////////// END GLOBALS /////////////////////
+}
 
 
+bool XMLSceneMod::readCameras(TiXmlElement* dgxElement){
+	return false;
+}
 
-	///////////////CAMERAS/////////////////
-	
+bool XMLSceneMod::readLights(TiXmlElement* dgxElement){
+	return false;
+}
 
-	//////////////END OF CAMERAS////////////
-	
-	
-
-
-	/////////////////LIGHTS///////////////
-
-
-	///////////////END OF LIGHTS/////////
+bool XMLSceneMod::readTextures(TiXmlElement* dgxElement){
+	return false;
+}
 
 
+bool XMLSceneMod::readAppearances(TiXmlElement* dgxElement){
+	cout<<"\nParsing appearances:\n";
 
+	appearancesElement=dgxElement->FirstChildElement("appearances");
 
-
-	/////////////////TEXTURES///////////////
-
-
-	///////////////END OF TEXTURES/////////
-
-
-
-
-
-	/////////////////APPEARANCES///////////////
-
-	cout<<"\nParcing appearances:\n";
-
-	if(appearancesElement==NULL)
+	if(appearancesElement==NULL){
 		printf("appearances block not found!\n");
+		return false;
+	}
 
 
 
@@ -282,18 +343,14 @@ XMLSceneMod::XMLSceneMod(char *filename)
 
 		cout<<endl;
 		appearances = appearances->NextSiblingElement("appearance");
+	}	
+
+	return true;
 }
 
 
-	///////////////END OF APPEARANCES/////////
-
-
-
-
-
-	
-	/////////////////GRAPH///////////////
-	//in progess
+bool XMLSceneMod::readGraph(TiXmlElement* dgxElement){
+	graphElement = dgxElement->FirstChildElement( "graph" );
 
 	if (graphElement == NULL)
 		printf("Graph block not found!\n");
@@ -313,7 +370,7 @@ XMLSceneMod::XMLSceneMod(char *filename)
 
 			string s=string(charString);
 			//cout<<s;
-			Node n= Node(s);
+			Node* n = new Node(s);
 			//cout<<"id do no"+n.getId();
 
 			TiXmlElement *transforms  = node->FirstChildElement();
@@ -369,7 +426,6 @@ XMLSceneMod::XMLSceneMod(char *filename)
 				} 
 				else printf("	Missing/invalid transform\n");
 				
-				
 				transform = transform->NextSiblingElement();
 			}
 
@@ -377,7 +433,7 @@ XMLSceneMod::XMLSceneMod(char *filename)
 			//por a matriz final em m e depois atribuir m à matriz transformação do nó
 			float m[16];
 			glGetFloatv(GL_MODELVIEW_MATRIX,m);
-			n.setMatrix(&m[0]);
+			n->setMatrix(&m[0]);
 			
 
 
@@ -403,9 +459,13 @@ XMLSceneMod::XMLSceneMod(char *filename)
 						char* xy1 = (char*) primitive->Attribute("xy1");
 						char* xy2 = (char*) primitive->Attribute("xy2");
 						float x1, y1, x2, y2;
-						if (readXYcoord(xy1, x1, y1) && readXYcoord(xy2, x2, y2))
+						if (readXYcoord(xy1, x1, y1) && readXYcoord(xy2, x2, y2)){
 							printf("		rectangle: xy1-%.2f %.2f, xy2-%.2f %.2f\n", x1, y1, x2, y2);
+							Rectangle* rect = new Rectangle(x1,y1,x2,y2);
+							n->addPrimitiva(rect);
+						}
 						else printf("		rectangle: invalid values or wrong format\n");
+						
 					}
 
 
@@ -422,20 +482,29 @@ XMLSceneMod::XMLSceneMod(char *filename)
 							printf("			xyz1-%.2f %.2f %.2f,\n", x1, y1, z1);
 							printf("			xyz2-%.2f %.2f %.2f,\n", x2, y2, z2);
 							printf("			xyz3-%.2f %.2f %.2f\n", x3, y3, z3);
+							Triangle* tri = new Triangle(x1,y1,z1,x2,y2,z2,x3,y3,z3);
+							n->addPrimitiva(tri);
 						}
 						else printf("		triangle: invalid values or wrong format\n");
+						
 					}
 
 
 					////////////cylinder//////////////
 					else if (strcmp("cylinder", primitive->Value()) == 0){
-						char* base = (char*) primitive->Attribute("base");
-						char* top = (char*) primitive->Attribute("top");
-						char* height = (char*) primitive->Attribute("height");
-						char* slices = (char*) primitive->Attribute("slices");
-						char* stacks = (char*) primitive->Attribute("stacks");
-						printf("		cylinder: base-%s, top-%s, height-%s, slices-%s, stacks-%s\n",
+						float base = atof((char*) primitive->Attribute("base"));
+						float top = atof((char*) primitive->Attribute("top"));
+						float height = atof((char*) primitive->Attribute("height"));
+						float slices = atof((char*) primitive->Attribute("slices"));
+						float stacks = atof((char*) primitive->Attribute("stacks"));
+						printf("		cylinder: base-%.2f, top-%.2f, height-%.2f, slices-%.2f, stacks-%.2f\n",
 							base, top, height, slices, stacks);
+						if (base == 0 || top == 0 || height == 0 || slices == 0 || stacks == 0)
+							printf("		cylinder: invalid values or wrong format\n");
+						else{
+							Cylinder* cil = new Cylinder(base,top,height,slices,stacks);
+							n->addPrimitiva(cil);
+						}
 					}
 
 
@@ -445,6 +514,8 @@ XMLSceneMod::XMLSceneMod(char *filename)
 						char* slices = (char*) primitive->Attribute("slices");
 						char* stacks = (char*) primitive->Attribute("stacks");
 						printf("		sphere: radius-%s, slices-%s, stacks-%s\n", radius, slices, stacks);
+
+						//ainda nao adiciona primitiva ao Node
 					}
 
 
@@ -456,10 +527,10 @@ XMLSceneMod::XMLSceneMod(char *filename)
 						char* loops = (char*) primitive->Attribute("loops");
 						printf("		torus: inner-%s, outer-%s, slices-%s, loops-%s\n",
 							inner, outer, slices, loops);
+
+						//ainda nao adiciona primitiva ao Node
 					}
 					else printf("		Invalid primitive detected\n");
-
-					
 
 					primitive = primitive->NextSiblingElement();
 				}
@@ -479,17 +550,21 @@ XMLSceneMod::XMLSceneMod(char *filename)
 			while(noderef)
 				{
 					idDesc = string(noderef->Attribute("id"));
-					n.addDescendente(idDesc);
+					n->addDescendente(idDesc);
 					cout<<idDesc<<"  ";
 					noderef=noderef->NextSiblingElement();
 				}
 			cout<<endl;
 			}
-			g.addNode(n);
+			
+			destinationGraph->addNode(n);
+			std::cout << n->mostrarNo();
 			node = node->NextSiblingElement();
 		}
 		//ao sair do while, é preciso verificar se existe pelo menos um nó
 	}
+
+
 
 	//mostrar dois nos
 /*
@@ -500,156 +575,30 @@ XMLSceneMod::XMLSceneMod(char *filename)
 	cout<<g.searchForNode("second")->getDescendentes().size();
 	*/
 
-	///////////////END OF GRAPH/////////
-
-
-
-	
-
-	//////////////////////OLD EXAMPLE CODE/////////////////////
-	// Init
-	// An example of well-known, required nodes
-
-	
-	/*
-	if (initElement == NULL)
-		printf("Init block not found!\n");
-	else
-	{
-		printf("Processing init:\n");
-		// frustum: example of a node with individual attributes
-		TiXmlElement* frustumElement=initElement->FirstChildElement("frustum");
-		if (frustumElement)
-		{
-			float near,far;
-
-			if (frustumElement->QueryFloatAttribute("near",&near)==TIXML_SUCCESS && 
-				frustumElement->QueryFloatAttribute("far",&far)==TIXML_SUCCESS
-				)
-				printf("  frustum attributes: %f %f\n", near, far);
-			else
-				printf("Error parsing frustum\n");
-		}
-		else
-			printf("frustum not found\n");
-
-
-		// translate: example of a node with an attribute comprising several float values
-		// It shows an example of extracting an attribute's value, and then further parsing that value 
-		// to extract individual values
-		TiXmlElement* translateElement=initElement->FirstChildElement("translate");
-		if (translateElement)
-		{
-			char *valString=NULL;
-			float x,y,z;
-
-			valString=(char *) translateElement->Attribute("xyz");
-
-			if(valString && sscanf(valString,"%f %f %f",&x, &y, &z)==3)
-			{
-				printf("  translate values (XYZ): %f %f %f\n", x, y, z);
-			}
-			else
-				printf("Error parsing translate");
-		}
-		else
-			printf("translate not found\n");		
-
-		// repeat for each of the variables as needed
-	}
-
-	// Other blocks could be validated/processed here
-	*/
-
-	// graph section
-
-
-	/*
-	if (graphElement == NULL)
-		printf("Graph block not found!\n");
-	else
-	{
-		char *prefix="  -";
-		TiXmlElement *node=graphElement->FirstChildElement();
-
-		while (node)
-		{
-			printf("Node id '%s' - Descendants:\n",node->Attribute("id"));
-			TiXmlElement *child=node->FirstChildElement();
-			while (child)
-			{
-				if (strcmp(child->Value(),"Node")==0)
-				{
-					// access node data by searching for its id in the nodes section
-					
-					TiXmlElement *noderef=findChildByAttribute(nodesElement,"id",child->Attribute("id"));
-
-					if (noderef)
-					{
-						// print id
-						printf("  - Node id: '%s'\n", child->Attribute("id"));
-
-						// prints some of the data
-						printf("    - Material id: '%s' \n", noderef->FirstChildElement("material")->Attribute("id"));
-						printf("    - Texture id: '%s' \n", noderef->FirstChildElement("texture")->Attribute("id"));
-
-						// repeat for other leaf details
-					}
-					else
-						printf("  - Node id: '%s': NOT FOUND IN THE NODES SECTION\n", child->Attribute("id"));
-
-				}
-				if (strcmp(child->Value(),"Leaf")==0)
-				{
-					// access leaf data by searching for its id in the leaves section
-					TiXmlElement *leaf=findChildByAttribute(leavesElement,"id",child->Attribute("id"));
-
-					if (leaf)
-					{
-						// it is a leaf and it is present in the leaves section
-						printf("  - Leaf id: '%s' ; type: '%s'\n", child->Attribute("id"), leaf->Attribute("type"));
-
-						// repeat for other leaf details
-					}
-					else
-						printf("  - Leaf id: '%s' - NOT FOUND IN THE LEAVES SECTION\n",child->Attribute("id"));
-				}
-
-				child=child->NextSiblingElement();
-			}
-			node=node->NextSiblingElement();
-		}
-	}*/
-
-}
-
-bool XMLSceneMod::readRGBcomponents (char* rawString, float &R, float &G, float &B, float &A){
-	if (sscanf(rawString,"%f %f %f %f",&R, &G, &B, &A) != 4)
-		return false;
-	if ( R>1 || G>1 || B>1 || A>1 )
-		return false;
-	if ( R<0 || G<0 || B<0 || A<0 )
-		return false;
 	return true;
+
 }
 
-bool XMLSceneMod::readXYcoord (char* rawString, float &x, float &y){
-	return (sscanf(rawString,"%f %f",&x, &y) == 2);
-}
 
-bool XMLSceneMod::readXYZcoord (char* rawString, float &x, float &y, float &z){
-	return (sscanf(rawString,"%f %f %f",&x, &y, &z) == 3);
-}
 
-bool XMLSceneMod::readFloatArray(char* rawString, float (&a)[4])
-{
-	return(sscanf(rawString,"%f %f %f %f",&a[0],&a[1],&a[2],&a[3]));
-}
 
-XMLSceneMod::~XMLSceneMod()
-{
-	delete(doc);
-}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 //-------------------------------------------------------
 

@@ -1,7 +1,7 @@
 
 #include "CGFappearance.h"
 #include "CGFobject.h"
-
+#include "Primitives.h"
 #include <vector>
 
 class Node
@@ -9,7 +9,7 @@ class Node
 private:
 	string id;
 	vector<string> descendentes;
-	CGFobject * primitiva;
+	vector<Primitive*> primitivas;
 	CGFappearance * aparencia;
 	float matrix[16];
 
@@ -19,10 +19,10 @@ public:
 	Node(void);
 	~Node(void);
 	Node(string id);
-	Node(string id, CGFobject* primitiva, CGFappearance * aparencia,float matrix[16]);
+	Node(string id, vector<Primitive*> primitivas, CGFappearance * aparencia,float matrix[16]);
 
 	//void addDescendente(Node * n);
-	void setPrimitiva(CGFobject * primitiva);
+	void addPrimitiva(Primitive* primitiva);
 	void setAparencia(CGFappearance * aparencia);
 	void setMatrix(float matrix[16] );
 	string getId(){return id;}
@@ -30,5 +30,9 @@ public:
 	vector<string> getDescendentes(){return descendentes;}
 
 	string mostrarNo();
+
+	unsigned int getNumeroDePrimitivas(){return primitivas.size();};
+	Primitive* getPrimitiva(int i);
+	float* getMatrix(){return matrix;};
 };
 

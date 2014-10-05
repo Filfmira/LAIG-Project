@@ -82,9 +82,9 @@
                 <!-- ex: bloco transforms pode ficar sem conteudo -->
                 <!-- ex: bloco transforms pode ser R,T (nao tem S) -->
                 <!-- ex: bloco transforms pode ser R,S,T,S -->
-                <transform type="translate" to="2 2 2.5" />
-                <transform type="rotate" axis="xx" angle="90" />
-                <transform type="scale" factor="2.1 1 5" />
+                <transform type="translate" to="0 0 0" />
+           <!--     <transform type="rotate" axis="xx" angle="90" />
+                <transform type="scale" factor="2.1 1 5" /> -->
             </transforms>
          
             <!-- declaracao da aparencia a utilizar -->
@@ -103,11 +103,11 @@
                 <!-- Primitivas : rectangle, triangle, cylinder, sphere, torus -->
                 <!--   Comandos a serem interpretados genericamente como em OpenGL/GLUT, exceto -->
                 <!--   o cilindro, que deve adicionalmente ter topos ou tampas) -->           
-                <rectangle xy1="2 4" xy2="1 2" />
-                <triangle xyz1="0 0.0 0" xyz2="2 0 0" xyz3="1 2.5 0" />
-                <cylinder base="ff" top="ff" height="ff" slices="ii" stacks="ii" />      <!-- deve ter topos -->
+                <rectangle xy1="-1 -1" xy2="1 1" />
+              <!--  <triangle xyz1="0 0.0 0" xyz2="2 0 0" xyz3="1 2.5 0" />
+                <cylinder base="ff" top="ff" height="ff" slices="ii" stacks="ii" />
                 <sphere radius="ff" slices="ii" stacks="ii" />
-                <torus inner="ff" outer="ff" slices="ii" loops="ii" />
+                <torus inner="ff" outer="ff" slices="ii" loops="ii" /> -->
              </primitives>
               
              <!-- bloco "descendants" -->
@@ -122,7 +122,7 @@
             </descendants>
         </node>
 		
-		<node id="second">
+	<!--"	<node id="second">
             <transforms>
                 <transform type="translate" to="2 2 2.5" />
                 <transform type="rotate" axis="xx" angle="90" />
@@ -135,7 +135,7 @@
                 <rectangle xy1="2 4" xy2="1 2" />
                 <triangle xyz1="0 0.0 0" xyz2="2 0 0" xyz3="1 2.5 0" />
                 <cylinder base="ff" top="ff" height="ff" slices="ii" stacks="ii" />      <!-- deve ter topos -->
-                <sphere radius="ff" slices="ii" stacks="ii" />
+     <!--           <sphere radius="ff" slices="ii" stacks="ii" />
                 <torus inner="ff" outer="ff" slices="ii" loops="ii" />
              </primitives>
               
@@ -143,7 +143,7 @@
                 <noderef id="root" />
             </descendants>
         </node>
-		
+		-->
 		
     </graph>
 </anf>
