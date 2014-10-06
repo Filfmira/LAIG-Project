@@ -114,7 +114,10 @@
              <!-- bloco "descendants" -->
             <descendants>
                 <noderef id="cilindro teste" />
-				<noderef id="R" />
+				<noderef id="RTE" />
+                <noderef id="RFE" />
+                <noderef id="RTD" />
+                <noderef id="RFD" />
             </descendants>
         </node>
 
@@ -151,7 +154,7 @@
 		
 		<node id="RFE">
 			<transforms>
-				<transform type="translate" to="1 0 1" />
+				<transform type="translate" to="1 0 2" />
 				<transform type="rotate" axis="yy" angle="-90"/>
 				
             </transforms>
@@ -166,7 +169,7 @@
 		
 		<node id="RFD">
 			<transforms>
-				<transform type="translate" to="-1 0 1" />
+				<transform type="translate" to="-1 0 2" />
 				<transform type="rotate" axis="yy" angle="90"/>
 				
             </transforms>
@@ -179,9 +182,9 @@
             </descendants>
 		</node>
 		
-				<node id="RTE">
+		<node id="RTE">
 			<transforms>
-				<transform type="translate" to="1 0 -1" />
+				<transform type="translate" to="1 0 -2" />
 				<transform type="rotate" axis="yy" angle="-90"/>
 				
             </transforms>
@@ -196,7 +199,7 @@
 		
 		<node id="RTD">
 			<transforms>
-				<transform type="translate" to="-1 0 -1" />
+				<transform type="translate" to="-1 0 -2" />
 				<transform type="rotate" axis="yy" angle="90"/>
 				
             </transforms>
