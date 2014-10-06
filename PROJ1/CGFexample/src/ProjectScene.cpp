@@ -82,7 +82,8 @@ void ProjectScene::init()
 
 	visualizationMode = 1; //textured mode
 	
-	XMLSceneMod temp = XMLSceneMod("anfFile - Copia.xml", &sceneGraph);
+	//XMLSceneMod temp = XMLSceneMod("anfFile - Copia.xml", &sceneGraph);
+	XMLSceneMod temp = XMLSceneMod("wall-e.xml", &sceneGraph);
 
 	/*if (sceneGraph.getNumberOfNodes() > 0)
 		for (unsigned int i = 0; i < sceneGraph.getNumberOfNodes(); i++){

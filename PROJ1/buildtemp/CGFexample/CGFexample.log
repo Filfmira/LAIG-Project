@@ -1,17 +1,17 @@
-﻿Build started 06/10/2014 16:29:53.
-     1>Project "C:\Users\filipe\Desktop\LAIG\PROJ1\CGFexample\CGFexample.vcxproj" on node 2 (build target(s)).
+﻿Build started 06/10/2014 22:50:35.
+     1>Project "C:\Users\João\Documents\FEUP\3º ano\LAIG\Repos Working Copy\PROJ1\CGFexample\CGFexample.vcxproj" on node 2 (build target(s)).
      1>InitializeBuildStatus:
-         Creating "..\buildtemp\CGFexample\CGFexample.unsuccessfulbuild" because "AlwaysCreate" was specified.
+         Touching "..\buildtemp\CGFexample\CGFexample.unsuccessfulbuild".
        ClCompile:
          All outputs are up-to-date.
        Link:
          All outputs are up-to-date.
-         CGFexample.vcxproj -> C:\Users\filipe\Desktop\LAIG\PROJ1\CGFexample\bin\CGFexample.exe
+         CGFexample.vcxproj -> C:\Users\João\Documents\FEUP\3º ano\LAIG\Repos Working Copy\PROJ1\CGFexample\bin\CGFexample.exe
        FinalizeBuildStatus:
          Deleting file "..\buildtemp\CGFexample\CGFexample.unsuccessfulbuild".
          Touching "..\buildtemp\CGFexample\CGFexample.lastbuildstate".
-     1>Done Building Project "C:\Users\filipe\Desktop\LAIG\PROJ1\CGFexample\CGFexample.vcxproj" (build target(s)).
+     1>Done Building Project "C:\Users\João\Documents\FEUP\3º ano\LAIG\Repos Working Copy\PROJ1\CGFexample\CGFexample.vcxproj" (build target(s)).
 
 Build succeeded.
 
-Time Elapsed 00:00:00.17
+Time Elapsed 00:00:00.07

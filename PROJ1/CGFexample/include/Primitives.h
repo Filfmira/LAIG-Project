@@ -154,4 +154,57 @@ public:
 
 	char* getNome(){return "Cilindro";};
 };
+
+class Sphere: public Primitive{
+private:
+	float radius;
+	int slices;
+	int stacks;
+
+public:
+	Sphere(float radius, int slices, int stacks){
+		this->radius = radius;
+		this->slices = slices;
+		this->stacks = stacks;
+	};
+
+	void draw(){		
+		glPushMatrix();
+			//void gluSphere(GLUquadric*  quad,  GLdouble  radius,  GLint  slices,  GLint  stacks);
+			gluSphere(gluNewQuadric(), radius, slices, stacks);
+		glPopMatrix();
+	};
+
+	char* getNome(){return "Esfera";};
+};
+
+
+class Torus: public Primitive{
+private:
+	float innerRadius;
+	float outerRadius;
+	int slices;
+	int loops;
+
+public:
+	Torus(float innerRadius, float outerRadius, int slices, int loops){
+		this->innerRadius = innerRadius;
+		this->outerRadius = outerRadius;
+		this->slices = slices;
+		this->loops = loops;
+	};
+
+	void draw(){		
+		glPushMatrix();
+			/*void glutSolidTorus(GLdouble innerRadius,
+                    GLdouble outerRadius,
+                    GLint nsides, GLint rings);*/
+			glutSolidTorus(innerRadius, outerRadius, slices, loops);
+		glPopMatrix();
+	};
+
+	char* getNome(){return "Torus";};
+};
+
+
 #endif

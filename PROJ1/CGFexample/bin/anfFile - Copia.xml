@@ -106,18 +106,67 @@
                 <!--   o cilindro, que deve adicionalmente ter topos ou tampas) -->           
                 <rectangle xy1="-1 1" xy2="1 -1" />
                 <triangle xyz1="0 2.5 0" xyz2="-1.5 1 0" xyz3="1.5 1 0" />
-                <!-- <cylinder base="1" top="1" height="3" slices="20" stacks="10" />
-               <!-- <sphere radius="ff" slices="ii" stacks="ii" />
-                <torus inner="ff" outer="ff" slices="ii" loops="ii" /> -->
+                <!--<cylinder base="1" top="1" height="3" slices="20" stacks="10" /> -->
+                <sphere radius="5" slices="ii" stacks="ii" />
+                <!--<torus inner="ff" outer="ff" slices="ii" loops="ii" /> --> 
              </primitives>
               
              <!-- bloco "descendants" -->
             <descendants>
                 <noderef id="cilindro teste" />
+                <noderef id="esfera teste" />
+                <noderef id="torus teste" />
 				<noderef id="RTE" />
                 <noderef id="RFE" />
                 <noderef id="RTD" />
                 <noderef id="RFD" />
+            </descendants>
+        </node>
+
+        <node id="esfera teste">
+            <transforms>
+                <transform type="translate" to="0 6 0" />
+            </transforms>
+
+            <appearanceref id="ss" />
+
+            <primitives>
+               <sphere radius="1" slices="20" stacks="10" />
+            </primitives>
+
+            <descendants>
+            </descendants>
+
+        </node>
+
+        <node id="torus teste">
+            <transforms>
+                <transform type="translate" to="0 0 9" />
+                <transform type="rotate" axis="yy" angle="90"/>
+            </transforms>
+
+            <appearanceref id="ss" />
+
+            <primitives>
+               <torus inner="1.5" outer="3" slices="20" loops="10"/>
+            </primitives>
+
+            <descendants>
+            </descendants>
+
+        </node>
+
+
+        <node id="R">
+            <transforms>
+                <transform type="translate" to="0 0 3" />
+            </transforms>
+             <appearanceref id="ss" />
+             <primitives>
+               <rectangle xy1="-1 1" xy2="1 -1" />
+            </primitives>
+            
+            <descendants>
             </descendants>
         </node>
 

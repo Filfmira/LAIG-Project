@@ -1,0 +1,552 @@
+<anf>
+
+    <!-- bloco de configuracoes globais -->
+    <!-- a declaracao dos componentes deste bloco e' obrigatoria -->
+    <globals>
+        <!-- Parametros de desenho -->
+        <!-- Valores para mode: "fill" , "line", "point" -->
+        <!-- Valores para shading: "flat", "gouraud" ) -->
+        <drawing mode="fill" shading="gouraud" background="0.5 0.2 0.1 0.8" />
+ 
+        <!-- Parametros de culling -->
+        <!-- Valores para cullface: "none", "back" , "front" ou "both" -->
+        <!-- Valores para cullorder : "ccw" ou "cw" -->
+        <culling face="back" order="ccw" />
+ 
+        <!-- Parametros de iluminacao; seguem os parametros do OpenGL  -->
+        <lighting doublesided="true" local="false" enabled="true" ambient="0.8 0.8 0.8 0.8" />
+ 
+    </globals>
+
+    <!-- bloco de camaras: o atributo "initial" identifica a camara/ponto de vista inicial, que tem de existir -->
+    <cameras initial="ss" >
+        <!-- tem de existir, pelo menos uma camara dos tipos seguintes (perspective ou ortho) -->
+        <!-- no caso da camara ortho, o atributo "direction" define o eixo segundo o qual se efetua a projecao -->
+
+        <perspective id="ss" near="ff" far="ff" angle="ff" pos="ff ff ff" target="ff ff ff" />
+        <ortho id="ss" direction="ee" near="ff" far="ff" left="ff" right="ff" top="ff" bottom="ff" />
+
+    </cameras>
+
+ <!-- bloco de luzes -->
+    <lights>
+            <!-- Deve existir pelo menos uma luz declarada -->
+            <!-- Atributo "marker" indica se deve ou nao desenhar-se uma esfera representativa -->
+            <light id="ss" type="omni" enabled="tt" marker="tt" pos="ff ff ff" >
+               <component type="ambient" value="ff ff ff ff" />
+               <component type="diffuse" value="ff ff ff ff" />
+               <component type="specular" value="ff ff ff ff" />
+
+            </light>
+
+            <light id="ss" type="spot" enabled="tt" marker="tt" pos="ff ff ff" target="ff ff ff" 
+                angle="ff" exponent="ff" >
+
+               <component type="ambient" value="ff ff ff ff" />
+               <component type="diffuse" value="ff ff ff ff" />
+               <component type="specular" value="ff ff ff ff" />
+
+            </light>
+    </lights>
+
+    <!-- bloco de texturas. Este bloco tem de existir mas pode estar vazio, se nao forem usadas texturas -->
+    <!--   ver topico 'Notas finais' no enunciado sobre os parametros texlength_... -->
+    <textures>      
+          <texture id="ss" file="ss" texlength_s="ff" texlength_t="ff" />
+    </textures>
+
+    <!-- bloco de materiais; -->
+    <appearances>
+        <!-- deve existir um ou mais blocos "appearance" -->
+        <!-- IMPORTANTE: -->
+        <!--   textureref e opcional, a utilizar caso haja textura associada a esta aparencia -->
+        <appearance id="ss" shininess="1" textureref="ss" >
+               <component type="ambient" value="1 1 1 1" />
+               <component type="diffuse" value="1 1 1 1" />
+               <component type="specular" value="1 1 1 1" />
+        </appearance>
+        <appearance id="ss" shininess="1" textureref="ss" >
+               <component type="ambient" value="1 1 1 1" />
+               <component type="diffuse" value="1 1 1 1" />
+        </appearance>
+    </appearances>
+
+    <graph rootid="root">
+
+        <node id="root">
+
+            <transforms>
+
+                <transform type="translate" to="0 0 0" />
+
+            </transforms>
+         
+            <appearanceref id="ss" />
+ 
+            <primitives>
+
+             </primitives>
+              
+             <!-- bloco "descendants" -->
+            <descendants>
+                <noderef id="corpo" />
+                <noderef id="pernas" />
+                <noderef id="pescoco" />
+                <noderef id="olhos" />
+            </descendants>
+        </node>
+
+        <!--<node id="example">
+            <transforms>
+                <transform type="translate" to="0 6 0" />
+                <transform type="rotate" axis="xx" angle="90" />
+                <transform type="scale" factor="2.1 1 5" />
+            </transforms>
+            <appearanceref id="ss" />
+            <primitives>
+                <rectangle xy1="-1 1" xy2="1 -1" />
+                <triangle xyz1="0 2.5 0" xyz2="-1.5 1 0" xyz3="1.5 1 0" />
+                <cylinder base="1" top="1" height="3" slices="20" stacks="10" />
+                <sphere radius="5" slices="ii" stacks="ii" />
+                <torus inner="ff" outer="ff" slices="ii" loops="ii" /> 
+               <sphere radius="1" slices="20" stacks="10" />
+            </primitives>
+
+            <descendants>
+            </descendants>
+        </node> -->
+
+
+        <!-- ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||-->
+        <!-- ||||||||||||||||||||||||||||||||CORPO|||||||||||||||||||||||||||||-->
+        <!-- ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||-->
+
+
+        <node id="corpo">
+            <transforms>
+                <transform type="translate" to="0 1.5 0" />
+            </transforms>
+            <appearanceref id="ss" />
+            <primitives>
+            </primitives>
+
+            <descendants>
+                <noderef id="corpoFrente" />
+                <noderef id="corpoTras" />
+                <noderef id="corpoEsq" />
+                <noderef id="corpoDir" />
+                <noderef id="corpoTopo" />
+                <noderef id="corpoBaixo" />
+            </descendants>
+        </node>
+
+         <node id="corpoFrente">
+            <transforms>
+                <transform type="translate" to="0 0 1" />
+            </transforms>
+            <appearanceref id="ss" />
+            <primitives>
+            </primitives>
+
+            <descendants>
+                <noderef id="cuboCorpo" />
+            </descendants>
+        </node>
+
+        <node id="corpoTras">
+            <transforms>
+                <transform type="translate" to="0 0 -1" />
+                <transform type="rotate" axis="yy" angle="180" />
+            </transforms>
+            <appearanceref id="ss" />
+            <primitives>
+            </primitives>
+
+            <descendants>
+                <noderef id="cuboCorpo" />
+            </descendants>
+        </node>
+
+        <node id="corpoEsq">
+            <transforms>
+                <transform type="translate" to="-1 0 0" />
+                <transform type="rotate" axis="yy" angle="-90" />
+            </transforms>
+            <appearanceref id="ss" />
+            <primitives>
+            </primitives>
+
+            <descendants>
+                <noderef id="cuboCorpo" />
+            </descendants>
+        </node>
+
+        <node id="corpoDir">
+            <transforms>
+                <transform type="translate" to="1 0 0" />
+                <transform type="rotate" axis="yy" angle="90" />
+            </transforms>
+            <appearanceref id="ss" />
+            <primitives>
+            </primitives>
+
+            <descendants>
+                <noderef id="cuboCorpo" />
+            </descendants>
+        </node>
+
+        <node id="corpoTopo">
+            <transforms>
+                <transform type="translate" to="0 1 0" />
+                <transform type="rotate" axis="xx" angle="-90" />
+            </transforms>
+            <appearanceref id="ss" />
+            <primitives>
+            </primitives>
+
+            <descendants>
+                <noderef id="cuboCorpo" />
+            </descendants>
+        </node>
+
+        <node id="corpoBaixo">
+            <transforms>
+                <transform type="translate" to="0 -1 0" />
+                <transform type="rotate" axis="xx" angle="90" />
+            </transforms>
+            <appearanceref id="ss" />
+            <primitives>
+            </primitives>
+
+            <descendants>
+                <noderef id="cuboCorpo" />
+            </descendants>
+        </node>
+
+        <node id="cuboCorpo">
+            <transforms>
+            </transforms>
+            <appearanceref id="ss" />
+            <primitives>
+                <rectangle xy1="-1 1" xy2="1 -1" />
+            </primitives>
+
+            <descendants>
+            </descendants>
+        </node>
+
+        <!-- ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||-->
+        <!-- |||||||||||||||||||||||||||||||PERNAS|||||||||||||||||||||||||||||-->
+        <!-- ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||-->
+
+\       
+        <!--<node id="example">
+            <transforms>
+                <transform type="translate" to="0 6 0" />
+                <transform type="rotate" axis="xx" angle="90" />
+                <transform type="scale" factor="2.1 1 5" />
+            </transforms>
+            <appearanceref id="ss" />
+            <primitives>
+                <rectangle xy1="-1 1" xy2="1 -1" />
+                <triangle xyz1="0 2.5 0" xyz2="-1.5 1 0" xyz3="1.5 1 0" />
+                <cylinder base="1" top="1" height="3" slices="20" stacks="10" />
+                <sphere radius="5" slices="ii" stacks="ii" />
+                <torus inner="ff" outer="ff" slices="ii" loops="ii" /> 
+               <sphere radius="1" slices="20" stacks="10" />
+            </primitives>
+
+            <descendants>
+                <noderef id="cuboCorpo" />
+            </descendants>
+        </node> -->
+
+
+        <node id="pernas">
+            <transforms>
+                <transform type="scale" factor="1 0.8 1" />
+                <transform type="translate" to="0 1 0" />
+            </transforms>
+            <appearanceref id="ss" />
+            <primitives>
+            </primitives>
+
+            <descendants>
+                <noderef id="perna1" />
+                <noderef id="perna2" />
+            </descendants>
+        </node>
+
+        <node id="perna1">
+            <transforms>
+                <transform type="translate" to="1.3 0 0" />
+                <transform type="rotate" axis="yy" angle="90" />
+            </transforms>
+            <appearanceref id="ss" />
+            <primitives>
+            </primitives>
+
+            <descendants>
+                <noderef id="prismaPerna" />
+            </descendants>
+        </node>
+
+        <node id="perna2">
+            <transforms>
+                <transform type="translate" to="-1.3 0 0" />
+                <transform type="rotate" axis="yy" angle="-90" />
+            </transforms>
+            <appearanceref id="ss" />
+            <primitives>
+            </primitives>
+
+            <descendants>
+                <noderef id="prismaPerna" />
+            </descendants>
+        </node>
+
+        <node id="prismaPerna">
+            <transforms>
+            </transforms>
+            <appearanceref id="ss" />
+            <primitives>
+            </primitives>
+
+            <descendants>
+                <noderef id="ladoDentro" />
+                <noderef id="ladoFora" />
+                <noderef id="restoPernaFrente" />
+                <noderef id="restoPernaTras" />
+                <noderef id="restoPernaBaixo" />
+            </descendants>
+        </node>
+
+
+
+        <node id="ladoDentro">
+            <transforms>
+                <transform type="translate" to="0 0 -0.3" />
+                <transform type="rotate" axis="yy" angle="180" /> 
+            </transforms>
+            <appearanceref id="ss" />
+            <primitives>
+            </primitives>
+
+            <descendants>
+                <noderef id="trianguloPerna" />
+            </descendants>
+        </node>
+
+        <node id="ladoFora"> <!--lado de fora, se apenas for desenhado o prisma, é o lado da frente (??) -->
+            <transforms>
+                <transform type="translate" to="0 0 0.3" />
+            </transforms>
+            <appearanceref id="ss" />
+            <primitives>
+            </primitives>
+
+            <descendants>
+                <noderef id="trianguloPerna" />
+            </descendants>
+        </node>
+
+        <node id="trianguloPerna">
+            <transforms>
+            </transforms>
+            <appearanceref id="ss" />
+            <primitives>
+                 <triangle xyz1="0 1 0" xyz2="-1 -1 0" xyz3="1 -1 0" />
+            </primitives>
+
+            <descendants>
+            </descendants>
+        </node>
+
+         <node id="restoPernaFrente">
+            <transforms>
+                <transform type="translate" to="0 1 0" />
+                <transform type="rotate" axis="zz" angle="-26.56505118" /> 
+                <transform type="rotate" axis="yy" angle="-90" /> 
+            </transforms>
+            <appearanceref id="ss" />
+            <primitives>
+                <rectangle xy1="-0.3 0" xy2="0.3 -2.236067977" />
+            </primitives>
+
+            <descendants>
+            </descendants>
+        </node>
+
+        <node id="restoPernaTras">
+            <transforms>
+                <transform type="translate" to="0 1 0" />
+                <transform type="rotate" axis="zz" angle="26.56505118" /> 
+                <transform type="rotate" axis="yy" angle="90" /> 
+            </transforms>
+            <appearanceref id="ss" />
+            <primitives>
+                <rectangle xy1="-0.3 0" xy2="0.3 -2.236067977" />
+            </primitives>
+
+            <descendants>
+            </descendants>
+        </node>
+
+        <node id="restoPernaBaixo">
+            <transforms>
+                <transform type="translate" to="0 -1 0" /> 
+                <transform type="rotate" axis="zz" angle="90" /> 
+                <transform type="rotate" axis="yy" angle="-90" /> 
+            </transforms>
+            <appearanceref id="ss" />
+            <primitives>
+                <rectangle xy1="-0.3 1" xy2="0.3 -1" />
+            </primitives>
+
+            <descendants>
+            </descendants>
+        </node>
+
+
+
+        <!-- ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||-->
+        <!-- |||||||||||||||||||||||||||||||PESCOCO||||||||||||||||||||||||||||-->
+        <!-- ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||-->
+      
+        <!--<node id="example">
+            <transforms>
+                <transform type="translate" to="0 6 0" />
+                <transform type="rotate" axis="xx" angle="90" />
+                <transform type="scale" factor="2.1 1 5" />
+            </transforms>
+            <appearanceref id="ss" />
+            <primitives>
+                <rectangle xy1="-1 1" xy2="1 -1" />
+                <triangle xyz1="0 2.5 0" xyz2="-1.5 1 0" xyz3="1.5 1 0" />
+                <cylinder base="1" top="1" height="3" slices="20" stacks="10" />
+                <sphere radius="5" slices="ii" stacks="ii" />
+                <torus inner="ff" outer="ff" slices="ii" loops="ii" /> 
+               <sphere radius="1" slices="20" stacks="10" />
+            </primitives>
+
+            <descendants>
+                <noderef id="cuboCorpo" />
+            </descendants>
+        </node> -->
+
+        <node id="pescoco">
+            <transforms>
+                <transform type="translate" to="0 2.5 0" />
+                <transform type="rotate" axis="xx" angle="-90" />
+                <!--<transform type="scale" factor="2.1 1 5" /> -->
+            </transforms>
+            <appearanceref id="ss" />
+            <primitives>
+                <cylinder base="0.2" top="0.2" height="1" slices="20" stacks="10" />
+            </primitives>
+
+            <descendants>
+            </descendants>
+        </node> 
+
+        <!-- ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||-->
+        <!-- |||||||||||||||||||||||||||||||OLHOS||||||||||||||||||||||||||||||-->
+        <!-- ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||-->
+
+
+
+        <node id="olhos">
+            <transforms>
+                <transform type="translate" to="0 3.5 0" />
+            </transforms>
+            <appearanceref id="ss" />
+            <primitives>
+            </primitives>
+
+            <descendants>
+                <noderef id="ligacaoOlhos" />
+                <noderef id="olhoEsq" />
+                <noderef id="olhoDir" />
+            </descendants>
+        </node> 
+
+        <node id="olhoDir">
+            <transforms>
+                <transform type="translate" to="0.5 0 0" />
+            </transforms>
+            <appearanceref id="ss" />
+            <primitives>
+            </primitives>
+            <descendants>
+                <noderef id="olho" />
+            </descendants>
+        </node> 
+
+        <node id="olhoEsq">
+            <transforms>
+                <transform type="translate" to="-0.5 0 0" />
+            </transforms>
+            <appearanceref id="ss" />
+            <primitives>
+            </primitives>
+            <descendants>
+                <noderef id="olho" />
+            </descendants>
+        </node> 
+
+        <node id="olho">
+            <transforms>
+                <transform type="translate" to="0 0 0" />
+            </transforms>
+            <appearanceref id="ss" />
+            <primitives>
+            </primitives>
+
+            <descendants>
+                <noderef id="estruturaOlho" />
+                <noderef id="globoOlho" />
+            </descendants>
+        </node> 
+
+        <node id="estruturaOlho">
+            <transforms>
+                <transform type="translate" to="0 0 -0.75" />
+            </transforms>
+            <appearanceref id="ss" />
+            <primitives>
+                <cylinder base="0.2" top="0.5" height="1.5" slices="20" stacks="10" />
+            </primitives>
+            <descendants>
+            </descendants>
+        </node> 
+
+        <node id="globoOlho">
+            <transforms>
+                <transform type="translate" to="0 0 0.75" />
+            </transforms>
+            <appearanceref id="ss" />
+            <primitives>
+                <sphere radius="0.2" slices="20" stacks="10" />
+            </primitives>
+            <descendants>
+            </descendants>
+        </node> 
+
+        <node id="ligacaoOlhos">
+            <transforms>
+                <transform type="translate" to="0.25 0 0" />
+                <transform type="rotate" axis="yy" angle="-90" />
+            </transforms>
+            <appearanceref id="ss" />
+            <primitives>
+                <cylinder base="0.2" top="0.2" height="0.5" slices="20" stacks="10" />
+            </primitives>
+            <descendants>
+            </descendants>
+        </node> 
+
+
+
+
+    </graph>
+</anf>

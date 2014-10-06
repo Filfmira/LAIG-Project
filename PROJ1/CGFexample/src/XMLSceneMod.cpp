@@ -502,9 +502,9 @@ bool XMLSceneMod::readGraph(TiXmlElement* dgxElement){
 						float base = atof((char*) primitive->Attribute("base"));
 						float top = atof((char*) primitive->Attribute("top"));
 						float height = atof((char*) primitive->Attribute("height"));
-						float slices = atof((char*) primitive->Attribute("slices"));
-						float stacks = atof((char*) primitive->Attribute("stacks"));
-						printf("		cylinder: base-%.2f, top-%.2f, height-%.2f, slices-%.2f, stacks-%.2f\n",
+						int slices = atoi((char*) primitive->Attribute("slices"));
+						int stacks = atoi((char*) primitive->Attribute("stacks"));
+						printf("		cylinder: base-%.2f, top-%.2f, height-%.2f, slices-%d, stacks-%d\n",
 							base, top, height, slices, stacks);
 						if (base == 0 || top == 0 || height == 0 || slices == 0 || stacks == 0)
 							printf("		cylinder: invalid values or wrong format\n");
@@ -517,25 +517,33 @@ bool XMLSceneMod::readGraph(TiXmlElement* dgxElement){
 
 					/////////////sphere////////////////
 					else if (strcmp("sphere", primitive->Value()) == 0){
-						char* radius = (char*) primitive->Attribute("radius");
-						char* slices = (char*) primitive->Attribute("slices");
-						char* stacks = (char*) primitive->Attribute("stacks");
-						printf("		sphere: radius-%s, slices-%s, stacks-%s\n", radius, slices, stacks);
-
-						//ainda nao adiciona primitiva ao Node
+						float radius = atof((char*) primitive->Attribute("radius"));
+						int slices = atoi((char*) primitive->Attribute("slices"));
+						int stacks = atoi((char*) primitive->Attribute("stacks"));
+						printf("		sphere: radius-%.2f, slices-%d, stacks-%d\n", radius, slices, stacks);
+						if (radius == 0 || slices == 0 || stacks == 0)
+							printf("		sphere: invalid values or wrong format\n");
+						else{
+							Sphere* esf = new Sphere(radius,slices,stacks);
+							n->addPrimitiva(esf);
+						}
 					}
 
 
 					///////////////torus///////////////
 					else if (strcmp("torus", primitive->Value()) == 0){
-						char* inner = (char*) primitive->Attribute("inner");
-						char* outer = (char*) primitive->Attribute("outer");
-						char* slices = (char*) primitive->Attribute("slices");
-						char* loops = (char*) primitive->Attribute("loops");
-						printf("		torus: inner-%s, outer-%s, slices-%s, loops-%s\n",
+						float inner = atof ((char*) primitive->Attribute("inner"));
+						float outer = atof((char*) primitive->Attribute("outer"));
+						int slices = atoi((char*) primitive->Attribute("slices"));
+						int loops = atoi((char*) primitive->Attribute("loops"));
+						printf("		torus: inner-%.2f, outer-%.2f, slices-%d, loops-%d\n",
 							inner, outer, slices, loops);
-
-						//ainda nao adiciona primitiva ao Node
+						if (inner == 0 || outer == 0 || slices == 0 || loops == 0)
+							printf("		torus: invalid values or wrong format\n");
+						else{
+							Torus* tor = new Torus(inner, outer , slices, loops);
+							n->addPrimitiva(tor);
+						}
 					}
 					else printf("		Invalid primitive detected\n");
 
