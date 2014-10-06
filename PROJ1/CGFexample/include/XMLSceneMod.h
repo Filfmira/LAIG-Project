@@ -33,6 +33,7 @@ protected:
 	TiXmlElement* camerasElement;
 	TiXmlElement* graphElement;
 	TiXmlElement* appearancesElement;
+	TiXmlElement* texturesElement;
 	//////////////////////////////////////
 
 

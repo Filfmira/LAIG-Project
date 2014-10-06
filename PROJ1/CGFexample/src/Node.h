@@ -8,7 +8,8 @@ class Node
 {
 private:
 	string id;
-	vector<string> descendentes;
+	vector<Node*> descendentes;
+	vector<Node*> ascendentes; 
 	vector<Primitive*> primitivas;
 	CGFappearance * aparencia;
 	float matrix[16];
@@ -26,8 +27,10 @@ public:
 	void setAparencia(CGFappearance * aparencia);
 	void setMatrix(float matrix[16] );
 	string getId(){return id;}
-	void addDescendente(string id){descendentes.push_back(id);}
-	vector<string> getDescendentes(){return descendentes;}
+	void addDescendente(Node* n){descendentes.push_back(n);}
+	void addAscendente(Node* n){ascendentes.push_back(n);}
+	vector<Node*> getDescendentes(){return descendentes;}
+	vector<Node*> getAscendentes(){return ascendentes;}
 
 	string mostrarNo();
 

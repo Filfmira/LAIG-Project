@@ -39,6 +39,7 @@ void Node::addDescendente(Node *n)
 */
 void Node::setMatrix(float m[16] )				
 {
+	
 	for(int i=0;i<16;i++)
 		matrix[i]=m[i];
 }
@@ -72,9 +73,15 @@ string Node::mostrarNo(){
 
 	s<<"Descendentes:";
 	for(int i=0;i<this->descendentes.size();i++)
-		s<<descendentes.at(i)<<" , ";
+		s<<descendentes.at(i)->getId()<<" , ";
+	s<<"\nSize:"<<descendentes.size()<<endl;
 	s<<"\n";
 
+	s<<"Ascendentes:";
+	for(int i=0;i<this->ascendentes.size();i++)
+		s<<ascendentes.at(i)->getId()<<" , ";
+	s<<"\nSize:"<<ascendentes.size()<<endl;
+	s<<"\n";
 
 	s<<"\n\n=================\n";
 	return s.str();

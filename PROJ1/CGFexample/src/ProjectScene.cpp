@@ -127,20 +127,23 @@ void ProjectScene::display()
 
 	// ---- BEGIN Primitive drawing section
 
-	if (sceneGraph.getNumberOfNodes() > 0)
+	drawAux(sceneGraph.getRoot());
+
+/*	if (sceneGraph.getNumberOfNodes() > 0)
 		for (unsigned int i = 0; i < sceneGraph.getNumberOfNodes(); i++){
 			Node* tempNode = sceneGraph.searchForNode(i);
 			if (tempNode->getNumeroDePrimitivas() > 0)
 				for (unsigned int j = 0; j < tempNode->getNumeroDePrimitivas(); j++){
 					//printf("	Desenhei primitiva %d do node %d- %s\n", j, i, sceneGraph.searchForNode(i)->getPrimitiva(j)->getNome());
 					glPushMatrix();
+						
 						glMultMatrixf(tempNode->getMatrix()); 
 						tempNode->getPrimitiva(j)->draw();
 						//cout << tempNode->mostrarNo();
 					glPopMatrix();
 				}
 
-		}
+		}*/
 		
 	// ---- END Primitive drawing section
 
@@ -149,7 +152,19 @@ void ProjectScene::display()
 	// glutSwapBuffers() will swap pointers so that the back buffer becomes the front buffer and vice-versa
 	glutSwapBuffers();
 }
+void ProjectScene::drawAux(Node* node){
 
+	glPushMatrix();
+	glMultMatrixf(node->getMatrix());
+		for (unsigned int j = 0; j < node->getNumeroDePrimitivas(); j++){
+			node->getPrimitiva(j)->draw();
+		}
+		for (unsigned int i = 0; i < node->getDescendentes().size(); i++){
+
+			drawAux(node->getDescendentes()[i]);
+		}
+	glPopMatrix();
+}
 ProjectScene::~ProjectScene() 
 {
 	for (unsigned int i = 0; i < 8; i++)

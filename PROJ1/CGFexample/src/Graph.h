@@ -5,7 +5,7 @@ class Graph
 {
 private:
 	vector<Node*> nodes;
-
+	Node* root;
 
 public:
 	//vector<Node> nodes;
@@ -19,4 +19,6 @@ public:
 	Node* searchForNode(int num);	//pesquisa node por posicao no vector, retorna null se nao existir;
 
 	unsigned int getNumberOfNodes(){return nodes.size();}
+	void setRoot(Node* n){root = n;};
+	Node* getRoot(){return root;};
 };

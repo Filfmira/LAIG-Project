@@ -351,7 +351,7 @@ bool XMLSceneMod::readAppearances(TiXmlElement* dgxElement){
 
 bool XMLSceneMod::readGraph(TiXmlElement* dgxElement){
 	graphElement = dgxElement->FirstChildElement( "graph" );
-
+	char* rootNodeId = "";
 	if (graphElement == NULL)
 		printf("Graph block not found!\n");
 	else
@@ -362,9 +362,15 @@ bool XMLSceneMod::readGraph(TiXmlElement* dgxElement){
 
 		char *prefix="  -";
 		TiXmlElement *node = graphElement->FirstChildElement("node");
+		
+		if (node)
+			rootNodeId = (char*) node->Attribute("id");
 
+
+		vector<vector<char* > > descendentes;
 		while (node)
 		{
+			
 			printf("-Node id: %s\n",node->Attribute("id"));
 			char* charString=(char *)node->Attribute("id");
 
@@ -406,11 +412,11 @@ bool XMLSceneMod::readGraph(TiXmlElement* dgxElement){
 
 					float angulo;
 					sscanf(angle,"%f",&angulo);
-					if(strcmp(axis,"xx"))
+					if(strcmp(axis,"xx") == 0)
 						glRotatef(angulo, 1,0,0);
-					else if(strcmp(axis,"yy"))
+					else if(strcmp(axis,"yy") == 0)
 						glRotatef(angulo, 0,1,0);
-					else if(strcmp(axis,"zz"))
+					else if(strcmp(axis,"zz") == 0)
 						glRotatef(angulo, 0,0,1);
 					else printf("	Unexpected problem with rotation\n");
 				} 
@@ -545,17 +551,16 @@ bool XMLSceneMod::readGraph(TiXmlElement* dgxElement){
 			}
 
 			TiXmlElement *noderef = descendants->FirstChildElement("noderef");  
-
+			vector<char*> descendentesNo;
 			string idDesc;
 			cout<<"	Descendentes: ";
 			while(noderef)
 				{
-					idDesc = string(noderef->Attribute("id"));
-					n->addDescendente(idDesc);
-					cout<<idDesc<<"  ";
+					descendentesNo.push_back((char*) noderef->Attribute("id"));
 					noderef=noderef->NextSiblingElement();
 				}
-			cout<<endl;
+			//cout<<endl;
+			descendentes.push_back(descendentesNo);
 			}
 			
 			destinationGraph->addNode(n);
@@ -563,18 +568,28 @@ bool XMLSceneMod::readGraph(TiXmlElement* dgxElement){
 			node = node->NextSiblingElement();
 		}
 		//ao sair do while, é preciso verificar se existe pelo menos um nó
+		if (destinationGraph->searchForNode((string)rootNodeId) == NULL)
+			return false;
+		destinationGraph->setRoot(destinationGraph->searchForNode((string)rootNodeId));
+
+		for (unsigned int i = 0; i < descendentes.size(); i++){
+			Node* tempNode = destinationGraph->searchForNode(i);
+			for (unsigned int j = 0; j < descendentes[i].size(); j++){
+				Node* descendenteTemp = destinationGraph->searchForNode( (string) descendentes[i][j] );
+				if (descendenteTemp != NULL){
+					tempNode->addDescendente(descendenteTemp);
+					descendenteTemp->addAscendente(tempNode);
+				}
+			}
+		}
 	}
 
 
 
 	//mostrar dois nos
-/*
-	cout<<g.searchForNode("root")->mostrarNo();
-	cout<<g.searchForNode("root")->getDescendentes().size();
+	for(int i =0;i<destinationGraph->getNumberOfNodes();i++)
+		cout<<destinationGraph->searchForNode(i)->mostrarNo();
 
-	cout<<g.searchForNode("second")->mostrarNo();
-	cout<<g.searchForNode("second")->getDescendentes().size();
-	*/
 
 	return true;
 
