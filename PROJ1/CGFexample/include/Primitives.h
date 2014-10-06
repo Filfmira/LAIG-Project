@@ -2,7 +2,7 @@
 #define PRIMITIVES_H
 
 #include "CGFobject.h"
-
+#include <math.h>
 
 class Primitive{
 public:
@@ -118,9 +118,38 @@ public:
 	};
 
 	void draw(){
-		//glPushMatrix();
+		double alphaStep = (360.0/(float)slices)*acos(-1.0)/180.0;
+
+		
+		glPushMatrix();
+
+			//topo
+			glNormal3f(0,0,1) ;
+			glBegin(GL_TRIANGLE_FAN);
+				glVertex3f(0, 0, height);
+				for(unsigned int i = 0; i <= slices; i++){
+					glVertex3f(top*cos(i* alphaStep), top*sin(i* alphaStep), height); //guardar estes senos e cossenos para não calcular???
+				}
+			glEnd();
+
+			//base
+			glPushMatrix();
+				glRotated(180,0,1,0);
+				glNormal3f(0,0,1) ;
+				glBegin(GL_TRIANGLE_FAN);
+					glVertex3f(0, 0, 0);
+					for(unsigned int i = 0; i <= slices; i++){
+						glVertex3f(base*cos(i* alphaStep), base*sin(i* alphaStep), 0); //guardar estes senos e cossenos para não calcular???
+					}
+				glEnd();
+			glPopMatrix();
+
+			//corpo do cilindro
 			gluCylinder(gluNewQuadric(), base, top, height,  slices, stacks);
-		//glPopMatrix();
+
+		glPopMatrix();
+
+
 	};
 
 	char* getNome(){return "Cilindro";};

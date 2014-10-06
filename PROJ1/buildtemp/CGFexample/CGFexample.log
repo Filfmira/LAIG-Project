@@ -1,27 +1,21 @@
-﻿Build started 01/10/2014 23:44:33.
+﻿Build started 06/10/2014 01:28:15.
      1>Project "C:\Users\João\Documents\FEUP\3º ano\LAIG\Repos Working Copy\PROJ1\CGFexample\CGFexample.vcxproj" on node 2 (build target(s)).
      1>InitializeBuildStatus:
          Creating "..\buildtemp\CGFexample\CGFexample.unsuccessfulbuild" because "AlwaysCreate" was specified.
        ClCompile:
-         c:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /Od /Oy- /D _MBCS /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"..\buildtemp\CGFexample\\" /Fd"..\buildtemp\CGFexample\vc100.pdb" /Gd /TP /analyze- /errorReport:prompt src\DemoScene.cpp src\ExampleObject.cpp src\main.cpp src\XMLScene.cpp src\XMLSceneMod.cpp
-         XMLSceneMod.cpp
-     1>c:\users\joão\documents\feup\3º ano\laig\repos working copy\proj1\cgfexample\src\xmlscenemod.cpp(453): warning C4996: 'sscanf': This function or variable may be unsafe. Consider using sscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-                 c:\program files (x86)\microsoft visual studio 10.0\vc\include\stdio.h(325) : see declaration of 'sscanf'
-     1>c:\users\joão\documents\feup\3º ano\laig\repos working copy\proj1\cgfexample\src\xmlscenemod.cpp(463): warning C4996: 'sscanf': This function or variable may be unsafe. Consider using sscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-                 c:\program files (x86)\microsoft visual studio 10.0\vc\include\stdio.h(325) : see declaration of 'sscanf'
-     1>c:\users\joão\documents\feup\3º ano\laig\repos working copy\proj1\cgfexample\src\xmlscenemod.cpp(467): warning C4996: 'sscanf': This function or variable may be unsafe. Consider using sscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-                 c:\program files (x86)\microsoft visual studio 10.0\vc\include\stdio.h(325) : see declaration of 'sscanf'
-         XMLScene.cpp
-     1>c:\users\joão\documents\feup\3º ano\laig\repos working copy\proj1\cgfexample\src\xmlscene.cpp(70): warning C4996: 'sscanf': This function or variable may be unsafe. Consider using sscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-                 c:\program files (x86)\microsoft visual studio 10.0\vc\include\stdio.h(325) : see declaration of 'sscanf'
-         main.cpp
-         ExampleObject.cpp
-         DemoScene.cpp
-         Generating Code...
+         c:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /Od /Oy- /D _MBCS /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"..\buildtemp\CGFexample\\" /Fd"..\buildtemp\CGFexample\vc100.pdb" /Gd /TP /analyze- /errorReport:prompt src\ProjectScene.cpp
+         ProjectScene.cpp
+     1>c:\users\joão\documents\feup\3º ano\laig\repos working copy\proj1\cgfexample\include\primitives.h(130): warning C4018: '<=' : signed/unsigned mismatch
+     1>c:\users\joão\documents\feup\3º ano\laig\repos working copy\proj1\cgfexample\include\primitives.h(141): warning C4018: '<=' : signed/unsigned mismatch
        Link:
          c:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"bin\CGFexample.exe" /NOLOGO glew32.lib CGFlib.lib tinyxml.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /ManifestFile:"..\buildtemp\CGFexample\CGFexample.exe.intermediate.manifest" /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /DEBUG /PDB:"C:\Users\João\Documents\FEUP\3º ano\LAIG\Repos Working Copy\PROJ1\CGFexample\bin\CGFexample.pdb" /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"bin\CGFexample.lib" /MACHINE:X86 ..\buildtemp\CGFexample\DemoScene.obj
          ..\buildtemp\CGFexample\ExampleObject.obj
+         ..\buildtemp\CGFexample\Graph.obj
          ..\buildtemp\CGFexample\main.obj
+         ..\buildtemp\CGFexample\Node.obj
+         ..\buildtemp\CGFexample\Primitives.obj
+         ..\buildtemp\CGFexample\ProjectScene.obj
+         ..\buildtemp\CGFexample\TPinterface.obj
          ..\buildtemp\CGFexample\XMLScene.obj
          ..\buildtemp\CGFexample\XMLSceneMod.obj
          LINK : bin\CGFexample.exe not found or not built by the last incremental link; performing full link
@@ -52,4 +46,4 @@
 
 Build succeeded.
 
-Time Elapsed 00:00:28.29
+Time Elapsed 00:00:01.25

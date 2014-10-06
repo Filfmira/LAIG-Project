@@ -406,12 +406,13 @@ bool XMLSceneMod::readGraph(TiXmlElement* dgxElement){
 
 					float angulo;
 					sscanf(angle,"%f",&angulo);
-					if(axis=="xx")
+					if(strcmp(axis,"xx"))
 						glRotatef(angulo, 1,0,0);
-					else if(axis=="yy")
+					else if(strcmp(axis,"yy"))
 						glRotatef(angulo, 0,1,0);
-					else if(axis=="zz")
+					else if(strcmp(axis,"zz"))
 						glRotatef(angulo, 0,0,1);
+					else printf("	Unexpected problem with rotation\n");
 				} 
 
 				else if (strcmp(tipo,"scale") == 0){
@@ -433,7 +434,7 @@ bool XMLSceneMod::readGraph(TiXmlElement* dgxElement){
 			//por a matriz final em m e depois atribuir m à matriz transformação do nó
 			float m[16];
 			glGetFloatv(GL_MODELVIEW_MATRIX,m);
-			n->setMatrix(&m[0]);
+			n->setMatrix(m);
 			
 
 

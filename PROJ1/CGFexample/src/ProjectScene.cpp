@@ -1,7 +1,7 @@
 #include "ProjectScene.h"
 #include "CGFaxis.h"
 #include "CGFapplication.h"
-
+#include <iostream>
 
 
 // Positions for two lights
@@ -52,7 +52,7 @@ void ProjectScene::init()
 	for (unsigned int i = 0; i < 8; i++)
 		lights[i] = NULL;
 
-/*	// Declares and enables two lights, with null ambient component
+	// Declares and enables two lights, with null ambient component
 	lights[0] = new CGFlight(GL_LIGHT0, light0_pos);
 	lights[0]->setSpecular(yellow);
 	lights[0]->setAmbient(ambientNull);
@@ -67,8 +67,8 @@ void ProjectScene::init()
 	
 	//light1->disable();
 	lights[1]->enable();
+
 	
-	*/
 	
 	// Uncomment below to enable normalization of lighting normal vectors
 	 glEnable (GL_NORMALIZE);
@@ -136,6 +136,7 @@ void ProjectScene::display()
 					glPushMatrix();
 						glMultMatrixf(tempNode->getMatrix()); 
 						tempNode->getPrimitiva(j)->draw();
+						//cout << tempNode->mostrarNo();
 					glPopMatrix();
 				}
 

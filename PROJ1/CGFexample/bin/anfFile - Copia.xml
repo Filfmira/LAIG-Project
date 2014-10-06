@@ -125,7 +125,7 @@
 
         <node id="cilindro teste">
             <transforms>
-                <transform type="rotate" axis="yy" angle="90"/>
+                <transform type="rotate" axis="xx" angle="90"/>
             </transforms>
 
             <appearanceref id="ss" />
