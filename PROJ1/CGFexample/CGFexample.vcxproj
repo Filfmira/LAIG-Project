@@ -69,6 +69,7 @@
     <ClCompile Include="src\DemoScene.cpp" />
     <ClCompile Include="src\ExampleObject.cpp" />
     <ClCompile Include="src\Graph.cpp" />
+    <ClCompile Include="src\Lights.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\Node.cpp" />
     <ClCompile Include="src\Primitives.cpp" />
@@ -78,6 +79,7 @@
     <ClCompile Include="src\XMLSceneMod.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="include\Lights.h" />
     <ClInclude Include="include\Primitives.h" />
     <ClInclude Include="include\ProjectScene.h" />
     <ClInclude Include="include\tinystr.h" />

@@ -56,13 +56,13 @@ void TPinterface::initGUI()
 
 	int initialId = 2;
 
-	for (unsigned int i = 0; i < 8; i++){
+/*	for (unsigned int i = 0; i < 8; i++){
 		if (((ProjectScene*) scene)->lights[i] != NULL){
 			ostringstream ss;
 			ss << "Light " << i;
 			addCheckboxToPanel(lightsPanel,(char *) ss.str().c_str(), 0, initialId+i);
 		}
-	}
+	}*/
 
 
 	addColumn();

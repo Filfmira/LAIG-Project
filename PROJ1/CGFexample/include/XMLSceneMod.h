@@ -3,11 +3,11 @@
 
 #include "tinyxml.h"
 #include "Graph.h"
-
+#include "Lights.h"
 class XMLSceneMod
 {
 public:
-	XMLSceneMod(char *filename, Graph* gr);
+	XMLSceneMod(char *filename, Graph* gr, Light** lig);
 	~XMLSceneMod();
 
 	static TiXmlElement *findChildByAttribute(TiXmlElement *parent,const char * attr, const char *val);
@@ -28,6 +28,7 @@ protected:
 
 	TiXmlDocument* doc;
 	Graph* destinationGraph;
+	Light** destinationLights;
 	//vector<CGFlight *> luzes;
 	/////////////Projecto LAIG////////////
 	TiXmlElement* globalsElement;

@@ -1,9 +1,12 @@
-#ifndef PROJECTSCENE_H
-#define PROJECTSCENE_H
+#ifndef __PROJECTSCENE_H_
+#define __PROJECTSCENE_H_
 
 #include "CGFscene.h"
 #include "CGFappearance.h"
 #include "XMLSceneMod.h"
+#include "Lights.h"
+#include <vector>
+
 
 class ProjectScene : public CGFscene
 {
@@ -11,8 +14,9 @@ public:
 	void init();
 	void display();
 
-	//unsigned int numberOfLights;
-	CGFlight* lights[8];
+	CGFlight* lightTest;
+	Light* lights[8];
+	unsigned int numberOfLights;
 
 	Graph sceneGraph;
 
@@ -20,20 +24,7 @@ public:
 	CGFappearance* materialB;
 	
 	~ProjectScene();
-
-	vector<bool> lightStatus;
 	
-	 void toggleLight(CGFlight* light, int i){
-		 if (lightStatus[i]){
-			 light->disable();
-			 lightStatus[i] = false;
-		 }
-		 else{
-			 light->enable();
-			 lightStatus[i] = true;
-		 }
-	 }
-
 
 
 	///////////alternar entre wireframe e texturas////////////

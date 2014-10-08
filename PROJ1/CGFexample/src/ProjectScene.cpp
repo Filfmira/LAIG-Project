@@ -6,12 +6,13 @@
 
 // Positions for two lights
 float light0_pos[4] = {4, 6.0, 1.0, 1.0};
-float light1_pos[4] = {10.5, 6.0, 1.0, 1.0};
+float light1_pos[4] = {0, 0, 5, 1};
 
 
 
 // Global ambient light (do not confuse with ambient component of individual lights)
-float globalAmbientLight[4]= {0.8,0.8,0.8,1.0};
+//float globalAmbientLight[4]= {0.8,0.8,0.8,1.0};
+float globalAmbientLight[4]= {0.2,0.2,0.2,1.0};
 
 
 // Coefficients for material A
@@ -33,8 +34,9 @@ float yellow[4]={1,1,0,1};
 
 void ProjectScene::init() 
 {
-	lightStatus = vector<bool>(5, false);
-	 
+//	lightStatus = vector<bool>(5, false);
+	for (unsigned int i = 0; i < 8; i++)
+		lights[i] = NULL;
 	
 	glFrontFace(GL_CCW); //este parametro deve ser lido do anf file
 						 //GL_CCW torna os poligonos CCW nas frontFaces (outra opção é GL_CW)
@@ -49,29 +51,40 @@ void ProjectScene::init()
 	// Define ambient light (do not confuse with ambient component of individual lights)
 	glLightModelfv(GL_LIGHT_MODEL_AMBIENT, globalAmbientLight);  
 	
-	for (unsigned int i = 0; i < 8; i++)
-		lights[i] = NULL;
 
+	 glEnable (GL_NORMALIZE);
+
+	XMLSceneMod temp = XMLSceneMod("wall-e.xml", &sceneGraph, lights);
+
+	for (unsigned int i = 0; i < 8; i++){
+		if (lights[i] == NULL)
+			break;
+		cout << lights[i]->showLight();
+	}
+
+	
+		
+		
 	// Declares and enables two lights, with null ambient component
-	lights[0] = new CGFlight(GL_LIGHT0, light0_pos);
+	/*lights[0] = new CGFlight(GL_LIGHT0, light0_pos);
 	lights[0]->setSpecular(yellow);
 	lights[0]->setAmbient(ambientNull);
 
 	//light0->disable();
-	lights[0]->enable();
+	lights[0]->enable();*/
 
 	
-
-	lights[1] = new CGFlight(GL_LIGHT1, light1_pos);
-	lights[1]->setAmbient(ambientNull);
+	/*
+	lightTest = new CGFlight(GL_LIGHT1, light1_pos);
+	lightTest->setAmbient(ambientNull);
 	
 	//light1->disable();
-	lights[1]->enable();
+	lightTest->enable();
 
-	
+	*/
 	
 	// Uncomment below to enable normalization of lighting normal vectors
-	 glEnable (GL_NORMALIZE);
+	
 
 	
 	//Declares materials
@@ -83,20 +96,12 @@ void ProjectScene::init()
 	visualizationMode = 1; //textured mode
 	
 	//XMLSceneMod temp = XMLSceneMod("anfFile - Copia.xml", &sceneGraph);
-	XMLSceneMod temp = XMLSceneMod("wall-e.xml", &sceneGraph);
-
-	/*if (sceneGraph.getNumberOfNodes() > 0)
-		for (unsigned int i = 0; i < sceneGraph.getNumberOfNodes(); i++){
-
-				printf("gg1\n");
-				if (sceneGraph.searchForNode(i)->getNumeroDePrimitivas() > 0)
-					for (unsigned int j = 0; j < sceneGraph.searchForNode(i)->getNumeroDePrimitivas(); j++){
-						printf("gg2\n");
-						printf("%s", sceneGraph.searchForNode(i)->getPrimitiva(j)->getNome());
-					}
-
-
-		}*/
+	
+	/*if (0 && 1)
+		printf("0 e 1\n");
+	if (1 && 1)
+		printf("1 e 1 \n ");
+		*/
 
 }
 
@@ -117,10 +122,12 @@ void ProjectScene::display()
 
 
 	for (unsigned int i = 0; i < 8; i++)
-		if (lights[i] != NULL)
-			lights[i]->draw();
+		if (lights[i] != NULL){
+			lights[i]->getLight()->draw();
+			lights[i]->getLight()->update();
+		}
 
-	
+	//lightTest->draw();
 	// Draw axis
 	axis.draw();
 
@@ -130,22 +137,7 @@ void ProjectScene::display()
 
 	drawAux(sceneGraph.getRoot());
 
-/*	if (sceneGraph.getNumberOfNodes() > 0)
-		for (unsigned int i = 0; i < sceneGraph.getNumberOfNodes(); i++){
-			Node* tempNode = sceneGraph.searchForNode(i);
-			if (tempNode->getNumeroDePrimitivas() > 0)
-				for (unsigned int j = 0; j < tempNode->getNumeroDePrimitivas(); j++){
-					//printf("	Desenhei primitiva %d do node %d- %s\n", j, i, sceneGraph.searchForNode(i)->getPrimitiva(j)->getNome());
-					glPushMatrix();
-						
-						glMultMatrixf(tempNode->getMatrix()); 
-						tempNode->getPrimitiva(j)->draw();
-						//cout << tempNode->mostrarNo();
-					glPopMatrix();
-				}
-
-		}*/
-		
+	
 	// ---- END Primitive drawing section
 
 	// We have been drawing in a memory area that is not visible - the back buffer, 
@@ -168,17 +160,12 @@ void ProjectScene::drawAux(Node* node){
 }
 ProjectScene::~ProjectScene() 
 {
-	for (unsigned int i = 0; i < 8; i++)
+	/*for (unsigned int i = 0; i < 8; i++)
 		if (lights[i]!=NULL)
 			delete(lights[i]);
 
-
+			*/
 	delete(materialA);
 	delete(materialB);
 }
 
-/*
-void ProjectScene::toggleSomething(){
-	printf("yeah\n");
-}
-*/

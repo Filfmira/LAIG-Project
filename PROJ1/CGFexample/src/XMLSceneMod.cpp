@@ -8,12 +8,12 @@ using namespace std;
 #include "GL/glut.h"
 #include <stdlib.h>     /* strtol */
 #include <cstdlib>
-//#include "Node.h"
+
 
 //como vamos guardar os Appearances? talvez uma especia de map, tabela tipo <id,CGFappearance>
 //é preciso por os nos com links entre eles?!?*****
 
-XMLSceneMod::XMLSceneMod(char *filename, Graph* gr): destinationGraph(gr)
+XMLSceneMod::XMLSceneMod(char *filename, Graph* gr, Light** lig): destinationGraph(gr), destinationLights(lig)
 {
 
 	// Read XML from file
@@ -253,45 +253,109 @@ bool XMLSceneMod::readLights(TiXmlElement* dgxElement){
 	TiXmlElement * lights = lightsElement->FirstChildElement("light");
 
 	while(lights){
+		
+		bool validLight = true;
 
-		char* id = (char*) lights->Attribute("id");
-		printf("id: %s \n",id);
-
-		char* type = (char*) lights->Attribute("type");
-		printf("type: %s \n",type);
-
+		int id;
+		char* type;
 		bool enabled;
+		bool marker;
+		float pos[4];
+		float target[3];
+		float ambient[4];
+		float diffuse[4];
+		float specular[4];
+		float angle;
+		float exponent;
+
+		//id
+		char* id_T = (char*) lights->Attribute("id");
+		if (id_T){
+			id = atoi(id_T);
+			printf("id: %d \n",id);
+		}
+		else validLight = false;
+
+		//type
+		type = (char*) lights->Attribute("type");
+		if (type){
+			printf("	type: %s \n",type);
+		}
+		else validLight = false;
+
+		//enabled
 		char* enabledChr = (char*) lights->Attribute("enabled");
-		printf("enabled: %s \n",enabledChr);
+		printf("	enabled: %s \n",enabledChr);
 		if (strcmp(enabledChr,"true") == 0)
 			enabled=true;
 		else  if (strcmp(enabledChr,"false") == 0)
 			enabled=false;
-		else
+		else{
 			 printf("	Unexpected problem with light's enabled value\n");
+			 validLight = false;
+		}
 
-		bool marker;
+		//marker
 		char* markerChr = (char*) lights->Attribute("marker");
-		printf("marker: %s \n",markerChr);
+		printf("	marker: %s \n",markerChr);
 		if (strcmp(markerChr,"true") == 0)
 			marker=true;
 		else  if (strcmp(markerChr,"false") == 0)
 			marker=false;
-		else
+		else{
 			 printf("	Unexpected problem with light's marker value\n");
+			 validLight = false;
+		}
 
-		char* pos = (char*) lights->Attribute("pos");
-		printf("pos: %s \n",pos);
-		float x,y,z;
-		if(readXYZcoord(pos,x,y,z)==false)
-			 printf("	Unexpected problem with light's values \n");
+
+		//pos array
+		char* pos_T = (char*) lights->Attribute("pos");
+		if (pos_T){
+			printf("	pos: %s \n",pos_T);
+			float x,y,z;
+			if(!readXYZcoord(pos_T,x,y,z)){
+				printf("	Unexpected problem with light's position values \n");
+				validLight = false;
+			}
+			else{ pos[0] = x; pos[1] = y; pos[2] = z;}
+		}
+		else validLight = false;
+
+		
+
+
+
+		//angle and exponent - only for spot lights
+		if ( strcmp(type, "omni") == 0 ){
+			angle = 360; // ????
+			exponent = 1; // ????
+			target[0] = NULL; target[1] = NULL; target[2] = NULL;
+		}
+		else{
+			char* ang = (char*) lights->Attribute("angle");
+			char* exp = (char*) lights->Attribute("exponent");
+			char* trg = (char*) lights->Attribute("target");
+
+			if (ang && exp && trg){
+				angle = atof(ang);
+				exponent = atof(exp);
+				printf("	Angle: %f, Exponent: %f\n", angle, exponent);
+				//target array - only for spot lights
+				float x,y,z;
+				if(!readXYZcoord(trg,x,y,z)){
+					printf("	Unexpected problem with light's target values \n");
+					validLight = false;
+				}
+				else{ target[0] = x; target[1] = y; target[2] = z;}
+			}
+			else validLight = false;
+		}
+	
 
 		TiXmlElement * components = lights->FirstChildElement("component");
-		bool a,d,s;
-		a=false;
-		d=false;
-		s=false;
-
+		
+		bool amb, dif, spec;
+		amb = dif = spec = false;
 		while(components)
 		{
 			char* typeComponent = (char*) components->Attribute("type");
@@ -299,29 +363,51 @@ bool XMLSceneMod::readLights(TiXmlElement* dgxElement){
 			char* valueComponent=(char*) components->Attribute("value");
 			printf("	values: %s \n",valueComponent);
 
-			if (strcmp(typeComponent,"ambient") == 0)
-				a=true;
-			else if (strcmp(typeComponent,"diffuse") == 0)
-				d=true;
-			else if (strcmp(typeComponent,"specular") == 0)
-				s=true;
-			else
-				 printf("	Unexpected problem with component's type of lights\n");
 
-			float value[4];
-			if(readFloatArray(valueComponent,  (&value)[4])==false)
-				 printf("	Unexpected problem with component's values of lights\n");
+			if (typeComponent && valueComponent){ //se estes valores existem
+				
+				if (strcmp(typeComponent,"ambient") == 0){
+					if(!readFloatArray(valueComponent, ambient)){
+						printf("	Unexpected problem with ambient component's values of lights\n");
+						validLight = false;
+					}
+					amb = true;
+				}
+				else if (strcmp(typeComponent,"diffuse") == 0){
+					if(!readFloatArray(valueComponent, diffuse)){
+						printf("	Unexpected problem with diffuse component's values of lights\n");
+						validLight = false;
+					}
+					dif = true;
+				}
+				else if (strcmp(typeComponent,"specular") == 0){
+					if(!readFloatArray(valueComponent, specular)){
+						printf("	Unexpected problem with specular component's values of lights\n");
+						validLight = false;
+					}
+					spec = true;
+				}
+				else{
+					printf("	Unexpected light component... Program will run anyway\n");
+				}
 
-
+			}
+			else {
+				printf("	missing type and/or value of light component... Program will run anyway\n");
+			}
+			
 
 			components=components->NextSiblingElement();
 		}
-		if(a&&d&&s)
-		{
-			
+
+		if (validLight && amb && dif && spec){
+			Light* newLight = new Light((string) type, id, enabled, marker, pos, target, angle, exponent, ambient, diffuse, specular);
+			for (unsigned int i = 0; i < 8; i++)
+				if (destinationLights[i] == NULL){
+					destinationLights[i] = newLight;
+					break;
+				}
 		}
-		else
-			cout<<"        One or more atributes couldn't be found\n";
 
 		lights=lights->NextSiblingElement();
 

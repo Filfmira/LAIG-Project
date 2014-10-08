@@ -32,10 +32,7 @@ int main(int argc, char* argv[]) {
 		//app.setInterface(new CGFinterface());
 		app.setScene(new ProjectScene());
 		app.setInterface(new TPinterface());
-		
-		//parser deve ser chamado aqui
-		//	XMLSceneMod temp = XMLSceneMod("anfFile.xml");
-		////////////////////
+
 
 		app.run();
 	}
