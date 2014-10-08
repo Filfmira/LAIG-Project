@@ -28,13 +28,17 @@ protected:
 
 	TiXmlDocument* doc;
 	Graph* destinationGraph;
+	//vector<CGFlight *> luzes;
 	/////////////Projecto LAIG////////////
 	TiXmlElement* globalsElement;
 	TiXmlElement* camerasElement;
+	TiXmlElement* lightsElement;
 	TiXmlElement* graphElement;
 	TiXmlElement* appearancesElement;
 	TiXmlElement* texturesElement;
 	//////////////////////////////////////
+
+
 
 
 };

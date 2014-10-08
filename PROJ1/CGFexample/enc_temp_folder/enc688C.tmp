@@ -255,7 +255,7 @@ bool XMLSceneMod::readLights(TiXmlElement* dgxElement){
 	while(lights){
 
 		char* id = (char*) lights->Attribute("id");
-		printf("id: %s \n",id);
+		printf("i: %s \n",id);
 
 		char* type = (char*) lights->Attribute("type");
 		printf("type: %s \n",type);

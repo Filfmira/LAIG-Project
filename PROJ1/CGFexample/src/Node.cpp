@@ -59,7 +59,7 @@ void Node::setAparencia(CGFappearance * aparencia)
 
 string Node::mostrarNo(){
 	std::ostringstream s;
-	s<<"\n=======NODE=======\n\n";
+	/*s<<"\n=======NODE=======\n\n";
 	s<<"Id:"<<id<<"\n";
 
 	s<<"Matrix:";
@@ -83,7 +83,7 @@ string Node::mostrarNo(){
 	s<<"\nSize:"<<ascendentes.size()<<endl;
 	s<<"\n";
 
-	s<<"\n\n=================\n";
+	s<<"\n\n=================\n";*/
 	return s.str();
 
 }
