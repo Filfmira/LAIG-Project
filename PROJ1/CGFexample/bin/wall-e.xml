@@ -32,12 +32,12 @@
     <lights>
             <!-- Deve existir pelo menos uma luz declarada -->
             <!-- Atributo "marker" indica se deve ou nao desenhar-se uma esfera representativa -->
-           <light id="0" type="omni" enabled="true" marker="true" pos="0 0 5" >
+           <!--<light id="0" type="omni" enabled="true" marker="true" pos="0 0 5" >
                <component type="ambient" value="0.1 0.1 0.1 1" />
                <component type="diffuse" value="0.2 0.2 0.2 1" />
                <component type="specular" value="0.2 0.2 0.2 1" />
 
-            </light>
+            </light>-->
 
             <light id="2" type="omni" enabled="true" marker="true" pos="0 10 0" >
                <component type="ambient" value="0.5 0.5 0.5 0" />
@@ -45,9 +45,9 @@
                <component type="specular" value="0.2 0.2 0.2 1" />
             </light>
 
-            <light id="1" type="spot" enabled="true" marker="true" pos="5 0 0" target="0 1 0" 
-                angle="50" exponent="10" >
-                <component type="ambient" value="0.2 0.2 0.2 1" />
+            <light id="1" type="spot" enabled="true" marker="true" pos="7 2 0" target="0 0 0" 
+                angle="10" exponent="100" >
+                <component type="ambient" value="0.05 0.05 0.05 1" />
                 <component type="diffuse" value="1 1 1 1" />
                 <component type="specular" value="1 1 1 1" /> 
 
@@ -98,6 +98,7 @@
                 <noderef id="pernas" />
                 <noderef id="pescoco" />
                 <noderef id="olhos" />
+               <!-- <noderef id= "chao" />-->
             </descendants>
         </node>
 
@@ -121,6 +122,18 @@
             </descendants>
         </node> -->
 
+        <node id="chao">
+            <transforms>
+                <transform type="rotate" axis="xx" angle="-90" /> 
+            </transforms>
+            <appearanceref id="ss" />
+            <primitives>
+                <rectangle xy1="-10 10" xy2="10 -10" />
+            </primitives>
+
+            <descendants>
+            </descendants>
+        </node>
 
         <!-- ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||-->
         <!-- ||||||||||||||||||||||||||||||||CORPO|||||||||||||||||||||||||||||-->

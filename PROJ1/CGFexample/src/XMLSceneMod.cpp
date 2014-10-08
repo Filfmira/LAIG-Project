@@ -412,8 +412,8 @@ bool XMLSceneMod::readLights(TiXmlElement* dgxElement){
 		lights=lights->NextSiblingElement();
 
 	}
-
-	return false;
+	
+	return (destinationLights[0] != NULL); //vê se fez load de pelo menos uma luz
 }
 
 bool XMLSceneMod::readTextures(TiXmlElement* dgxElement){

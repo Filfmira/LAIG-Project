@@ -1,4 +1,4 @@
-﻿Build started 08/10/2014 23:41:19.
+﻿Build started 09/10/2014 00:35:13.
      1>Project "C:\Users\João\Documents\FEUP\3º ano\LAIG\Repos Working Copy\PROJ1\CGFexample\CGFexample.vcxproj" on node 2 (build target(s)).
      1>InitializeBuildStatus:
          Touching "..\buildtemp\CGFexample\CGFexample.unsuccessfulbuild".
@@ -14,4 +14,4 @@
 
 Build succeeded.
 
-Time Elapsed 00:00:00.06
+Time Elapsed 00:00:00.08

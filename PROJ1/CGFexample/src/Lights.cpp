@@ -1,6 +1,8 @@
 #include "Lights.h"
 #include <sstream>
-#
+#include <gl/gl.h>
+#include <gl/glu.h>
+#include <gl/glut.h>
 
 Light::Light(string tipo, int lightId, bool enabled, bool marker, float pos[4], 
 		float target[3], float angle, float exponent,
@@ -19,11 +21,11 @@ Light::Light(string tipo, int lightId, bool enabled, bool marker, float pos[4],
 	this->angle = angle;
 	this->exponent = exponent;
 	
-	if (tipo == "spot"){
+	/*if (tipo == "spot"){
 		this->target[0] = target[0];
 		this->target[1] = target[1];
 		this->target[2] = target[2];
-	}
+	}*/
 
 	if (tipo == "spot"){
 		this->target[0] = target[0]-pos[0];
@@ -32,9 +34,10 @@ Light::Light(string tipo, int lightId, bool enabled, bool marker, float pos[4],
 		
 		light = new CGFlight(this->lightId, this->pos, this->target);
 		
-		light->setKc(exponent);
+		glLightf(lightId + GL_LIGHT0, GL_SPOT_EXPONENT, exponent);
+		/*light->setKc(exponent);
 		light->setKl(exponent);
-		light->setKq(exponent);
+		light->setKq(exponent);*/
 
 		light->setAngle(angle);
 	}

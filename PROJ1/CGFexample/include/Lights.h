@@ -29,6 +29,7 @@ public:
 
 	string showLight();
 	CGFlight* getLight(){return light;}
+	int getLightId(){return lightId;}
 
 };
 

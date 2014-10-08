@@ -32,7 +32,7 @@ public:
 		glPushMatrix();
 			
 			//glMultMatrixf(tra1); 
-			glNormal3f(0,0,1) ;
+			glNormal3d(0,0,1) ;
 			
 			glBegin(GL_QUADS);
 				//glTexCoord2d(0,0);
