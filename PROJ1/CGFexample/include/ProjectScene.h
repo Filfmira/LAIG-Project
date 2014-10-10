@@ -6,6 +6,9 @@
 #include "XMLSceneMod.h"
 #include "Lights.h"
 #include <vector>
+#include "Textures.h"
+#include "Appearances.h"
+#include "Cameras.h"
 
 
 class ProjectScene : public CGFscene
@@ -19,6 +22,9 @@ public:
 	unsigned int numberOfLights;
 
 	Graph sceneGraph;
+
+	vector<Texture > textures;
+	vector<Appearance > appearances;
 
 	CGFappearance* materialA;
 	CGFappearance* materialB;

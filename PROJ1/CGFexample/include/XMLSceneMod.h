@@ -4,10 +4,13 @@
 #include "tinyxml.h"
 #include "Graph.h"
 #include "Lights.h"
+#include "Textures.h"
+#include "Appearances.h"
+#include "Cameras.h"
 class XMLSceneMod
 {
 public:
-	XMLSceneMod(char *filename, Graph* gr, Light** lig);
+	XMLSceneMod(char *filename, Graph* gr, Light** lig, vector<Texture >* textures, vector<Appearance >*appearances);
 	~XMLSceneMod();
 
 	static TiXmlElement *findChildByAttribute(TiXmlElement *parent,const char * attr, const char *val);
@@ -29,6 +32,8 @@ protected:
 	TiXmlDocument* doc;
 	Graph* destinationGraph;
 	Light** destinationLights;
+	vector<Texture >* textures;
+	vector<Appearance >*appearances;
 	//vector<CGFlight *> luzes;
 	/////////////Projecto LAIG////////////
 	TiXmlElement* globalsElement;

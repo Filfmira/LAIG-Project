@@ -28,9 +28,10 @@ public:
 	~Light();
 
 	string showLight();
-	CGFlight* getLight(){return light;}
+	float getAngle(){return this->angle;}
+	void setAngle(float angle){this->angle=angle;}
 	int getLightId(){return lightId;}
-
+	CGFlight* getLight(){return light;}
 };
 
 

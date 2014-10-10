@@ -86,5 +86,14 @@
     <ClInclude Include="include\Lights.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="include\Cameras.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Textures.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Appearances.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

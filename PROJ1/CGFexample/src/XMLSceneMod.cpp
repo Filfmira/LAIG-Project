@@ -13,12 +13,16 @@ using namespace std;
 //como vamos guardar os Appearances? talvez uma especia de map, tabela tipo <id,CGFappearance>
 //é preciso por os nos com links entre eles?!?*****
 
-XMLSceneMod::XMLSceneMod(char *filename, Graph* gr, Light** lig): destinationGraph(gr), destinationLights(lig)
+XMLSceneMod::XMLSceneMod(char *filename, Graph* gr, Light** lig, vector<Texture >* textures, vector<Appearance >*appearances): destinationGraph(gr), destinationLights(lig)
 {
 
 	// Read XML from file
 	
 	//Graph graph = Graph();
+	
+	
+	this->textures=textures;
+	this->appearances=appearances;
 	
 	doc=new TiXmlDocument( filename );
 	bool loadOkay = doc->LoadFile();
@@ -238,13 +242,149 @@ bool XMLSceneMod::readGlobals(TiXmlElement* dgxElement){
 
 
 bool XMLSceneMod::readCameras(TiXmlElement* dgxElement){
+	cout<<"\nParsing cameras:\n";
+
+	camerasElement=dgxElement->FirstChildElement("cameras");
+
+	int initial;
+	char* initial_T = (char*) camerasElement->Attribute("initial");
+	if (initial_T){
+		initial = atoi(initial_T); 
+		printf("initial: %d \n",initial);
+	}
+
+
+	printf("-Prespective\n");
+
+	
+	//prespective cameras
+	TiXmlElement * perspectives = camerasElement->FirstChildElement("perspective");
+	while(perspectives)
+	{
+		//CGFcamera* cgfCamera= new CGFcamera();
+
+		int id;
+		float near;
+		float far;
+		float angle;
+		float pos[3];
+		float target[3];
+
+		//id
+		char* id_T=(char*) perspectives->Attribute("id");
+		if(id_T){
+			id=atoi(id_T);
+			printf("        id: %d \n",id);
+		}
+
+		//near
+		char* near_T=(char*) perspectives->Attribute("near");
+		sscanf(near_T,"%f",&near);
+		printf("        near: %f\n",near);
+		
+
+		//far
+		char* far_T=(char*) perspectives->Attribute("far");
+		sscanf(far_T,"%f",&far);
+		printf("        far: %f\n",far);
+
+		//angle
+		char* angle_T=(char*) perspectives->Attribute("angle");
+		sscanf(angle_T,"%f",&angle);
+		printf("        angle: %f\n",angle);
+		
+
+		//pos
+		char* pos_T=(char*) perspectives->Attribute("pos");
+		readXYZcoord(pos_T,pos[0],pos[1],pos[2]);
+		printf("        pos: %s\n",pos_T);
+		//cgfCamera->setX(pos[0]);
+		//cgfCamera->setY(pos[1]);
+		//cgfCamera->set>(pos[2]);
+
+
+		//target
+		char* target_T=(char*) perspectives->Attribute("target");
+		printf("        target: %s\n",target_T);
+
+		perspectives=perspectives->NextSiblingElement("prespective");
+	}
+
+	printf("-Ortho\n");
+	//ortho cameras
+	TiXmlElement * orthos = camerasElement->FirstChildElement("ortho");
+	while(orthos)
+	{
+		int id;
+		char* direction;
+		float near;
+		float far;
+		float left;
+		float right;
+		float top;
+		float bottom;
+
+		
+		//id
+		char* id_T=(char*) orthos->Attribute("id");
+		if(id_T){
+			id=atoi(id_T);
+			printf("        id: %d \n",id);
+		}
+
+		//direction
+		direction=(char*) orthos->Attribute("direction");
+		if(direction!="")
+		{
+			if(strcmp(direction,"xx")||strcmp(direction,"yy")||strcmp(direction,"xx"))
+			{
+				printf("        direction: %s\n",direction);
+			}
+			else printf("Error parsing camera: bad direction input \n");
+			
+		}
+		else printf("Error parsing camera: missing direction\n");
+
+
+		//near
+		char* near_T=(char*) orthos->Attribute("near");
+		sscanf(near_T,"%f",&near);
+		printf("        near: %f\n",near);
+
+		//far
+		char* far_T=(char*) orthos->Attribute("far");
+		sscanf(far_T,"%f",&far);
+		printf("        far: %f\n",far)	;
+
+		//left
+		char* left_T=(char*) orthos->Attribute("left");
+		sscanf(left_T,"%f",&left);
+		printf("        left: %f\n",left);
+
+		//right
+		char* right_T=(char*) orthos->Attribute("right");
+		sscanf(right_T,"%f",&right);
+		printf("        right: %f\n",right)	;
+		
+		//top
+		char* top_T=(char*) orthos->Attribute("top");
+		sscanf(top_T,"%f",&top);
+		printf("        top: %f\n",top)	;
+		
+		//bottom
+		char* bottom_T=(char*) orthos->Attribute("bottom");
+		sscanf(far_T,"%f",&bottom);
+		printf("        bottom: %f\n",bottom)	;
+
+		orthos=orthos->NextSiblingElement("ortho");
+	}
+
 	return false;
 }
 
 bool XMLSceneMod::readLights(TiXmlElement* dgxElement){
 	cout<<"\nParsing lights:\n";
 	lightsElement=dgxElement->FirstChildElement("lights");
-	cout<<"................................................................\n";
 	if(lightsElement==NULL){
 		printf("lights block not found!\n");
 		return false;
@@ -417,6 +557,40 @@ bool XMLSceneMod::readLights(TiXmlElement* dgxElement){
 }
 
 bool XMLSceneMod::readTextures(TiXmlElement* dgxElement){
+
+	cout<<"\nParsing textures:\n";
+
+
+	texturesElement=dgxElement->FirstChildElement("textures");
+	
+	TiXmlElement * texture = texturesElement->FirstChildElement("texture");
+	while(texture)
+	{
+		char* id;
+		char* file;
+		float texlength_s;
+		float texlength_t;
+
+		 id = (char*) texture->Attribute("id");
+		 printf("-Id: %s\n",id);
+		 file=(char*) texture->Attribute("file");
+		 printf("        File: %s\n",file);
+
+		 char* texlength_s_T=(char*) texture->Attribute("texlength_s");
+		 sscanf(texlength_s_T,"%f",&texlength_s);
+		 printf("        Textlength_s: %s\n",texlength_s_T);
+
+		 char* texlength_t_T=(char*) texture->Attribute("texlength_t");
+		 sscanf(texlength_t_T,"%f",&texlength_t);
+		 printf("        Texlength_t: %s\n",texlength_t_T);
+
+		 this->textures->push_back(Texture(id,file,texlength_s,texlength_t));
+
+		texture=texture->NextSiblingElement();
+	}
+	cout<<endl;
+
+
 	return false;
 }
 
@@ -433,43 +607,52 @@ bool XMLSceneMod::readAppearances(TiXmlElement* dgxElement){
 
 
 
-	TiXmlElement * appearances = appearancesElement->FirstChildElement("appearance");
-	CGFappearance * appearance;
-	string id,textureref;
+	TiXmlElement * appearance = appearancesElement->FirstChildElement("appearance");
+	
+	char* id;
+	char* textureref;
 	float shininess;
 
-	while(appearances){
+	while(appearance){
 
-		CGFappearance appearanceObject= CGFappearance();
+		CGFappearance* appearanceObject= new CGFappearance();
 
 		//read the appearance's id
-		id = string(appearances->Attribute("id"));
+		id = (char*)appearance->Attribute("id");
 		if(id != ""){
-			cout<<"-Appearance id: "<<id<<endl;
+			printf("-Appearance id: %s\n",id);
 		}
 		else cout<<"Error parsing appearance: missing id\n";
 
 		//read the appearance's shininess
-		char* ss = (char*)appearances->Attribute("shininess");
+		char* ss = (char*)appearance->Attribute("shininess");
 			sscanf(ss,"%f",&shininess);
 		if(ss != ""){
 			cout<<"        Shininess: "<<shininess<<endl;
+			appearanceObject->setShininess(shininess);
 		}
 		else cout<<"        Error parsing appearance: missing shininess\n";
 
-		appearanceObject.setShininess(shininess);
+		appearanceObject->setShininess(shininess);
 
 		//read the appearance's textured reference
-		textureref = string(appearances->Attribute("textureref"));
-		if(textureref != ""){
-			cout<<"        Textureref: "<<textureref<<endl;
+		textureref = (char*)appearance->Attribute("textureref");
+		if(textureref){
+			bool exists=false;
+			for(int i=0;i<textures->size();i++)
+				if(strcmp(textures->at(i).getId(),textureref)==0){
+					exists=true;
+					//appearanceObject->setTexture(textures->at(i).getTexture());
+				}
+
+			if(exists) cout<<"        Textureref: "<<textureref<<endl;
+			else cout<<"			Error parcing appearance: texture does not exist\n";
 		}
 		else cout<<"        Error parsing appearance: missing textureref\n";
 
-		//appearanceObject.setTexture(textureref);									//é preciso descomentar para por a textura
 
 		//read the appearence's elements(ambient,diffuse,specular)
-		TiXmlElement *component = appearances->FirstChildElement("component");  
+		TiXmlElement *component = appearance->FirstChildElement("component");  
 		string type;
 		float floatVector[4];
 		bool a,d,s;
@@ -488,17 +671,17 @@ bool XMLSceneMod::readAppearances(TiXmlElement* dgxElement){
 				a=true;
 				
 
-				appearanceObject.setAmbient(&floatVector[0]);
+				appearanceObject->setAmbient(&floatVector[0]);
 			}
 			else if(type=="diffuse")
 			{
 				d=true;
-				appearanceObject.setDiffuse((&floatVector)[0]);
+				appearanceObject->setDiffuse((&floatVector)[0]);
 			}
 			else if(type=="specular")
 			{
 				s=true;
-				appearanceObject.setSpecular((&floatVector)[0]);
+				appearanceObject->setSpecular((&floatVector)[0]);
 			}
 
 			component=component->NextSiblingElement();
@@ -507,13 +690,14 @@ bool XMLSceneMod::readAppearances(TiXmlElement* dgxElement){
 		//If all the elements(ambient, diffuse, specular) are present
 		if(a&&d&&s)
 		{
+			this->appearances->push_back(Appearance(id,appearanceObject));
 			
 		}
 		else
 			cout<<"        One or more atributes couldn't be found\n";
 
 		cout<<endl;
-		appearances = appearances->NextSiblingElement("appearance");
+		appearance = appearance->NextSiblingElement("appearance");
 	}	
 
 	return true;
@@ -621,7 +805,16 @@ bool XMLSceneMod::readGraph(TiXmlElement* dgxElement){
 				break;
 			}
 			char* appearance = (char*) appearanceref->Attribute("id"); 
-			printf("	Appearance: %s\n", appearance);
+			
+			bool exists=false;
+			for(int i=0;i<appearances->size();i++)
+				if(strcmp(appearances->at(i).getId(),appearance)==0){
+					exists=true;
+					n->setAparencia(appearances->at(i).getAppearance());
+				}
+
+			if(exists) printf("	Appearance: %s\n", appearance);
+			else cout<<"			Error parcing node: appearance does not exist\n";
 
 			
 			

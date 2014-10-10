@@ -37,5 +37,6 @@ public:
 	unsigned int getNumeroDePrimitivas(){return primitivas.size();};
 	Primitive* getPrimitiva(int i);
 	float* getMatrix(){return matrix;};
+	CGFappearance* getApprearance(){return aparencia;}
 };
 

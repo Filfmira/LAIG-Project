@@ -54,7 +54,8 @@ void ProjectScene::init()
 
 	 glEnable (GL_NORMALIZE);
 
-	XMLSceneMod temp = XMLSceneMod("wall-e.xml", &sceneGraph, lights);
+	XMLSceneMod temp = XMLSceneMod("wall-e.xml", &sceneGraph, lights ,&textures,&appearances);
+
 
 	for (unsigned int i = 0; i < 8; i++){
 		if (lights[i] == NULL)
@@ -150,6 +151,8 @@ void ProjectScene::drawAux(Node* node){
 	glPushMatrix();
 	glMultMatrixf(node->getMatrix());
 		for (unsigned int j = 0; j < node->getNumeroDePrimitivas(); j++){
+			this->textures[0].getTexture()->apply();
+			node->getApprearance()->apply();
 			node->getPrimitiva(j)->draw();
 		}
 		for (unsigned int i = 0; i < node->getDescendentes().size(); i++){
