@@ -34,9 +34,9 @@
             <!-- Deve existir pelo menos uma luz declarada -->
             <!-- Atributo "marker" indica se deve ou nao desenhar-se uma esfera representativa -->
            <light id="0" type="omni" enabled="true" marker="true" pos="0 0 5" >
-               <component type="ambient" value="0.1 0.1 0.1 1" />
-               <component type="diffuse" value="0.2 0.2 0.2 1" />
-               <component type="specular" value="0.2 0.2 0.2 1" />
+               <component type="ambient" value="1 1 1 1" />
+               <component type="diffuse" value="1 1 1 1" />
+               <component type="specular" value="1 1 1 1" />
 
             </light>
 
@@ -66,14 +66,15 @@
         <!-- deve existir um ou mais blocos "appearance" -->
         <!-- IMPORTANTE: -->
         <!--   textureref e opcional, a utilizar caso haja textura associada a esta aparencia -->
-        <appearance id="ss" shininess="120" textureref="ss" >
-               <component type="ambient" value="0.9 0.9 0.9 1" />
-               <component type="diffuse" value="0.1 0.1 0.1 1" />
-               <component type="specular" value="0.9 0.9 0.9 1" />
+        <appearance id="ss" shininess="10" textureref="ss" >
+               <component type="ambient" value="0.1 0.1 0.1 1" />
+                <component type="diffuse" value="0.4 0.33 0.25 1" />
+               <component type="specular" value="0.8 0.67 0.5 1" />
         </appearance>
         <appearance id="s2" shininess="1" textureref="ss" >
-               <component type="ambient" value="1 1 1 1" />
-               <component type="diffuse" value="1 1 1 1" />
+               <component type="ambient" value="0.1 0.1 0.1 1" />
+                <component type="diffuse" value="1 1 0 1" />
+               <component type="specular" value="0.8 0.67 0.5 1" />
         </appearance>
     </appearances>
 
@@ -150,7 +151,7 @@
             <transforms>
                 <transform type="translate" to="0 0 1" />
             </transforms>
-            <appearanceref id="ss" />
+            <appearanceref id="inherit" />
             <primitives>
             </primitives>
 
@@ -164,7 +165,7 @@
                 <transform type="translate" to="0 0 -1" />
                 <transform type="rotate" axis="yy" angle="180" />
             </transforms>
-            <appearanceref id="ss" />
+            <appearanceref id="inherit" />
             <primitives>
             </primitives>
 
@@ -178,7 +179,7 @@
                 <transform type="translate" to="-1 0 0" />
                 <transform type="rotate" axis="yy" angle="-90" />
             </transforms>
-            <appearanceref id="ss" />
+            <appearanceref id="inherit" />
             <primitives>
             </primitives>
 
@@ -192,7 +193,7 @@
                 <transform type="translate" to="1 0 0" />
                 <transform type="rotate" axis="yy" angle="90" />
             </transforms>
-            <appearanceref id="ss" />
+           <appearanceref id="inherit" />
             <primitives>
             </primitives>
 
@@ -206,7 +207,7 @@
                 <transform type="translate" to="0 1 0" />
                 <transform type="rotate" axis="xx" angle="-90" />
             </transforms>
-            <appearanceref id="ss" />
+             <appearanceref id="inherit" />
             <primitives>
             </primitives>
 
@@ -220,7 +221,7 @@
                 <transform type="translate" to="0 -1 0" />
                 <transform type="rotate" axis="xx" angle="90" />
             </transforms>
-            <appearanceref id="ss" />
+            <appearanceref id="inherit" />
             <primitives>
             </primitives>
 
@@ -232,7 +233,7 @@
         <node id="cuboCorpo">
             <transforms>
             </transforms>
-            <appearanceref id="ss" />
+            <appearanceref id="s2" />
             <primitives>
                 <rectangle xy1="-1 1" xy2="1 -1" />
             </primitives>

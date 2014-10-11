@@ -7,10 +7,11 @@
 #include "Textures.h"
 #include "Appearances.h"
 #include "Cameras.h"
+
 class XMLSceneMod
 {
 public:
-	XMLSceneMod(char *filename, Graph* gr, Light** lig, vector<Texture >* textures, vector<Appearance >*appearances);
+	XMLSceneMod(char *filename, Graph* gr, Light** lig, vector<Texture >* textures, vector<Appearance >*appearances, vector<Camera >* cameras);
 	~XMLSceneMod();
 
 	static TiXmlElement *findChildByAttribute(TiXmlElement *parent,const char * attr, const char *val);
@@ -34,6 +35,7 @@ protected:
 	Light** destinationLights;
 	vector<Texture >* textures;
 	vector<Appearance >*appearances;
+	vector<Camera >*cameras;
 	//vector<CGFlight *> luzes;
 	/////////////Projecto LAIG////////////
 	TiXmlElement* globalsElement;

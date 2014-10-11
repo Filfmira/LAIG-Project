@@ -8,12 +8,13 @@ using namespace std;
 #include "GL/glut.h"
 #include <stdlib.h>     /* strtol */
 #include <cstdlib>
+#include "CGFapplication.h"
 
 
 //como vamos guardar os Appearances? talvez uma especia de map, tabela tipo <id,CGFappearance>
 //é preciso por os nos com links entre eles?!?*****
 
-XMLSceneMod::XMLSceneMod(char *filename, Graph* gr, Light** lig, vector<Texture >* textures, vector<Appearance >*appearances): destinationGraph(gr), destinationLights(lig)
+XMLSceneMod::XMLSceneMod(char *filename, Graph* gr, Light** lig, vector<Texture >* textures, vector<Appearance >*appearances, vector<Camera >*cameras): destinationGraph(gr), destinationLights(lig)
 {
 
 	// Read XML from file
@@ -23,6 +24,7 @@ XMLSceneMod::XMLSceneMod(char *filename, Graph* gr, Light** lig, vector<Texture 
 	
 	this->textures=textures;
 	this->appearances=appearances;
+	this->cameras=cameras;
 	
 	doc=new TiXmlDocument( filename );
 	bool loadOkay = doc->LoadFile();
@@ -263,7 +265,7 @@ bool XMLSceneMod::readCameras(TiXmlElement* dgxElement){
 	{
 		//CGFcamera* cgfCamera= new CGFcamera();
 
-		int id;
+		char* id;
 		float near;
 		float far;
 		float angle;
@@ -271,11 +273,8 @@ bool XMLSceneMod::readCameras(TiXmlElement* dgxElement){
 		float target[3];
 
 		//id
-		char* id_T=(char*) perspectives->Attribute("id");
-		if(id_T){
-			id=atoi(id_T);
-			printf("        id: %d \n",id);
-		}
+		id=(char*) perspectives->Attribute("id");
+			printf("        id: %s \n",id);
 
 		//near
 		char* near_T=(char*) perspectives->Attribute("near");
@@ -306,6 +305,9 @@ bool XMLSceneMod::readCameras(TiXmlElement* dgxElement){
 		//target
 		char* target_T=(char*) perspectives->Attribute("target");
 		printf("        target: %s\n",target_T);
+
+		Prespective(id,near,far,angle,&pos[0],&target[0]);
+		//cameras->push_back();
 
 		perspectives=perspectives->NextSiblingElement("prespective");
 	}
@@ -805,13 +807,18 @@ bool XMLSceneMod::readGraph(TiXmlElement* dgxElement){
 				break;
 			}
 			char* appearance = (char*) appearanceref->Attribute("id"); 
-			
 			bool exists=false;
+			if(strcmp(appearance,"inherit")==0){
+				exists=true;
+			}
+			else{
+			
 			for(int i=0;i<appearances->size();i++)
 				if(strcmp(appearances->at(i).getId(),appearance)==0){
 					exists=true;
 					n->setAparencia(appearances->at(i).getAppearance());
 				}
+			}
 
 			if(exists) printf("	Appearance: %s\n", appearance);
 			else cout<<"			Error parcing node: appearance does not exist\n";

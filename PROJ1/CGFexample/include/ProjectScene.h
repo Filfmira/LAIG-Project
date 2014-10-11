@@ -9,6 +9,7 @@
 #include "Textures.h"
 #include "Appearances.h"
 #include "Cameras.h"
+#include "CGFapplication.h"
 
 
 class ProjectScene : public CGFscene
@@ -25,6 +26,7 @@ public:
 
 	vector<Texture > textures;
 	vector<Appearance > appearances;
+	vector<Camera> cameras;
 
 	CGFappearance* materialA;
 	CGFappearance* materialB;
