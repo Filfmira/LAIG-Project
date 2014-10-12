@@ -12,11 +12,13 @@ class Camera{
 protected:
 	CGFcamera* c;
 	string id;
+	string type;
 public:
 	Camera(){};
-	Camera(CGFcamera* c,string id){
+	Camera(CGFcamera* c,string id, string tipo){
 		this->id=(string)id;
 		this->c=c;
+		this->type = tipo;
 	}
 	string getId(){return id;}
 	CGFcamera* getCamera(){return this->c;}
@@ -24,18 +26,22 @@ public:
 	//virtual void applyView(){};
 	//virtual void mostrar(string *a){};
 
+	string getType(){
+		return type;
+	}
 };
 
 
 
-class Prespective:public CGFcamera{
+class Perspective:public CGFcamera{
 	
 private:
 	float near, far,angle;
 	float pos[3];
 	float target[3];
+
 public:
-	Prespective(float near, float far, float angle, float pos[3], float target[3]){
+	Perspective(float near, float far, float angle, float pos[3], float target[3]){
 		this->near=near;
 		this->angle=angle;
 		this->pos[0]=pos[0];
@@ -59,12 +65,16 @@ public:
 	gluLookAt(pos[0],pos[1],pos[2],target[0],target[1],target[2],0,1,0);
 	}
 
+
+
+
 };
 
 class Ortho:public CGFcamera{
 	private:
 	float near, far,left,right,top,bottom;
 	string direction;
+	string type;
 public:
 	Ortho(string direction,float near, float far, float left, float right, float top, float bottom)
 	{
@@ -75,6 +85,7 @@ public:
 		this->right=right;
 		this->top=top;
 		this->bottom=bottom;
+		this->type = "ortho";
 	}
 
 	void updateProjectionMatrix(int width, int height)
@@ -91,7 +102,7 @@ public:
 		if(direction=="x")
 		{
 			//glOrtho(left, right, bottom, top, near, far);
-			printf("entou no x foudasse\n");
+			printf("entou no x\n");
 			gluLookAt(near, 0.0, 0.0, far, 0.0, 0.0, 0.0, 1.0, 0.0);
 		}
 		else if(direction=="y")

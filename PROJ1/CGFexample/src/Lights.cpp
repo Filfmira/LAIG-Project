@@ -16,7 +16,7 @@ Light::Light(string tipo, int lightId, bool enabled, bool marker, float pos[4],
 	this->pos[0] = pos[0];
 	this->pos[1] = pos[1];
 	this->pos[2] = pos[2];
-	this->pos[3] = 1;
+	this->pos[3] = 1.0;
 
 	this->angle = angle;
 	this->exponent = exponent;

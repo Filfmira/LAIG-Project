@@ -27,22 +27,13 @@ public:
 	vector<Texture > textures;
 	vector<Appearance > appearances;
 	vector<Camera> cameras;
+	Camera* activeCamera;
 
 	CGFappearance* materialA;
 	CGFappearance* materialB;
 	
-	~ProjectScene();
-	
+	bool wireFrame;
 
-
-	///////////alternar entre wireframe e texturas////////////
-	int visualizationMode;
-	void setVisualizationMode(int mode){
-		visualizationMode = mode;
-		printf("mode = %d", mode);
-	}
-
-	
 	void setWireFrameMode()
 	{
 		glPolygonMode(GL_FRONT,GL_LINE);
@@ -56,6 +47,19 @@ public:
 		glPolygonMode(GL_BACK,GL_FILL);
 
 	}
+
+	~ProjectScene();
+	
+
+
+	///////////alternar entre wireframe e texturas////////////
+	int visualizationMode;
+	void setVisualizationMode(int mode){
+		visualizationMode = mode;
+		printf("mode = %d", mode);
+	}
+
+
 	///////////////////////////////////////////////////////////
 
 

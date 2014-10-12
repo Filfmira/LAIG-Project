@@ -54,7 +54,7 @@ void ProjectScene::init()
 
 	 glEnable (GL_NORMALIZE);
 
-	XMLSceneMod temp = XMLSceneMod("wall-e.xml", &sceneGraph, lights ,&textures,&appearances,&cameras);
+	XMLSceneMod temp = XMLSceneMod("wall-e.xml", &sceneGraph, lights ,&textures,&appearances,&cameras, activeCamera);
 
 
 	for (unsigned int i = 0; i < 8; i++){
@@ -119,16 +119,13 @@ void ProjectScene::display()
 	glLoadIdentity();
 
 	// Apply transformations corresponding to the camera position relative to the origin
-	//CGFscene::activeCamera->setX(0);
-	//CGFscene::activeCamera->applyView();
-	Camera c=this->cameras.at(1);
-	c.getCamera()->applyView();
-	//printf("node: %f\n",this->cameras.at(0).near);
-	/*string s;*/
-//	c.mostrar(&s);
-	cout<<c.getId()<<endl;
-	
-	//CGFscene::activeCamera->setX(0);
+	activeCamera->getCamera()->applyView();
+
+	//VisualizationMode
+	if (wireFrame)
+		setWireFrameMode();
+	else setTextureMode();
+
 
 	for (unsigned int i = 0; i < 8; i++)
 		if (lights[i] != NULL){
@@ -136,20 +133,20 @@ void ProjectScene::display()
 			lights[i]->getLight()->update();
 		}
 
-	//lightTest->draw();
+
 	// Draw axis
 	axis.draw();
 
 	// ---- END Background, camera and axis setup
 
+
+
+
 	// ---- BEGIN Primitive drawing section
-
 	drawAux(sceneGraph.getRoot());
-
-
-	
-	
 	// ---- END Primitive drawing section
+
+
 
 	// We have been drawing in a memory area that is not visible - the back buffer, 
 	// while the graphics card is showing the contents of another buffer - the front buffer
@@ -161,9 +158,7 @@ void ProjectScene::drawAux(Node* node){
 	glPushMatrix();
 	glMultMatrixf(node->getMatrix());
 		for (unsigned int j = 0; j < node->getNumeroDePrimitivas(); j++){
-			//this->textures[0].getTexture()->apply();
 			node->getApprearance()->apply();
-			//cout<<"node:"<<node->getId()<<endl;
 			node->getPrimitiva(j)->draw();
 			
 		}

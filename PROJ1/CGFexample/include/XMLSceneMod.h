@@ -11,7 +11,7 @@
 class XMLSceneMod
 {
 public:
-	XMLSceneMod(char *filename, Graph* gr, Light** lig, vector<Texture >* textures, vector<Appearance >*appearances, vector<Camera >* cameras);
+	XMLSceneMod(char *filename, Graph* gr, Light** lig, vector<Texture >* textures, vector<Appearance >*appearances, vector<Camera >* cameras, Camera* &activeCamera);
 	~XMLSceneMod();
 
 	static TiXmlElement *findChildByAttribute(TiXmlElement *parent,const char * attr, const char *val);
@@ -36,6 +36,7 @@ protected:
 	vector<Texture >* textures;
 	vector<Appearance >*appearances;
 	vector<Camera >*cameras;
+	Camera* initialCamera;
 	//vector<CGFlight *> luzes;
 	/////////////Projecto LAIG////////////
 	TiXmlElement* globalsElement;

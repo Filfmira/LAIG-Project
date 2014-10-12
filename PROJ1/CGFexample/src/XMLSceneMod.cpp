@@ -14,7 +14,7 @@ using namespace std;
 //como vamos guardar os Appearances? talvez uma especia de map, tabela tipo <id,CGFappearance>
 //é preciso por os nos com links entre eles?!?*****
 
-XMLSceneMod::XMLSceneMod(char *filename, Graph* gr, Light** lig, vector<Texture >* textures, vector<Appearance >*appearances, vector<Camera >*cameras): destinationGraph(gr), destinationLights(lig)
+XMLSceneMod::XMLSceneMod(char *filename, Graph* gr, Light** lig, vector<Texture >* textures, vector<Appearance >*appearances, vector<Camera >*cameras, Camera* &activeCamera): destinationGraph(gr), destinationLights(lig)
 {
 
 	// Read XML from file
@@ -25,7 +25,7 @@ XMLSceneMod::XMLSceneMod(char *filename, Graph* gr, Light** lig, vector<Texture 
 	this->textures=textures;
 	this->appearances=appearances;
 	this->cameras=cameras;
-	
+	this->initialCamera = NULL;
 	doc=new TiXmlDocument( filename );
 	bool loadOkay = doc->LoadFile();
 
@@ -51,6 +51,7 @@ XMLSceneMod::XMLSceneMod(char *filename, Graph* gr, Light** lig, vector<Texture 
 
 	///////////////CAMERAS/////////////////
 	readCameras(dgxElement);
+	activeCamera = initialCamera;
 	//////////////END OF CAMERAS////////////
 
 
@@ -307,9 +308,9 @@ bool XMLSceneMod::readCameras(TiXmlElement* dgxElement){
 		char* target_T=(char*) perspectives->Attribute("target");
 		printf("        target: %s\n",target_T);
 
-		cameras->push_back(Camera(new Prespective(near,far,angle,&pos[0],&target[0]),id));
+		cameras->push_back(Camera(new Perspective(near,far,angle,&pos[0],&target[0]),id, "Perspective"));
 
-		perspectives=perspectives->NextSiblingElement("prespective");
+		perspectives=perspectives->NextSiblingElement("perspective");
 	}
 
 	printf("-Ortho\n");
@@ -375,8 +376,17 @@ bool XMLSceneMod::readCameras(TiXmlElement* dgxElement){
 		sscanf(far_T,"%f",&bottom);
 		printf("        bottom: %f\n",bottom)	;
 
-		cameras->push_back(Camera(new Ortho(direction,near,far,left,right,top,bottom),id));
-		orthos=orthos->NextSiblingElement("ortho");
+		cameras->push_back(Camera(new Ortho(direction,near,far,left,right,top,bottom),id, "Ortho"));
+		orthos=orthos->NextSiblingElement("Ortho");
+	}
+
+	//verificar se a câmera indicada como inicial existe
+	for (unsigned int i = 0; i < cameras->size(); i++){
+		if (cameras->at(i).getId() == (string) initial_T){
+			initialCamera = &(cameras->at(i));
+			printf("set da initial camera\n");
+			return true;
+		}
 	}
 
 	return false;
@@ -646,7 +656,7 @@ bool XMLSceneMod::readAppearances(TiXmlElement* dgxElement){
 				}
 
 			if(exists) cout<<"        Textureref: "<<textureref<<endl;
-			else cout<<"			Error parcing appearance: texture does not exist\n";
+			else cout<<"			Error parsing appearance: texture does not exist\n";
 		}
 		else cout<<"        Error parsing appearance: missing textureref\n";
 
@@ -819,7 +829,7 @@ bool XMLSceneMod::readGraph(TiXmlElement* dgxElement){
 			}
 
 			if(exists) printf("	Appearance: %s\n", appearance);
-			else cout<<"			Error parcing node: appearance does not exist\n";
+			else cout<<"			Error parsing node: appearance does not exist\n";
 
 			
 			
