@@ -161,7 +161,7 @@ void ProjectScene::drawAux(Node* node){
 	glPushMatrix();
 	glMultMatrixf(node->getMatrix());
 		for (unsigned int j = 0; j < node->getNumeroDePrimitivas(); j++){
-			this->textures[0].getTexture()->apply();
+			//this->textures[0].getTexture()->apply();
 			node->getApprearance()->apply();
 			cout<<"node:"<<node->getId()<<endl;
 			node->getPrimitiva(j)->draw();

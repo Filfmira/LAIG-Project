@@ -642,7 +642,7 @@ bool XMLSceneMod::readAppearances(TiXmlElement* dgxElement){
 			for(int i=0;i<textures->size();i++)
 				if(strcmp(textures->at(i).getId(),textureref)==0){
 					exists=true;
-					//appearanceObject->setTexture(textures->at(i).getTexture());
+					appearanceObject->setTexture(textures->at(i).getTexture());
 				}
 
 			if(exists) cout<<"        Textureref: "<<textureref<<endl;

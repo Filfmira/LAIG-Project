@@ -35,13 +35,13 @@ public:
 			glNormal3d(0,0,1) ;
 			
 			glBegin(GL_QUADS);
-				//glTexCoord2d(0,0);
+				glTexCoord2d(0,0);
 				glVertex3d(x1,y1,0);
-				//glTexCoord2d(1,0);
+				glTexCoord2d(1,0);
 				glVertex3d(x1,y2,0);
-				//glTexCoord2d(1,1);
+				glTexCoord2d(1,1);
 				glVertex3d(x2,y2,0);
-				//glTexCoord2d(0,1);
+				glTexCoord2d(0,1);
 				glVertex3d(x2,y1,0);
 			glEnd();
 
@@ -107,6 +107,7 @@ private:
 	float height;
 	int slices;
 	int stacks;
+	GLUquadric* cylinder;
 
 public:
 	Cylinder (float base, float top, float height, int slices, int stacks){
@@ -115,12 +116,13 @@ public:
 		this->height = height;
 		this->slices = slices;
 		this->stacks = stacks;
+		cylinder=gluNewQuadric();
 	};
 
 	void draw(){
 		double alphaStep = (360.0/(float)slices)*acos(-1.0)/180.0;
 
-		
+		float x1,y1;
 		glPushMatrix();
 
 			//topo
@@ -128,7 +130,10 @@ public:
 			glBegin(GL_TRIANGLE_FAN);
 				glVertex3f(0, 0, height);
 				for(unsigned int i = 0; i <= slices; i++){
-					glVertex3f(top*cos(i* alphaStep), top*sin(i* alphaStep), height); //guardar estes senos e cossenos para não calcular???
+					x1=top*cos(i* alphaStep);
+					y1=top*sin(i* alphaStep);
+					glVertex3f(x1,y1, height); //guardar estes senos e cossenos para não calcular???
+					glTexCoord2d(x1*0.5+0.5,y1*0.5+0.5);
 				}
 			glEnd();
 
@@ -139,14 +144,20 @@ public:
 				glBegin(GL_TRIANGLE_FAN);
 					glVertex3f(0, 0, 0);
 					for(unsigned int i = 0; i <= slices; i++){
-						glVertex3f(base*cos(i* alphaStep), base*sin(i* alphaStep), 0); //guardar estes senos e cossenos para não calcular???
+						x1=base*cos(i* alphaStep);
+						y1=base*sin(i* alphaStep);
+						glVertex3d(x1,y1,0); //guardar estes senos e cossenos para não calcular???
+						glTexCoord2d(x1*0.5+0.5,y1*0.5+0.5);
 					}
 				glEnd();
 			glPopMatrix();
 
 			//corpo do cilindro
-			gluCylinder(gluNewQuadric(), base, top, height,  slices, stacks);
-
+		//	glMatrixMode(GL_TEXTURE);
+			gluCylinder(cylinder, base, top, height,  slices, stacks);
+gluQuadricDrawStyle(cylinder, GLU_FILL);
+		gluQuadricTexture(cylinder, GLU_TRUE);	
+		gluQuadricNormals(cylinder, GLU_SMOOTH);
 		glPopMatrix();
 
 
@@ -160,18 +171,27 @@ private:
 	float radius;
 	int slices;
 	int stacks;
+	GLUquadric* sphere;
+
 
 public:
 	Sphere(float radius, int slices, int stacks){
 		this->radius = radius;
 		this->slices = slices;
 		this->stacks = stacks;
+		sphere=gluNewQuadric();
 	};
 
+	//https://www.opengl.org/wiki/Texturing_a_Sphere
 	void draw(){		
 		glPushMatrix();
+		gluSphere(sphere, radius, slices, stacks);
+		gluQuadricDrawStyle(sphere, GLU_FILL);
+		gluQuadricTexture(sphere, GLU_TRUE);	
+		gluQuadricNormals(sphere, GLU_SMOOTH);
+		
 			//void gluSphere(GLUquadric*  quad,  GLdouble  radius,  GLint  slices,  GLint  stacks);
-			gluSphere(gluNewQuadric(), radius, slices, stacks);
+			
 		glPopMatrix();
 	};
 
