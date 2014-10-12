@@ -60,7 +60,7 @@ XMLSceneMod::XMLSceneMod(char *filename, Graph* gr, Light** lig, vector<Texture 
 
 
 	/////////////////TEXTURES///////////////
-	//readTextures(dgxElement);
+	readTextures(dgxElement);
 	///////////////END OF TEXTURES/////////
 
 
@@ -639,14 +639,14 @@ bool XMLSceneMod::readAppearances(TiXmlElement* dgxElement){
 		textureref = (char*)appearance->Attribute("textureref");
 		if(textureref){
 			bool exists=false;
-			/*for(int i=0;i<textures->size();i++)
+			for(int i=0;i<textures->size();i++)
 				if(strcmp(textures->at(i).getId(),textureref)==0){
 					exists=true;
 					//appearanceObject->setTexture(textures->at(i).getTexture());
 				}
 
 			if(exists) cout<<"        Textureref: "<<textureref<<endl;
-			else cout<<"			Error parcing appearance: texture does not exist\n";*/
+			else cout<<"			Error parcing appearance: texture does not exist\n";
 		}
 		else cout<<"        Error parsing appearance: missing textureref\n";
 

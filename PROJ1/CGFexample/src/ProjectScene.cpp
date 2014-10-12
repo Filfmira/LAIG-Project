@@ -54,7 +54,7 @@ void ProjectScene::init()
 
 	 glEnable (GL_NORMALIZE);
 
-	XMLSceneMod temp = XMLSceneMod("cena.xml", &sceneGraph, lights ,&textures,&appearances,&cameras);
+	XMLSceneMod temp = XMLSceneMod("wall-e.xml", &sceneGraph, lights ,&textures,&appearances,&cameras);
 
 
 	for (unsigned int i = 0; i < 8; i++){
