@@ -19,13 +19,17 @@
     </globals>
 
     <!-- bloco de camaras: o atributo "initial" identifica a camara/ponto de vista inicial, que tem de existir -->
-    <cameras initial="0" >
+    <cameras initial="landscapez" >
         <!-- tem de existir, pelo menos uma camara dos tipos seguintes (perspective ou ortho) -->
         <!-- no caso da camara ortho, o atributo "direction" define o eixo segundo o qual se efetua a projecao -->
 
-		
-       <ortho id="ortho_y" direction="z" near="1.0" far="10.0" left="-17.0" right="3.0" top="12.0" bottom="-3.0" />	
-		 <perspective id="0" near="1.0" far="20.0" angle="90" pos="4.0 4.0 4.0" target="0.0 0.0 0.0" />
+
+        <ortho id="landscapez" direction="z" near="10" far="-10" left="-10" right="10" top="10" bottom="-10" />
+        <ortho id="landscapex" direction="x" near="10" far="-10" left="-10" right="10" top="10" bottom="-10" />
+        <ortho id="landscapey" direction="y" near="-10" far="10" left="-10" right="10" top="10" bottom="-10" />
+  
+       
+   <perspective id="0" near="1.0" far="20.0" angle="90" pos="4.0 4.0 4.0" target="0.0 0.0 0.0" />
 
     </cameras>
 
@@ -260,7 +264,7 @@
             </transforms>
             <appearanceref id="s2" />
             <primitives>
-                <rectangle xy1="-1 1" xy2="1 -1" />
+                <rectangle xy1="-1 -1" xy2="1 1" />
             </primitives>
 
             <descendants>
@@ -402,7 +406,7 @@
             </transforms>
             <appearanceref id="tire" />
             <primitives>
-                <rectangle xy1="-0.3 0" xy2="0.3 -2.236067977" />
+                <rectangle xy1="-0.3 -2.236067977" xy2="0.3 0" />
             </primitives>
 
             <descendants>
@@ -417,7 +421,7 @@
             </transforms>
             <appearanceref id="tire" />
             <primitives>
-                <rectangle xy1="-0.3 0" xy2="0.3 -2.236067977" />
+                <rectangle xy1="-0.3 -2.236067977" xy2="0.3 0" />
             </primitives>
 
             <descendants>
@@ -432,7 +436,7 @@
             </transforms>
             <appearanceref id="tire" />
             <primitives>
-                <rectangle xy1="-0.3 1" xy2="0.3 -1" />
+                <rectangle xy1="-0.3 -1" xy2="0.3 1" />
             </primitives>
 
             <descendants>

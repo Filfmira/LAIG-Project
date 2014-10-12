@@ -377,7 +377,7 @@ bool XMLSceneMod::readCameras(TiXmlElement* dgxElement){
 		printf("        bottom: %f\n",bottom)	;
 
 		cameras->push_back(Camera(new Ortho(direction,near,far,left,right,top,bottom),id, "Ortho"));
-		orthos=orthos->NextSiblingElement("Ortho");
+		orthos=orthos->NextSiblingElement("ortho");
 	}
 
 	//verificar se a câmera indicada como inicial existe
