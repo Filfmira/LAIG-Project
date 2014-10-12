@@ -1,0 +1,589 @@
+<anf>
+
+  <!-- bloco de configuracoes globais -->
+  <!-- a declaracao dos componentes deste bloco e' obrigatoria -->
+  <globals>
+    <!-- Parametros de desenho -->
+    <!-- Valores para mode: "fill" , "line", "point" -->
+    <!-- Valores para shading: "flat", "gouraud" ) -->
+    <drawing mode="fill" shading="gouraud" background="0.5 0.2 0.1 0.8" />
+
+    <!-- Parametros de culling -->
+    <!-- Valores para cullface: "none", "back" , "front" ou "both" -->
+    <!-- Valores para cullorder : "ccw" ou "cw" -->
+    <culling face="back" order="ccw" />
+
+    <!-- Parametros de iluminacao; seguem os parametros do OpenGL  -->
+    <lighting doublesided="true" local="false" enabled="true" ambient="0.8 0.8 0.8 1" />
+
+  </globals>
+
+  <!-- bloco de camaras: o atributo "initial" identifica a camara/ponto de vista inicial, que tem de existir -->
+  <cameras initial="ss" >
+    <!-- tem de existir, pelo menos uma camara dos tipos seguintes (perspective ou ortho) -->
+    <!-- no caso da camara ortho, o atributo "direction" define o eixo segundo o qual se efetua a projecao -->
+
+    <perspective id="ss" near="ff" far="ff" angle="ff" pos="ff ff ff" target="ff ff ff" />
+    <ortho id="ss" direction="ee" near="ff" far="ff" left="ff" right="ff" top="ff" bottom="ff" />
+
+  </cameras>
+
+  <!-- bloco de luzes -->
+  <lights>
+    <!-- Deve existir pelo menos uma luz declarada -->
+    <!-- Atributo "marker" indica se deve ou nao desenhar-se uma esfera representativa -->
+    <light id="0" type="omni" enabled="true" marker="true" pos="0 0 5" >
+     <component type="ambient" value="0.1 0.1 0.1 0.1" />
+     <component type="diffuse" value="0.1 0.1 0.1 0.1" />
+     <component type="specular" value="0.1 0.1 0.1 0.1" />
+
+   </light>
+
+    <!--        <light id="2" ytpe="omni" enabled="true" marker="true" pos="0 10 0" >
+               <component type="ambient" value="0.5 0.5 0.5 0" />
+               <component type="diffuse" value="0.2 0.2 0.2 1" />
+               <component type="specular" value="0.2 0.2 0.2 1" />
+             </light>-->
+
+             <light id="0" type="omni" enabled="true" marker="true" pos="0 0 5" >
+               <component type="ambient" value="1 1 1 1" />
+               <component type="diffuse" value="1 1 1 1" />
+               <component type="specular" value="1 1 1 1" />
+
+            </light>
+          </lights>
+
+          <!-- bloco de texturas. Este bloco tem de existir mas pode estar vazio, se nao forem usadas texturas -->
+          <!--   ver topico 'Notas finais' no enunciado sobre os parametros texlength_... -->
+          <textures>      
+            <texture id="ss" file="eye.jpg" texlength_s="1" texlength_t="1" />    
+			 <texture id="s2" file="ganga.jpg" texlength_s="1" texlength_t="1" />   
+          </textures>
+
+          <!-- bloco de materiais; -->
+          <appearances>
+            <!-- deve existir um ou mais blocos "appearance" -->
+            <!-- IMPORTANTE: -->
+            <!--   textureref e opcional, a utilizar caso haja textura associada a esta aparencia -->
+            <appearance id="yellow" shininess="1" textureref="ss" >
+             <component type="ambient" value="0.2 0.2 0.2 1" />
+             <component type="diffuse" value="1 0.73 0.06 1" />
+             <component type="specular" value="0.1 0.1 0.1 1" />
+           </appearance>
+           <appearance id="white" shininess="1" textureref="ss" >
+             <component type="ambient" value="0.2 0.2 0.2 1" />
+             <component type="diffuse" value="1 1 1 1" />
+             <component type="specular" value="0.1 0.1 0.1 1" />
+           </appearance>
+           <appearance id="blue" shininess="1" textureref="s2" >
+            <component type="ambient" value="0.2 0.2 0.2 1" />
+            <component type="diffuse" value="0 0 1 1" />
+            <component type="specular" value="0.1 0.1 0.1 1" />
+          </appearance>
+          <appearance id="black" shininess="1" textureref="ss" >
+            <component type="ambient" value="0.2 0.2 0.2 1" />
+            <component type="diffuse" value="0 0 0 1" />
+            <component type="specular" value="0.1 0.1 0.1 1" />
+          </appearance>
+          <appearance id="brown" shininess="0.1" textureref="ss" >
+            <component type="ambient" value="0.2 0.2 0.2 1" />
+            <component type="diffuse" value="0.8 0.67 0.5 1" />
+            <component type="specular" value="0.1 0.1 0.1 1" />
+          </appearance>
+          <appearance id="red" shininess="1" textureref="ss">
+            <component type="ambient" value="0.2 0.2 0.2 1" />
+            <component type="diffuse" value="1 0 0 1" />
+            <component type="specular" value="0.1 0.1 0.1 1" />
+          </appearance>
+          <appearance id="darkyellow" shininess="1" textureref="ss">
+            <component type="ambient" value="0.2 0.2 0.2 1" />
+            <component type="diffuse" value="0.8 0.4 0 1" />
+            <component type="specular" value="0.1 0.1 0.1 1" />
+          </appearance>
+        </appearances>
+
+        <graph rootid="root">
+          <node id="root">
+            <transforms>
+            </transforms>
+
+            <appearanceref id="white" />
+
+            <primitives>
+            </primitives>
+
+            <descendants>
+              <noderef id="body"/>
+              <noderef id="donut"/>
+              <noderef id="duffbeer"/>
+            </descendants>
+          </node>
+
+          <node id="donut">
+            <transforms>
+              <transform type="translate" to="-2 4.5 2"/>
+              <transform type="rotate" axis="z" angle="-20"/>
+              <transform type="rotate" axis="x" angle="100"/>
+            </transforms>
+            <appearanceref id="darkyellow"/>
+            <primitives>
+             <torus inner="0.2" outer="0.35" slices="20" loops="20" />
+           </primitives>
+           <descendants>
+           </descendants>
+         </node>
+
+         <node id="duffbeer">
+          <transforms>
+            <transform type="translate" to="1.7 4.3 1.8"/>
+            <transform type="rotate" axis="z" angle="100"/>
+            <transform type="rotate" axis="x" angle="100"/>
+          </transforms>
+          <appearanceref id="red"/>
+          <primitives>
+           <cylinder base="0.3" top="0.3" height="0.8" slices="20" stacks="10" />
+         </primitives>
+         <descendants>
+         </descendants>
+       </node>
+
+       <node id="body">
+        <transforms>
+        </transforms>
+
+        <appearanceref id="white" />
+
+        <primitives>
+        </primitives>
+
+        <descendants>
+          <noderef id="head"/>
+          <noderef id="torso" />
+          <noderef id="lowerbody"/>
+        </descendants>
+      </node>
+
+      <node id="lowerbody">
+        <transforms>
+        </transforms>
+        <appearanceref id="white" />
+        <primitives>
+        </primitives>
+        <descendants>
+          <noderef id="rightleg"/>
+          <noderef id="leftleg"/>
+        </descendants>
+      </node> 
+
+      <node id="rightleg">
+        <transforms>
+          <transform type="translate" to="-0.75 0 0" />
+        </transforms>
+        <appearanceref id="white" />
+        <primitives>
+        </primitives>
+        <descendants>
+          <noderef id="legs"/>
+        </descendants>
+      </node> 
+
+      <node id="leftleg">
+        <transforms>
+          <transform type="translate" to="0.75 0 0" />
+        </transforms>
+        <appearanceref id="white" />
+        <primitives>
+        </primitives>
+
+        <descendants>
+          <noderef id="legs"/>
+        </descendants>
+      </node> 
+
+      <node id="legs">
+        <transforms>
+          <transform type="rotate" axis="x" angle="-90" />
+        </transforms>
+
+        <appearanceref id="blue" />
+
+        <primitives>
+          <cylinder base="0.7" top="0.7" height="4" slices="20" stacks="10" />
+        </primitives>
+
+        <descendants>
+          <noderef id="shoes"/>
+        </descendants>
+      </node> 
+
+      <node id="shoes">
+        <transforms>
+          <transform type="translate" to="0 -0.315 0"/>
+          <transform type="scale" factor="1.26 1.9 1"/>
+        </transforms>
+        <appearanceref id="black"/>
+        <primitives>
+        </primitives>
+        <descendants>
+          <noderef id="shoespartA"/>
+          <noderef id="shoespartB"/>
+        </descendants>
+      </node>
+
+      <node id="shoespartA">
+        <transforms>
+          <transform type="scale" factor="1 1 0.6"/>
+        </transforms>
+        <appearanceref id="white"/>
+        <primitives>
+         <sphere radius="0.5" slices="20" stacks="10" />
+       </primitives>
+       <descendants>
+       </descendants>
+     </node>
+
+     <node id="shoespartB">
+      <transforms>
+        <transform type="translate" to="0 0 -0.3"/>
+      </transforms>
+      <appearanceref id="white"/>
+      <primitives>
+       <cylinder base="0.5" top="0.5" height="0.3" slices="20" stacks="10" />
+     </primitives>
+     <descendants>
+     </descendants>
+   </node>
+
+   <node id="torso">
+    <transforms>
+    </transforms>
+    <appearanceref id="white" />
+    <primitives>
+    </primitives>
+
+    <descendants>
+      <noderef id="chest"/>
+      <noderef id="neck" />
+      <noderef id="hip" />
+      <noderef id="leftarm"/>
+      <noderef id="rightarm"/>
+    </descendants>
+  </node> 
+
+  <node id="hip">
+    <transforms>
+      <transform type="translate" to="0 4.4 0" />
+    </transforms>
+    <appearanceref id="blue" />
+    <primitives>
+      <sphere radius="1.7" slices="20" stacks="10" />
+    </primitives>
+
+    <descendants>
+    </descendants>
+  </node> 
+
+  <node id="chest">
+    <transforms>
+     <transform type="translate" to="0 4.5 0" />
+     <transform type="rotate" axis="x" angle="-90" />
+   </transforms>
+   <appearanceref id="white" />
+   <primitives>
+     <cylinder base="1.81" top="1" height="2" slices="20" stacks="10" />
+   </primitives>
+
+   <descendants>
+   </descendants>
+ </node> 
+
+ <node id="neck">
+  <transforms>
+    <transform type="translate" to="0 6.2 0" />
+    <transform type="rotate" axis="x" angle="-90" />
+  </transforms>
+  <appearanceref id="white" />
+  <primitives>
+   <cylinder base="1.2" top="1" height="0.5" slices="20" stacks="10" />
+ </primitives>
+
+ <descendants>
+ </descendants>
+</node> 
+
+<node id="head">
+  <transforms>
+   <transform type="translate" to="0 6.5 0" />
+ </transforms>
+ <appearanceref id="yellow" />
+ <primitives>
+ </primitives>
+
+ <descendants>
+   <noderef id="scalp" />
+   <noderef id="face" />
+   <noderef id="lefteye" />
+   <noderef id="righteye" />
+   <noderef id="mouth" />
+   <noderef id="nose" />
+ </descendants>
+</node> 
+
+<node id="nose">
+  <transforms>
+    <transform type="translate" to="0 1.6 0.9"/>
+  </transforms>
+  <appearanceref id="white"/>
+  <primitives>
+    <sphere radius="0.2" slices="20" stacks="10" />
+  </primitives>
+  <descendants>
+  </descendants>
+</node>
+
+<node id="face">
+  <transforms>
+   <transform type="rotate" axis="x" angle="-90" />
+ </transforms>
+ <appearanceref id="white" />
+ <primitives>
+   <cylinder base="0.8" top="0.8" height="2" slices="20" stacks="10" />
+ </primitives>
+
+ <descendants>
+ </descendants>
+</node> 
+
+<node id="scalp">
+  <transforms>
+    <transform type="translate" to="0 2 0" />
+  </transforms>
+  <appearanceref id="white" />
+  <primitives>
+   <sphere radius="0.8" slices="20" stacks="10" />
+ </primitives>
+
+ <descendants>
+ </descendants>
+</node> 
+
+
+<node id="righteye">
+  <transforms>
+   <transform type="translate" to="-0.3 0 0" />
+ </transforms>
+ <appearanceref id="white" />
+ <primitives>
+ </primitives>
+
+ <descendants>
+  <noderef id="eyes"/>
+</descendants>
+</node> 
+
+<node id="lefteye">
+  <transforms>
+   <transform type="translate" to="0.3 0 0" />
+ </transforms>
+ <appearanceref id="white" />
+ <primitives>
+ </primitives>
+
+ <descendants>
+  <noderef id="eyes"/>
+</descendants>
+</node> 
+
+<node id="eyes">
+  <transforms>
+    <transform type="translate" to="0 2 0.7" />
+  </transforms>
+  <appearanceref id="white" />
+  <primitives>
+   <sphere radius="0.3" slices="20" stacks="10" />
+ </primitives>
+
+ <descendants>
+  <noderef id="pupil"/>
+</descendants>
+</node> 
+
+<node id="pupil">
+  <transforms>
+    <transform type="scale" factor="0.3 0.3 1"/>
+    <transform type="translate" to="0 0 0.03"/>
+  </transforms>
+  <appearanceref id="black"/>
+  <primitives>
+    <sphere radius="0.3" slices="20" stacks="10" />
+  </primitives>
+
+  <descendants>
+  </descendants>
+</node>
+
+<node id="mouth">
+  <transforms>
+   <transform type="translate" to="0 1 0.5"/>
+ </transforms>
+ <appearanceref id="brown"/>
+ <primitives>
+  <sphere radius="0.6" slices="20" stacks="10" />
+</primitives>
+
+<descendants>
+  <noderef id="mouthline"/>
+
+</descendants>
+</node>
+
+<node id="mouthline">
+  <transforms>
+   <transform type="translate" to="0 -0.10 0"/>
+   <transform type="rotate" axis="x" angle="-90" />
+ </transforms>
+ <appearanceref id="black"/>
+ <primitives>
+  <cylinder base="0.60" top="0.60" height="0.05" slices="20" stacks="10" />  
+</primitives>
+
+<descendants>
+
+</descendants>
+</node>
+
+<node id="arms">
+  <transforms>
+    <transform type="translate" to="0 6 0"/>
+    <transform type="rotate" axis="x" angle="60"/>
+
+  </transforms>
+  <appearanceref id="yellow"/>
+  <primitives>
+    <cylinder base="0.45" top="0.45" height="1" slices="20" stacks="10" />
+
+  </primitives>
+  <descendants>
+    <noderef id="elbow"/>
+    <noderef id="lowerarm"/>
+    <noderef id="shoulder"/>
+  </descendants>
+</node>
+
+<node id="rightarm">
+  <transforms>
+    <transform type="translate" to="-1.5 0 0"/>
+    <transform type="rotate" axis="y" angle="-20"/>
+  </transforms>
+  <appearanceref id="white"/>
+  <primitives>
+  </primitives>
+  <descendants>
+    <noderef id="arms"/>
+  </descendants>
+</node>
+
+<node id="leftarm">
+  <transforms>
+    <transform type="translate" to="1.5 0 0"/>
+    <transform type="rotate" axis="y" angle="20"/>
+  </transforms>
+  <appearanceref id="white"/>
+  <primitives>
+
+  </primitives>
+  <descendants>
+    <noderef id="arms"/>
+  </descendants>
+</node>
+
+<node id="lowerarm">
+  <transforms>
+    <transform type="translate" to="0 0 1"/>
+    <transform type="rotate" axis="x" angle="-20"/>
+  </transforms>
+  <appearanceref id="white"/>
+  <primitives>
+    <cylinder base="0.45" top="0.4" height="1" slices="20" stacks="10" />
+  </primitives>
+  <descendants>
+    <noderef id="hand"/>
+  </descendants>
+</node>
+
+<node id="hand">
+  <transforms>
+    <transform type="translate" to="0 0 1"/>
+  </transforms>
+  <appearanceref id="white"/>
+  <primitives>
+    <sphere radius="0.45" slices="20" stacks="10"/>
+  </primitives>
+  <descendants>
+    <noderef id="thumb"/>
+  </descendants>
+</node>
+
+<node id="thumb">
+  <transforms>
+    <transform type="scale" factor="1 -1 -1"/>
+    <transform type="rotate" axis="x" angle="-70"/>
+    <transform type="translate" to="0 0 -0.6"/>
+  </transforms>
+  <appearanceref id="white"/>
+  <primitives>
+  </primitives>
+  <descendants>
+    <noderef id="thumbpartA"/>
+    <noderef id="thumbpartB"/>
+  </descendants>
+</node>
+
+<node id="thumbpartA">
+  <transforms>
+  </transforms>
+  <appearanceref id="white"/>
+  <primitives>
+    <sphere radius="0.1" slices="20" stacks="10"/>
+  </primitives>
+  <descendants>
+  </descendants>
+</node>
+
+<node id="thumbpartB">
+  <transforms>
+  </transforms>
+  <appearanceref id="white"/>
+  <primitives>
+    <cylinder base="0.1" top="0.1" height="0.2" slices="20" stacks="10" />
+  </primitives>
+  <descendants>
+  </descendants>
+</node>
+
+
+<node id="elbow">
+  <transforms>
+    <transform type="translate" to="0 0 1"/>
+  </transforms>
+  <appearanceref id="white"/>
+  <primitives>
+    <sphere radius="0.45" slices="20" stacks="10"/>
+  </primitives>
+  <descendants>
+  </descendants>
+</node>
+
+<node id="shoulder">
+  <transforms>
+  </transforms>
+  <appearanceref id="white"/>
+  <primitives>
+   <sphere radius="0.7" slices="20" stacks="10" />
+ </primitives>
+ <descendants>
+ </descendants>
+</node>
+
+</graph>
+</anf>
