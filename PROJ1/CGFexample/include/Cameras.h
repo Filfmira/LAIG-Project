@@ -54,8 +54,9 @@ public:
 	}
 
 	void applyView() {
-	/*gluPerspective(angle, 1.0, near, far);
-	gluLookAt(pos[0],pos[1],pos[2],target[0],target[1],target[2],0,1,0);*/
+		CGFcamera::applyView();
+	gluPerspective(angle, 1.0, near, far);
+	gluLookAt(pos[0],pos[1],pos[2],target[0],target[1],target[2],0,1,0);
 	}
 
 };

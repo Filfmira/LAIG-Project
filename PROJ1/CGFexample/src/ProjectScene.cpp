@@ -120,13 +120,13 @@ void ProjectScene::display()
 
 	// Apply transformations corresponding to the camera position relative to the origin
 	//CGFscene::activeCamera->setX(0);
-	CGFscene::activeCamera->applyView();
-	//Camera c=this->cameras.at(1);
-	//c.getCamera()->applyView();
+	//CGFscene::activeCamera->applyView();
+	Camera c=this->cameras.at(1);
+	c.getCamera()->applyView();
 	//printf("node: %f\n",this->cameras.at(0).near);
 	/*string s;*/
 //	c.mostrar(&s);
-	//cout<<c.getId()<<endl;
+	cout<<c.getId()<<endl;
 	
 	//CGFscene::activeCamera->setX(0);
 
@@ -163,7 +163,7 @@ void ProjectScene::drawAux(Node* node){
 		for (unsigned int j = 0; j < node->getNumeroDePrimitivas(); j++){
 			//this->textures[0].getTexture()->apply();
 			node->getApprearance()->apply();
-			cout<<"node:"<<node->getId()<<endl;
+			//cout<<"node:"<<node->getId()<<endl;
 			node->getPrimitiva(j)->draw();
 			
 		}
