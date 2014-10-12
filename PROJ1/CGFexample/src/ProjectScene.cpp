@@ -54,7 +54,7 @@ void ProjectScene::init()
 
 	 glEnable (GL_NORMALIZE);
 
-	XMLSceneMod temp = XMLSceneMod("wall-e.xml", &sceneGraph, lights ,&textures,&appearances,&cameras);
+	XMLSceneMod temp = XMLSceneMod("cena.xml", &sceneGraph, lights ,&textures,&appearances,&cameras);
 
 
 	for (unsigned int i = 0; i < 8; i++){
@@ -119,8 +119,16 @@ void ProjectScene::display()
 	glLoadIdentity();
 
 	// Apply transformations corresponding to the camera position relative to the origin
+	//CGFscene::activeCamera->setX(0);
 	CGFscene::activeCamera->applyView();
-
+	//Camera c=this->cameras.at(1);
+	//c.getCamera()->applyView();
+	//printf("node: %f\n",this->cameras.at(0).near);
+	/*string s;*/
+//	c.mostrar(&s);
+	//cout<<c.getId()<<endl;
+	
+	//CGFscene::activeCamera->setX(0);
 
 	for (unsigned int i = 0; i < 8; i++)
 		if (lights[i] != NULL){
@@ -138,6 +146,8 @@ void ProjectScene::display()
 
 	drawAux(sceneGraph.getRoot());
 
+
+	
 	
 	// ---- END Primitive drawing section
 
@@ -153,7 +163,9 @@ void ProjectScene::drawAux(Node* node){
 		for (unsigned int j = 0; j < node->getNumeroDePrimitivas(); j++){
 			this->textures[0].getTexture()->apply();
 			node->getApprearance()->apply();
+			cout<<"node:"<<node->getId()<<endl;
 			node->getPrimitiva(j)->draw();
+			
 		}
 		for (unsigned int i = 0; i < node->getDescendentes().size(); i++){
 

@@ -60,7 +60,7 @@ XMLSceneMod::XMLSceneMod(char *filename, Graph* gr, Light** lig, vector<Texture 
 
 
 	/////////////////TEXTURES///////////////
-	readTextures(dgxElement);
+	//readTextures(dgxElement);
 	///////////////END OF TEXTURES/////////
 
 
@@ -265,7 +265,7 @@ bool XMLSceneMod::readCameras(TiXmlElement* dgxElement){
 	{
 		//CGFcamera* cgfCamera= new CGFcamera();
 
-		char* id;
+		string id;
 		float near;
 		float far;
 		float angle;
@@ -273,7 +273,8 @@ bool XMLSceneMod::readCameras(TiXmlElement* dgxElement){
 		float target[3];
 
 		//id
-		id=(char*) perspectives->Attribute("id");
+		
+		id=string( perspectives->Attribute("id"));
 			printf("        id: %s \n",id);
 
 		//near
@@ -306,8 +307,7 @@ bool XMLSceneMod::readCameras(TiXmlElement* dgxElement){
 		char* target_T=(char*) perspectives->Attribute("target");
 		printf("        target: %s\n",target_T);
 
-		Prespective(id,near,far,angle,&pos[0],&target[0]);
-		//cameras->push_back();
+		cameras->push_back(Camera(new Prespective(near,far,angle,&pos[0],&target[0]),id));
 
 		perspectives=perspectives->NextSiblingElement("prespective");
 	}
@@ -317,7 +317,7 @@ bool XMLSceneMod::readCameras(TiXmlElement* dgxElement){
 	TiXmlElement * orthos = camerasElement->FirstChildElement("ortho");
 	while(orthos)
 	{
-		int id;
+		string id;
 		char* direction;
 		float near;
 		float far;
@@ -328,11 +328,8 @@ bool XMLSceneMod::readCameras(TiXmlElement* dgxElement){
 
 		
 		//id
-		char* id_T=(char*) orthos->Attribute("id");
-		if(id_T){
-			id=atoi(id_T);
-			printf("        id: %d \n",id);
-		}
+		id=string( orthos->Attribute("id"));
+			printf("        id: %s \n",id);
 
 		//direction
 		direction=(char*) orthos->Attribute("direction");
@@ -378,6 +375,7 @@ bool XMLSceneMod::readCameras(TiXmlElement* dgxElement){
 		sscanf(far_T,"%f",&bottom);
 		printf("        bottom: %f\n",bottom)	;
 
+		cameras->push_back(Camera(new Ortho(direction,near,far,left,right,top,bottom),id));
 		orthos=orthos->NextSiblingElement("ortho");
 	}
 
@@ -641,14 +639,14 @@ bool XMLSceneMod::readAppearances(TiXmlElement* dgxElement){
 		textureref = (char*)appearance->Attribute("textureref");
 		if(textureref){
 			bool exists=false;
-			for(int i=0;i<textures->size();i++)
+			/*for(int i=0;i<textures->size();i++)
 				if(strcmp(textures->at(i).getId(),textureref)==0){
 					exists=true;
 					//appearanceObject->setTexture(textures->at(i).getTexture());
 				}
 
 			if(exists) cout<<"        Textureref: "<<textureref<<endl;
-			else cout<<"			Error parcing appearance: texture does not exist\n";
+			else cout<<"			Error parcing appearance: texture does not exist\n";*/
 		}
 		else cout<<"        Error parsing appearance: missing textureref\n";
 
@@ -769,11 +767,11 @@ bool XMLSceneMod::readGraph(TiXmlElement* dgxElement){
 
 					float angulo;
 					sscanf(angle,"%f",&angulo);
-					if(strcmp(axis,"xx") == 0)
+					if(strcmp(axis,"x") == 0)
 						glRotatef(angulo, 1,0,0);
-					else if(strcmp(axis,"yy") == 0)
+					else if(strcmp(axis,"y") == 0)
 						glRotatef(angulo, 0,1,0);
-					else if(strcmp(axis,"zz") == 0)
+					else if(strcmp(axis,"z") == 0)
 						glRotatef(angulo, 0,0,1);
 					else printf("	Unexpected problem with rotation\n");
 				} 
