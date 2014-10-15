@@ -3,6 +3,8 @@
 #include "CGFapplication.h"
 #include <iostream>
 
+float Appearance::texlength_s = 0;
+float Appearance::texlength_t = 0;
 
 // Positions for two lights
 float light0_pos[4] = {4, 6.0, 1.0, 1.0};
@@ -54,7 +56,7 @@ void ProjectScene::init()
 
 	 glEnable (GL_NORMALIZE);
 
-	XMLSceneMod temp = XMLSceneMod("wall-e.xml", &sceneGraph, lights ,&textures,&appearances,&cameras, activeCamera);
+	XMLSceneMod temp = XMLSceneMod("wall-e.xml", &sceneGraph, lights ,textures,appearances,&cameras, activeCamera);
 
 
 	for (unsigned int i = 0; i < 8; i++){
@@ -119,8 +121,8 @@ void ProjectScene::display()
 	glLoadIdentity();
 
 	// Apply transformations corresponding to the camera position relative to the origin
-	activeCamera->getCamera()->applyView();
-
+	//activeCamera->getCamera()->applyView();
+	CGFscene::activeCamera->applyView();
 	//VisualizationMode
 	if (wireFrame)
 		setWireFrameMode();
@@ -158,7 +160,16 @@ void ProjectScene::drawAux(Node* node){
 	glPushMatrix();
 	glMultMatrixf(node->getMatrix());
 		for (unsigned int j = 0; j < node->getNumeroDePrimitivas(); j++){
-			node->getApprearance()->apply();
+			node->getAppearance()->apply();
+			if (node->getAppearance() != NULL){
+				if (node->getAppearance()->getTexture() != NULL){
+					//printf("Node: %s\n", node->getId().c_str());
+					//printf("	Textura: %s\n", node->getAppearance()->getTexture()->getId());
+					Appearance::texlength_s=node->getAppearance()->getTexture()->getTexlengths();
+					Appearance::texlength_t=node->getAppearance()->getTexture()->getTexlengtht();
+				}
+			}
+			
 			node->getPrimitiva(j)->draw();
 			
 		}

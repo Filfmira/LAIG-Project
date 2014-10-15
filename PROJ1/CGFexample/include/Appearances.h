@@ -3,23 +3,31 @@
 
 #include <vector>
 #include <CGFappearance.h>
+#include "Textures.h"
+class Appearance:public CGFappearance{
 
-class Appearance{
-
-private:
+protected:
 	char* id;
-	CGFappearance* appearance;
-	
+	Texture *t;
 
 public:
-
-	Appearance(char* id,CGFappearance* appearance)
+	
+	static float texlength_s;
+	static float texlength_t;
+	
+	Appearance(char* id):CGFappearance()
 	{
 		this->id=id;
-		this->appearance=appearance;
+		t = NULL;
+	}
+
+	void setTexture(Texture* t){
+		this->t=t;
+		this->CGFappearance::setTexture(t);
 
 	}
-	CGFappearance* getAppearance(){return this->appearance;}
+	//CGFappearance* getAppearance(){return this->appearance;}
+	Texture* getTexture(){return this->t;}
 	char* getId(){return id;}
 
 };

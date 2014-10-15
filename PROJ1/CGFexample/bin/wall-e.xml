@@ -26,10 +26,8 @@
 
         <ortho id="landscapez" direction="z" near="10" far="-10" left="-10" right="10" top="10" bottom="-10" />
         <ortho id="landscapex" direction="x" near="10" far="-10" left="-10" right="10" top="10" bottom="-10" />
-        <ortho id="landscapey" direction="y" near="-10" far="10" left="-10" right="10" top="10" bottom="-10" />
-  
-       
-   <perspective id="0" near="1.0" far="20.0" angle="90" pos="4.0 4.0 4.0" target="0.0 0.0 0.0" />
+        <ortho id="landscapey" direction="y" near="10" far="-10" left="-10" right="10" top="10" bottom="-10" />
+        <perspective id="0" near="1.0" far="20.0" angle="90" pos="4.0 4.0 4.0" target="0.0 0.0 0.0" />
 
     </cameras>
 

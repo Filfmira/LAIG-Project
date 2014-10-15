@@ -2,11 +2,11 @@
 #define __PROJECTSCENE_H_
 
 #include "CGFscene.h"
-#include "CGFappearance.h"
+//#include "CGFappearance.h"
 #include "XMLSceneMod.h"
 #include "Lights.h"
 #include <vector>
-#include "Textures.h"
+//#include "Textures.h"
 #include "Appearances.h"
 #include "Cameras.h"
 #include "CGFapplication.h"
@@ -24,8 +24,8 @@ public:
 
 	Graph sceneGraph;
 
-	vector<Texture > textures;
-	vector<Appearance > appearances;
+	vector<Texture *> textures;
+	vector<Appearance* > appearances;
 	vector<Camera> cameras;
 	Camera* activeCamera;
 

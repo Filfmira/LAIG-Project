@@ -4,25 +4,20 @@
 #include <vector>
 #include <CGFtexture.h>
 
-class Texture{
+class Texture:public CGFtexture{
 
 private:
 	char* id;
-	CGFtexture* texture;
 	float texlength_s;
 	float texlength_t;
 	
 
 public:
+	string getFileName(){return texName;}
 
-	Texture(char* id, char* file, float texlength_s, float texlength_t){
+
+	Texture(char* id, char* file, float texlength_s, float texlength_t):CGFtexture((string)file){
 		this->id=id;
-		try{
-			texture=new CGFtexture((string)file);
-		}
-		catch (int e){
-			printf("ERROR, COULD NOT FOUND FILE");
-		}
 		//texture=new CGFtexture((string)file);
 		this->texlength_s=texlength_s;
 		this->texlength_t=texlength_t;
@@ -30,7 +25,10 @@ public:
 
 
 	char* getId(){return id;}
-	CGFtexture* getTexture(){return this->texture;}
+	float getTexlengtht(){ return this->texlength_t;}
+	float getTexlengths(){ return this->texlength_s;}
+
+	//CGFtexture* getTexture(){return this->texture;}
 
 };
 

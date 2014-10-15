@@ -108,14 +108,14 @@ public:
 		else if(direction=="y")
 		{
 			//glOrtho(left, right, bottom, top, near, far);
-			gluLookAt(0.0, near, 0.0, 0.0, far, 0.0, 1.0, 1.0, 1.0);
+			gluLookAt(0.0, near, 0.0, 0.0, far, 0.0, 0, 0, 1.0);
 
 		}
 		else if(direction=="z")
 		{
 
 			//glOrtho(left, right, bottom, top, near, far);
-			gluLookAt(0.0, 0.0, near, 0.0, 0.0, far, 0.0, -1.0, 0.0);
+			gluLookAt(0.0, 0.0, near, 0.0, 0.0, far, 0.0, 1.0, 0.0);
 		}
 		else
 		{

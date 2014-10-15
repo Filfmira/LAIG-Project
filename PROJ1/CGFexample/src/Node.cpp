@@ -3,6 +3,7 @@
 
 Node::Node(void)
 {
+
 }
 
 
@@ -15,12 +16,11 @@ Node::~Node(void)
 
 Node::Node(string id)
 {
-	//printf("estou a por um fucking id que é %s\n\n",id);
 	this->id=id;
-	//printf("estou a por um fucking id que é %s\n\n",id);
+	this->aparencia = NULL;
 }
 
-Node::Node(string id, vector<Primitive*> primitivas, CGFappearance * aparencia,float matrix[16])
+Node::Node(string id, vector<Primitive*> primitivas, Appearance * aparencia,float matrix[16])
 {
 	this->id=id;
 	this->primitivas=primitivas;
@@ -50,7 +50,7 @@ void Node::addPrimitiva(Primitive* primitiva)
 	this->primitivas.push_back(primitiva);
 }
 
-void Node::setAparencia(CGFappearance * aparencia)	
+void Node::setAparencia(Appearance * aparencia)	
 {
 	this->aparencia=aparencia;
 }

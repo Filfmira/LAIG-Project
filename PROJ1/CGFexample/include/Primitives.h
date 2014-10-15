@@ -155,7 +155,7 @@ public:
 			//corpo do cilindro
 		//	glMatrixMode(GL_TEXTURE);
 			gluCylinder(cylinder, base, top, height,  slices, stacks);
-gluQuadricDrawStyle(cylinder, GLU_FILL);
+		gluQuadricDrawStyle(cylinder, GLU_FILL);
 		gluQuadricTexture(cylinder, GLU_TRUE);	
 		gluQuadricNormals(cylinder, GLU_SMOOTH);
 		glPopMatrix();

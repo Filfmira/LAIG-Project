@@ -14,7 +14,7 @@ using namespace std;
 //como vamos guardar os Appearances? talvez uma especia de map, tabela tipo <id,CGFappearance>
 //é preciso por os nos com links entre eles?!?*****
 
-XMLSceneMod::XMLSceneMod(char *filename, Graph* gr, Light** lig, vector<Texture >* textures, vector<Appearance >*appearances, vector<Camera >*cameras, Camera* &activeCamera): destinationGraph(gr), destinationLights(lig)
+XMLSceneMod::XMLSceneMod(char *filename, Graph* gr, Light** lig, vector<Texture* > &textures, vector<Appearance* > &appearances, vector<Camera >*cameras, Camera* &activeCamera): destinationGraph(gr), destinationLights(lig)
 {
 
 	// Read XML from file
@@ -22,8 +22,8 @@ XMLSceneMod::XMLSceneMod(char *filename, Graph* gr, Light** lig, vector<Texture 
 	//Graph graph = Graph();
 	
 	
-	this->textures=textures;
-	this->appearances=appearances;
+	//this->textures=textures;
+	//this->appearances=appearances;
 	this->cameras=cameras;
 	this->initialCamera = NULL;
 	doc=new TiXmlDocument( filename );
@@ -61,18 +61,18 @@ XMLSceneMod::XMLSceneMod(char *filename, Graph* gr, Light** lig, vector<Texture 
 
 
 	/////////////////TEXTURES///////////////
-	readTextures(dgxElement);
+	readTextures(dgxElement, textures);
 	///////////////END OF TEXTURES/////////
 
 
 	/////////////////APPEARANCES///////////////
-	readAppearances(dgxElement);	
+	readAppearances(dgxElement, appearances, textures);	
 	///////////////END OF APPEARANCES/////////
 
 
 		
 	/////////////////GRAPH///////////////
-	readGraph(dgxElement);
+	readGraph(dgxElement, appearances);
 	///////////////END OF GRAPH/////////
 
 }
@@ -566,7 +566,7 @@ bool XMLSceneMod::readLights(TiXmlElement* dgxElement){
 	return (destinationLights[0] != NULL); //vê se fez load de pelo menos uma luz
 }
 
-bool XMLSceneMod::readTextures(TiXmlElement* dgxElement){
+bool XMLSceneMod::readTextures(TiXmlElement* dgxElement, vector<Texture*> &text){
 
 	cout<<"\nParsing textures:\n";
 
@@ -594,7 +594,7 @@ bool XMLSceneMod::readTextures(TiXmlElement* dgxElement){
 		 sscanf(texlength_t_T,"%f",&texlength_t);
 		 printf("        Texlength_t: %s\n",texlength_t_T);
 
-		 this->textures->push_back(Texture(id,file,texlength_s,texlength_t));
+		 text.push_back(new Texture(id,file,texlength_s,texlength_t));
 
 		texture=texture->NextSiblingElement();
 	}
@@ -605,7 +605,7 @@ bool XMLSceneMod::readTextures(TiXmlElement* dgxElement){
 }
 
 
-bool XMLSceneMod::readAppearances(TiXmlElement* dgxElement){
+bool XMLSceneMod::readAppearances(TiXmlElement* dgxElement, vector<Appearance*> &appearances, vector<Texture*> &text){
 	cout<<"\nParsing appearances:\n";
 
 	appearancesElement=dgxElement->FirstChildElement("appearances");
@@ -625,7 +625,7 @@ bool XMLSceneMod::readAppearances(TiXmlElement* dgxElement){
 
 	while(appearance){
 
-		CGFappearance* appearanceObject= new CGFappearance();
+		
 
 		//read the appearance's id
 		id = (char*)appearance->Attribute("id");
@@ -633,6 +633,8 @@ bool XMLSceneMod::readAppearances(TiXmlElement* dgxElement){
 			printf("-Appearance id: %s\n",id);
 		}
 		else cout<<"Error parsing appearance: missing id\n";
+
+		Appearance* appearanceObject= new Appearance(id);
 
 		//read the appearance's shininess
 		char* ss = (char*)appearance->Attribute("shininess");
@@ -649,10 +651,10 @@ bool XMLSceneMod::readAppearances(TiXmlElement* dgxElement){
 		textureref = (char*)appearance->Attribute("textureref");
 		if(textureref){
 			bool exists=false;
-			for(int i=0;i<textures->size();i++)
-				if(strcmp(textures->at(i).getId(),textureref)==0){
+			for(int i=0;i<text.size();i++)
+				if(strcmp(text[i]->getId(),textureref)==0){
 					exists=true;
-					appearanceObject->setTexture(textures->at(i).getTexture());
+					appearanceObject->setTexture(text[i]);
 				}
 
 			if(exists) cout<<"        Textureref: "<<textureref<<endl;
@@ -700,7 +702,7 @@ bool XMLSceneMod::readAppearances(TiXmlElement* dgxElement){
 		//If all the elements(ambient, diffuse, specular) are present
 		if(a&&d&&s)
 		{
-			this->appearances->push_back(Appearance(id,appearanceObject));
+			appearances.push_back(appearanceObject);
 			
 		}
 		else
@@ -714,7 +716,7 @@ bool XMLSceneMod::readAppearances(TiXmlElement* dgxElement){
 }
 
 
-bool XMLSceneMod::readGraph(TiXmlElement* dgxElement){
+bool XMLSceneMod::readGraph(TiXmlElement* dgxElement, vector<Appearance* > &appearances){
 	graphElement = dgxElement->FirstChildElement( "graph" );
 	char* rootNodeId = "";
 	if (graphElement == NULL)
@@ -821,10 +823,10 @@ bool XMLSceneMod::readGraph(TiXmlElement* dgxElement){
 			}
 			else{
 			
-			for(int i=0;i<appearances->size();i++)
-				if(strcmp(appearances->at(i).getId(),appearance)==0){
+			for(int i=0;i<appearances.size();i++)
+				if(strcmp(appearances[i]->getId(),appearance)==0){
 					exists=true;
-					n->setAparencia(appearances->at(i).getAppearance());
+					n->setAparencia(appearances[i]);
 				}
 			}
 

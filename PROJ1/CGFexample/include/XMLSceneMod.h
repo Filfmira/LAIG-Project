@@ -11,7 +11,7 @@
 class XMLSceneMod
 {
 public:
-	XMLSceneMod(char *filename, Graph* gr, Light** lig, vector<Texture >* textures, vector<Appearance >*appearances, vector<Camera >* cameras, Camera* &activeCamera);
+	XMLSceneMod(char *filename, Graph* gr, Light** lig, vector<Texture* > &textures, vector<Appearance* > &appearances, vector<Camera >* cameras, Camera* &activeCamera);
 	~XMLSceneMod();
 
 	static TiXmlElement *findChildByAttribute(TiXmlElement *parent,const char * attr, const char *val);
@@ -24,17 +24,17 @@ public:
 	bool readGlobals(TiXmlElement* dgxElement);
 	bool readCameras(TiXmlElement* dgxElement);
 	bool readLights(TiXmlElement* dgxElement);
-	bool readTextures(TiXmlElement* dgxElement);
-	bool readAppearances(TiXmlElement* dgxElement);
-	bool readGraph(TiXmlElement* dgxElement);
+	bool readTextures(TiXmlElement* dgxElement, vector<Texture*> &text);
+	bool readAppearances(TiXmlElement* dgxElement, vector<Appearance* > &appearances, vector<Texture*> &text);
+	bool readGraph(TiXmlElement* dgxElement, vector<Appearance* > &appearances);
 
 protected:
 
 	TiXmlDocument* doc;
 	Graph* destinationGraph;
 	Light** destinationLights;
-	vector<Texture >* textures;
-	vector<Appearance >*appearances;
+	//vector<Texture* > textures;
+	//vector<Appearance* > appearances;
 	vector<Camera >*cameras;
 	Camera* initialCamera;
 	//vector<CGFlight *> luzes;
