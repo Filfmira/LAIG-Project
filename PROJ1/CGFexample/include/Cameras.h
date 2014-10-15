@@ -22,9 +22,6 @@ public:
 	}
 	string getId(){return id;}
 	CGFcamera* getCamera(){return this->c;}
-	//virtual void updateProjectionMatrix(int width, int height){};
-	//virtual void applyView(){};
-	//virtual void mostrar(string *a){};
 
 	string getType(){
 		return type;

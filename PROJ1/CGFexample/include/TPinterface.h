@@ -1,7 +1,8 @@
-#ifndef TPinterface_H
-#define TPinterface_H
+#ifndef TPINTERFACE_H
+#define TPINTERFACE_H
 
 #include "CGFinterface.h"
+#include "ProjectScene.h"
 
 
 class TPinterface: public CGFinterface {
@@ -11,7 +12,6 @@ class TPinterface: public CGFinterface {
 		virtual void initGUI();
 		virtual void processGUI(GLUI_Control *ctrl);
 
-		//virtual void processKeyboard(unsigned char key, int x, int y);
 		std::vector<GLUI_Checkbox*> lightCheckboxes;
 		std::vector<GLUI_RadioButton*> camerasRadioButtons;
 		GLUI_RadioGroup * camerasRadGroup;

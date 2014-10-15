@@ -1,3 +1,7 @@
+#ifndef GRAPH_H
+#define GRAPH_H
+
+
 #include "Node.h"
 #include <vector>
 
@@ -8,7 +12,6 @@ private:
 	Node* root;
 
 public:
-	//vector<Node> nodes;
 	Graph(void){};
 	void addNode(Node* n);
 	void addNode(Node * noPai, string novoID);
@@ -22,3 +25,6 @@ public:
 	void setRoot(Node* n){root = n;};
 	Node* getRoot(){return root;};
 };
+
+
+#endif

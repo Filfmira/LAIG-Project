@@ -1,5 +1,5 @@
-#ifndef _XMLSCENEMOD_H_
-#define _XMLSCENEMOD_H_
+#ifndef XMLSCENEMOD_H
+#define XMLSCENEMOD_H
 
 #include "tinyxml.h"
 #include "Graph.h"
@@ -33,11 +33,8 @@ protected:
 	TiXmlDocument* doc;
 	Graph* destinationGraph;
 	Light** destinationLights;
-	//vector<Texture* > textures;
-	//vector<Appearance* > appearances;
 	vector<Camera >*cameras;
 	Camera* initialCamera;
-	//vector<CGFlight *> luzes;
 	/////////////Projecto LAIG////////////
 	TiXmlElement* globalsElement;
 	TiXmlElement* camerasElement;

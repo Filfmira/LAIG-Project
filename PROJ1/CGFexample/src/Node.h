@@ -1,3 +1,6 @@
+#ifndef NODE_H
+#define NODE_H
+
 
 #include "CGFappearance.h"
 #include "CGFobject.h"
@@ -23,7 +26,6 @@ public:
 	Node(string id);
 	Node(string id, vector<Primitive*> primitivas, Appearance * aparencia,float matrix[16]);
 
-	//void addDescendente(Node * n);
 	void addPrimitiva(Primitive* primitiva);
 	void setAparencia(Appearance * aparencia);
 	void setMatrix(float matrix[16] );
@@ -41,3 +43,5 @@ public:
 	Appearance* getAppearance(){return aparencia;}
 };
 
+
+#endif

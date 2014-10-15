@@ -30,13 +30,6 @@ Node::Node(string id, vector<Primitive*> primitivas, Appearance * aparencia,floa
 }
 
 
-/*
-void Node::addDescendente(Node *n)
-{	
-	this->descendentes.push_back(n);
-}
-
-*/
 void Node::setMatrix(float m[16] )				
 {
 	
@@ -59,7 +52,7 @@ void Node::setAparencia(Appearance * aparencia)
 
 string Node::mostrarNo(){
 	std::ostringstream s;
-	/*s<<"\n=======NODE=======\n\n";
+	s<<"\n=======NODE=======\n\n";
 	s<<"Id:"<<id<<"\n";
 
 	s<<"Matrix:";
@@ -83,7 +76,7 @@ string Node::mostrarNo(){
 	s<<"\nSize:"<<ascendentes.size()<<endl;
 	s<<"\n";
 
-	s<<"\n\n=================\n";*/
+	s<<"\n\n=================\n";
 	return s.str();
 
 }

@@ -75,7 +75,6 @@
     <ClCompile Include="src\Primitives.cpp" />
     <ClCompile Include="src\ProjectScene.cpp" />
     <ClCompile Include="src\TPinterface.cpp" />
-    <ClCompile Include="src\XMLScene.cpp" />
     <ClCompile Include="src\XMLSceneMod.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -88,12 +87,14 @@
     <ClInclude Include="include\tinystr.h" />
     <ClInclude Include="include\tinyxml.h" />
     <ClInclude Include="include\TPinterface.h" />
-    <ClInclude Include="include\XMLScene.h" />
     <ClInclude Include="include\XMLSceneMod.h" />
     <ClInclude Include="src\DemoScene.h" />
     <ClInclude Include="src\ExampleObject.h" />
     <ClInclude Include="src\Graph.h" />
     <ClInclude Include="src\Node.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ClassDiagram1.cd" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

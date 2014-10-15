@@ -16,8 +16,7 @@ void Graph::addNode(string paiId, string novoId)
 void Graph::addNode(Node * noPai,string novoID, vector<Primitive*> primitivas, Appearance * aparencia,float matrix[16]){
 	Node* novo= new Node(novoID,primitivas,aparencia,matrix);
 	nodes.push_back(novo);
-	Node * n= nodes.at(nodes.size()-1); //???
-//	noPai->addDescendente(n);
+
 }
 
 void Graph::addNode(string novoId, vector<Primitive*> primitivas, Appearance * aparencia,float matrix[16]){

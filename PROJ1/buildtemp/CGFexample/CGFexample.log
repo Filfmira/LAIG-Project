@@ -1,12 +1,63 @@
-﻿Build started 15/10/2014 20:57:55.
+﻿Build started 15/10/2014 22:27:42.
      1>Project "C:\Users\João\Documents\FEUP\3º ano\LAIG\Repos Working Copy\PROJ1\CGFexample\CGFexample.vcxproj" on node 2 (build target(s)).
      1>InitializeBuildStatus:
          Creating "..\buildtemp\CGFexample\CGFexample.unsuccessfulbuild" because "AlwaysCreate" was specified.
        ClCompile:
-         c:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /Od /Oy- /D _MBCS /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"..\buildtemp\CGFexample\\" /Fd"..\buildtemp\CGFexample\vc100.pdb" /Gd /TP /analyze- /errorReport:prompt src\ProjectScene.cpp
+         c:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /Od /Oy- /D _MBCS /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"..\buildtemp\CGFexample\\" /Fd"..\buildtemp\CGFexample\vc100.pdb" /Gd /TP /analyze- /errorReport:prompt src\DemoScene.cpp src\ExampleObject.cpp src\Graph.cpp src\Lights.cpp src\main.cpp src\Node.cpp src\Primitives.cpp src\ProjectScene.cpp src\TPinterface.cpp src\XMLSceneMod.cpp
+         XMLSceneMod.cpp
+     1>c:\users\joão\documents\feup\3º ano\laig\repos working copy\proj1\cgfexample\src\xmlscenemod.cpp(81): warning C4996: 'sscanf': This function or variable may be unsafe. Consider using sscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\program files (x86)\microsoft visual studio 10.0\vc\include\stdio.h(325) : see declaration of 'sscanf'
+     1>c:\users\joão\documents\feup\3º ano\laig\repos working copy\proj1\cgfexample\src\xmlscenemod.cpp(91): warning C4996: 'sscanf': This function or variable may be unsafe. Consider using sscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\program files (x86)\microsoft visual studio 10.0\vc\include\stdio.h(325) : see declaration of 'sscanf'
+     1>c:\users\joão\documents\feup\3º ano\laig\repos working copy\proj1\cgfexample\src\xmlscenemod.cpp(95): warning C4996: 'sscanf': This function or variable may be unsafe. Consider using sscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\program files (x86)\microsoft visual studio 10.0\vc\include\stdio.h(325) : see declaration of 'sscanf'
+     1>c:\users\joão\documents\feup\3º ano\laig\repos working copy\proj1\cgfexample\src\xmlscenemod.cpp(100): warning C4800: 'int' : forcing value to bool 'true' or 'false' (performance warning)
+     1>c:\users\joão\documents\feup\3º ano\laig\repos working copy\proj1\cgfexample\src\xmlscenemod.cpp(100): warning C4996: 'sscanf': This function or variable may be unsafe. Consider using sscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\program files (x86)\microsoft visual studio 10.0\vc\include\stdio.h(325) : see declaration of 'sscanf'
+     1>c:\users\joão\documents\feup\3º ano\laig\repos working copy\proj1\cgfexample\src\xmlscenemod.cpp(283): warning C4996: 'sscanf': This function or variable may be unsafe. Consider using sscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\program files (x86)\microsoft visual studio 10.0\vc\include\stdio.h(325) : see declaration of 'sscanf'
+     1>c:\users\joão\documents\feup\3º ano\laig\repos working copy\proj1\cgfexample\src\xmlscenemod.cpp(289): warning C4996: 'sscanf': This function or variable may be unsafe. Consider using sscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\program files (x86)\microsoft visual studio 10.0\vc\include\stdio.h(325) : see declaration of 'sscanf'
+     1>c:\users\joão\documents\feup\3º ano\laig\repos working copy\proj1\cgfexample\src\xmlscenemod.cpp(294): warning C4996: 'sscanf': This function or variable may be unsafe. Consider using sscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\program files (x86)\microsoft visual studio 10.0\vc\include\stdio.h(325) : see declaration of 'sscanf'
+     1>c:\users\joão\documents\feup\3º ano\laig\repos working copy\proj1\cgfexample\src\xmlscenemod.cpp(351): warning C4996: 'sscanf': This function or variable may be unsafe. Consider using sscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\program files (x86)\microsoft visual studio 10.0\vc\include\stdio.h(325) : see declaration of 'sscanf'
+     1>c:\users\joão\documents\feup\3º ano\laig\repos working copy\proj1\cgfexample\src\xmlscenemod.cpp(356): warning C4996: 'sscanf': This function or variable may be unsafe. Consider using sscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\program files (x86)\microsoft visual studio 10.0\vc\include\stdio.h(325) : see declaration of 'sscanf'
+     1>c:\users\joão\documents\feup\3º ano\laig\repos working copy\proj1\cgfexample\src\xmlscenemod.cpp(361): warning C4996: 'sscanf': This function or variable may be unsafe. Consider using sscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\program files (x86)\microsoft visual studio 10.0\vc\include\stdio.h(325) : see declaration of 'sscanf'
+     1>c:\users\joão\documents\feup\3º ano\laig\repos working copy\proj1\cgfexample\src\xmlscenemod.cpp(366): warning C4996: 'sscanf': This function or variable may be unsafe. Consider using sscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\program files (x86)\microsoft visual studio 10.0\vc\include\stdio.h(325) : see declaration of 'sscanf'
+     1>c:\users\joão\documents\feup\3º ano\laig\repos working copy\proj1\cgfexample\src\xmlscenemod.cpp(371): warning C4996: 'sscanf': This function or variable may be unsafe. Consider using sscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\program files (x86)\microsoft visual studio 10.0\vc\include\stdio.h(325) : see declaration of 'sscanf'
+     1>c:\users\joão\documents\feup\3º ano\laig\repos working copy\proj1\cgfexample\src\xmlscenemod.cpp(376): warning C4996: 'sscanf': This function or variable may be unsafe. Consider using sscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\program files (x86)\microsoft visual studio 10.0\vc\include\stdio.h(325) : see declaration of 'sscanf'
+     1>c:\users\joão\documents\feup\3º ano\laig\repos working copy\proj1\cgfexample\src\xmlscenemod.cpp(590): warning C4996: 'sscanf': This function or variable may be unsafe. Consider using sscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\program files (x86)\microsoft visual studio 10.0\vc\include\stdio.h(325) : see declaration of 'sscanf'
+     1>c:\users\joão\documents\feup\3º ano\laig\repos working copy\proj1\cgfexample\src\xmlscenemod.cpp(594): warning C4996: 'sscanf': This function or variable may be unsafe. Consider using sscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\program files (x86)\microsoft visual studio 10.0\vc\include\stdio.h(325) : see declaration of 'sscanf'
+     1>c:\users\joão\documents\feup\3º ano\laig\repos working copy\proj1\cgfexample\src\xmlscenemod.cpp(641): warning C4996: 'sscanf': This function or variable may be unsafe. Consider using sscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\program files (x86)\microsoft visual studio 10.0\vc\include\stdio.h(325) : see declaration of 'sscanf'
+     1>c:\users\joão\documents\feup\3º ano\laig\repos working copy\proj1\cgfexample\src\xmlscenemod.cpp(654): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\joão\documents\feup\3º ano\laig\repos working copy\proj1\cgfexample\src\xmlscenemod.cpp(781): warning C4996: 'sscanf': This function or variable may be unsafe. Consider using sscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\program files (x86)\microsoft visual studio 10.0\vc\include\stdio.h(325) : see declaration of 'sscanf'
+     1>c:\users\joão\documents\feup\3º ano\laig\repos working copy\proj1\cgfexample\src\xmlscenemod.cpp(826): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\joão\documents\feup\3º ano\laig\repos working copy\proj1\cgfexample\src\xmlscenemod.cpp(979): warning C4018: '<' : signed/unsigned mismatch
+         TPinterface.cpp
          ProjectScene.cpp
-     1>c:\users\joão\documents\feup\3º ano\laig\repos working copy\proj1\cgfexample\include\primitives.h(132): warning C4018: '<=' : signed/unsigned mismatch
-     1>c:\users\joão\documents\feup\3º ano\laig\repos working copy\proj1\cgfexample\include\primitives.h(146): warning C4018: '<=' : signed/unsigned mismatch
+         Primitives.cpp
+         Node.cpp
+     1>c:\users\joão\documents\feup\3º ano\laig\repos working copy\proj1\cgfexample\src\node.cpp(68): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\joão\documents\feup\3º ano\laig\repos working copy\proj1\cgfexample\src\node.cpp(74): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\joão\documents\feup\3º ano\laig\repos working copy\proj1\cgfexample\src\node.cpp(86): warning C4018: '>=' : signed/unsigned mismatch
+         main.cpp
+         Lights.cpp
+         Graph.cpp
+     1>c:\users\joão\documents\feup\3º ano\laig\repos working copy\proj1\cgfexample\src\graph.cpp(30): warning C4018: '<' : signed/unsigned mismatch
+     1>c:\users\joão\documents\feup\3º ano\laig\repos working copy\proj1\cgfexample\src\graph.cpp(37): warning C4018: '>=' : signed/unsigned mismatch
+         ExampleObject.cpp
+         DemoScene.cpp
+         Generating Code...
        Link:
          c:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"bin\CGFexample.exe" /NOLOGO glew32.lib CGFlib.lib tinyxml.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /ManifestFile:"..\buildtemp\CGFexample\CGFexample.exe.intermediate.manifest" /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /DEBUG /PDB:"C:\Users\João\Documents\FEUP\3º ano\LAIG\Repos Working Copy\PROJ1\CGFexample\bin\CGFexample.pdb" /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"bin\CGFexample.lib" /MACHINE:X86 ..\buildtemp\CGFexample\DemoScene.obj
          ..\buildtemp\CGFexample\ExampleObject.obj
@@ -17,9 +68,7 @@
          ..\buildtemp\CGFexample\Primitives.obj
          ..\buildtemp\CGFexample\ProjectScene.obj
          ..\buildtemp\CGFexample\TPinterface.obj
-         ..\buildtemp\CGFexample\XMLScene.obj
          ..\buildtemp\CGFexample\XMLSceneMod.obj
-         LINK : bin\CGFexample.exe not found or not built by the last incremental link; performing full link
      1>LINK : warning LNK4098: defaultlib 'LIBCMT' conflicts with use of other libs; use /NODEFAULTLIB:library
      1>CGFlib.lib(CGFappearance.obj) : warning LNK4099: PDB 'vc100.pdb' was not found with 'CGFlib.lib(CGFappearance.obj)' or at 'C:\Users\João\Documents\FEUP\3º ano\LAIG\Repos Working Copy\PROJ1\CGFexample\bin\vc100.pdb'; linking object as if no debug info
      1>CGFlib.lib(CGFapplication.obj) : warning LNK4099: PDB 'vc100.pdb' was not found with 'CGFlib.lib(CGFapplication.obj)' or at 'C:\Users\João\Documents\FEUP\3º ano\LAIG\Repos Working Copy\PROJ1\CGFexample\bin\vc100.pdb'; linking object as if no debug info
@@ -47,4 +96,4 @@
 
 Build succeeded.
 
-Time Elapsed 00:00:01.30
+Time Elapsed 00:00:04.68

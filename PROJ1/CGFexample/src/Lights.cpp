@@ -21,12 +21,6 @@ Light::Light(string tipo, int lightId, bool enabled, bool marker, float pos[4],
 	this->angle = angle;
 	this->exponent = exponent;
 	
-	/*if (tipo == "spot"){
-		this->target[0] = target[0];
-		this->target[1] = target[1];
-		this->target[2] = target[2];
-	}*/
-
 	if (tipo == "spot"){
 		this->target[0] = target[0]-pos[0];
 		this->target[1] = target[1]-pos[1];
@@ -35,22 +29,9 @@ Light::Light(string tipo, int lightId, bool enabled, bool marker, float pos[4],
 		light = new CGFlight(this->lightId, this->pos, this->target);
 		
 		glLightf(lightId + GL_LIGHT0, GL_SPOT_EXPONENT, exponent);
-		/*light->setKc(exponent);
-		light->setKl(exponent);
-		light->setKq(exponent);*/
-
 		light->setAngle(angle);
 	}
 	else light = new CGFlight(this->lightId, this->pos);
-
-	
-	
-	
-	
-
-	printf( "||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||\n");
-	printf("Ambiente: %f %f %f \n", ambient[0],ambient[1],ambient[2]);
-	printf( "||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||\n");
 
 	light->setAmbient(ambient);
 	light->setDiffuse(diffuse);

@@ -1,12 +1,10 @@
-#ifndef __PROJECTSCENE_H_
-#define __PROJECTSCENE_H_
+#ifndef PROJECTSCENE_H
+#define PROJECTSCENE_H
 
 #include "CGFscene.h"
-//#include "CGFappearance.h"
 #include "XMLSceneMod.h"
 #include "Lights.h"
 #include <vector>
-//#include "Textures.h"
 #include "Appearances.h"
 #include "Cameras.h"
 #include "CGFapplication.h"
@@ -18,9 +16,7 @@ public:
 	void init();
 	void display();
 
-	CGFlight* lightTest;
 	Light* lights[8];
-	unsigned int numberOfLights;
 
 	Graph sceneGraph;
 
@@ -29,8 +25,6 @@ public:
 	vector<Camera> cameras;
 	Camera* activeCamera;
 
-	CGFappearance* materialA;
-	CGFappearance* materialB;
 	
 	bool wireFrame;
 
@@ -51,20 +45,9 @@ public:
 	~ProjectScene();
 	
 
-
-	///////////alternar entre wireframe e texturas////////////
-	int visualizationMode;
-	void setVisualizationMode(int mode){
-		visualizationMode = mode;
-		printf("mode = %d", mode);
-	}
-
-
-	///////////////////////////////////////////////////////////
-
-
 	void drawAux(Node* node);
-	};
+	
+};
 
 
 

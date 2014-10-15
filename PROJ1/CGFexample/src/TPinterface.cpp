@@ -1,5 +1,4 @@
 #include "TPinterface.h"
-#include "ProjectScene.h"
 #include <sstream>
 
 
@@ -7,54 +6,11 @@
 
 TPinterface::TPinterface()
 {
-	//testVar=0;
+
 }
-
-/*
-void TPinterface::processKeyboard(unsigned char key, int x, int y)
-{
-	// Uncomment below if you would like to process the default keys (e.g. 's' for snapshot, 'Esc' for exiting, ...)
-	// CGFinterface::processKeyboard(key, x, y);
-
-	switch(key)
-	{
-		case 'a':
-		{
-			// This is an example of accessing the associated scene
-			// To test, create the function toggleSomething in your scene to activate/deactivate something
-			((LightingScene *) scene)->toggleSomething();
-			break;
-		}
-		case 'j':
-			{
-				((LightingScene *) scene)->incAngle();
-				break;				
-			}
-		case 'l':
-			{
-				((LightingScene *) scene)->decAngle();
-				break;	
-			}
-		case 'i':
-			{
-				((LightingScene *) scene)->moveFront();
-				break;	
-			}
-		case 'k':
-			{
-				((LightingScene *) scene)->moveBack();
-				break;	
-			}
-	}
-}
-*/
-
-
-
 
 void TPinterface::initGUI()
 {
-	// Check CGFinterface.h and GLUI documentation for the types of controls available
 	GLUI_Panel *lightsPanel= addPanel("Lights", GLUI_PANEL_EMBOSSED);
 
 	//int initialId = 2;

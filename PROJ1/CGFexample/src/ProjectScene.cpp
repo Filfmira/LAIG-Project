@@ -6,28 +6,10 @@
 float Appearance::texlength_s = 0;
 float Appearance::texlength_t = 0;
 
-// Positions for two lights
-float light0_pos[4] = {4, 6.0, 1.0, 1.0};
-float light1_pos[4] = {0, 0, 5, 1};
-
-
 
 // Global ambient light (do not confuse with ambient component of individual lights)
 //float globalAmbientLight[4]= {0.8,0.8,0.8,1.0};
 float globalAmbientLight[4]= {0.2,0.2,0.2,1.0};
-
-
-// Coefficients for material A
-float ambA[3] = {0.2, 0.2, 0.2};
-float difA[3] = {0.6, 0.6, 0.6};
-float specA[3] = {0, 0.8, 0.8};
-float shininessA = 120.f;
-
-// Coefficients for material B
-float ambB[3] = {0.2, 0.2, 0.2};
-float difB[3] = {0.6, 0.6, 0.6};
-float specB[3] = {0.8, 0.8, 0.8};
-float shininessB = 120.f;
 
 
 
@@ -36,7 +18,7 @@ float yellow[4]={1,1,0,1};
 
 void ProjectScene::init() 
 {
-//	lightStatus = vector<bool>(5, false);
+
 	for (unsigned int i = 0; i < 8; i++)
 		lights[i] = NULL;
 	
@@ -65,46 +47,9 @@ void ProjectScene::init()
 		cout << lights[i]->showLight();
 	}
 
-	
-		
-		
-	// Declares and enables two lights, with null ambient component
-	/*lights[0] = new CGFlight(GL_LIGHT0, light0_pos);
-	lights[0]->setSpecular(yellow);
-	lights[0]->setAmbient(ambientNull);
-
-	//light0->disable();
-	lights[0]->enable();*/
 
 	
-	/*
-	lightTest = new CGFlight(GL_LIGHT1, light1_pos);
-	lightTest->setAmbient(ambientNull);
-	
-	//light1->disable();
-	lightTest->enable();
 
-	*/
-	
-	// Uncomment below to enable normalization of lighting normal vectors
-	
-
-	
-	//Declares materials
-	materialA = new CGFappearance(ambA,difA,specA,shininessA);
-	materialB = new CGFappearance(ambB,difB,specB,shininessB);
-	
-	
-
-	visualizationMode = 1; //textured mode
-	
-	//XMLSceneMod temp = XMLSceneMod("anfFile - Copia.xml", &sceneGraph);
-	
-	/*if (0 && 1)
-		printf("0 e 1\n");
-	if (1 && 1)
-		printf("1 e 1 \n ");
-		*/
 
 }
 
@@ -186,7 +131,6 @@ ProjectScene::~ProjectScene()
 			delete(lights[i]);
 
 			*/
-	delete(materialA);
-	delete(materialB);
+
 }
 

@@ -27,11 +27,8 @@ public:
 	}
 		
 	void draw(){
-		//glRectf(x1,y1,x2,y2);
 
 		glPushMatrix();
-			
-			//glMultMatrixf(tra1); 
 			glNormal3d(0,0,1) ;
 			
 			glBegin(GL_QUADS);
@@ -85,7 +82,6 @@ public:
 	
 	void draw(){
 		glPushMatrix();			
-			//glMultMatrixf(tra1); 
 			glNormal3f(0,0,1) ;
 			glBegin(GL_TRIANGLES);
 				glVertex3d(x1,y1,z1);
@@ -129,7 +125,7 @@ public:
 			glNormal3f(0,0,1) ;
 			glBegin(GL_TRIANGLE_FAN);
 				glVertex3f(0, 0, height);
-				for(unsigned int i = 0; i <= slices; i++){
+				for(int i = 0; i <= slices; i++){
 					x1=top*cos(i* alphaStep);
 					y1=top*sin(i* alphaStep);
 					glVertex3f(x1,y1, height); //guardar estes senos e cossenos para não calcular???
@@ -143,7 +139,7 @@ public:
 				glNormal3f(0,0,1) ;
 				glBegin(GL_TRIANGLE_FAN);
 					glVertex3f(0, 0, 0);
-					for(unsigned int i = 0; i <= slices; i++){
+					for(int i = 0; i <= slices; i++){
 						x1=base*cos(i* alphaStep);
 						y1=base*sin(i* alphaStep);
 						glVertex3d(x1,y1,0); //guardar estes senos e cossenos para não calcular???

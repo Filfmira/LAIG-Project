@@ -26,7 +26,6 @@ public:
 		this->CGFappearance::setTexture(t);
 
 	}
-	//CGFappearance* getAppearance(){return this->appearance;}
 	Texture* getTexture(){return this->t;}
 	char* getId(){return id;}
 
