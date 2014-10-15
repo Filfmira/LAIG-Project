@@ -40,40 +40,43 @@ XMLSceneMod::XMLSceneMod(char *filename, Graph* gr, Light** lig, vector<Texture*
 	if (dgxElement == NULL)
 	{
 		printf("Main anf block element not found! Exiting!\n");
+		cin.get();
 		exit(1);
 	}
 
 
-	/////////////////GLOBALS/////////////////
+
 	readGlobals(dgxElement);
-	/////////////// END GLOBALS //////////////
 
-
-	///////////////CAMERAS/////////////////
-	readCameras(dgxElement);
+	if (!readCameras(dgxElement)){
+		cin.get();
+		exit(1);
+	}
 	activeCamera = initialCamera;
-	//////////////END OF CAMERAS////////////
+	cin.get();
 
 
-	/////////////////LIGHTS///////////////
-	readLights(dgxElement);
-	///////////////END OF LIGHTS/////////
+	if (!readLights(dgxElement)){
+		cin.get();
+		exit(1);
+	}
+	cin.get();
 
 
-	/////////////////TEXTURES///////////////
-	readTextures(dgxElement, textures);
-	///////////////END OF TEXTURES/////////
+	if(!readTextures(dgxElement, textures)){
+		cin.get();
+		exit(1);
+	}
+	cin.get();
 
 
-	/////////////////APPEARANCES///////////////
-	readAppearances(dgxElement, appearances, textures);	
-	///////////////END OF APPEARANCES/////////
-
-
+	if (!readAppearances(dgxElement, appearances, textures)){
+		cin.get();
+		exit(1);
+	}
+	cin.get();
 		
-	/////////////////GRAPH///////////////
 	readGraph(dgxElement, appearances);
-	///////////////END OF GRAPH/////////
 
 }
 
@@ -248,6 +251,10 @@ bool XMLSceneMod::readCameras(TiXmlElement* dgxElement){
 	cout<<"\nParsing cameras:\n";
 
 	camerasElement=dgxElement->FirstChildElement("cameras");
+	if (!camerasElement){
+		printf("Cameras block not found! Program will end...\n");
+		return false;
+	}
 
 	int initial;
 	char* initial_T = (char*) camerasElement->Attribute("initial");
@@ -257,7 +264,7 @@ bool XMLSceneMod::readCameras(TiXmlElement* dgxElement){
 	}
 
 
-	printf("-Prespective\n");
+	printf("-Perspective\n");
 
 	
 	//prespective cameras
@@ -266,7 +273,8 @@ bool XMLSceneMod::readCameras(TiXmlElement* dgxElement){
 	{
 		//CGFcamera* cgfCamera= new CGFcamera();
 
-		string id;
+		bool valid = true;
+
 		float near;
 		float far;
 		float angle;
@@ -275,41 +283,48 @@ bool XMLSceneMod::readCameras(TiXmlElement* dgxElement){
 
 		//id
 		
-		id=string( perspectives->Attribute("id"));
-			printf("        id: %s \n",id);
+		
+		char* id = (char*) perspectives->Attribute("id"); 
+		if (!id)
+			valid = false;
+		else printf("        id: %s \n",id);
 
 		//near
 		char* near_T=(char*) perspectives->Attribute("near");
-		sscanf(near_T,"%f",&near);
-		printf("        near: %f\n",near);
+		if (!near_T || !sscanf(near_T,"%f",&near))
+			valid = false;
+		else printf("        near: %f\n",near);
 		
 
 		//far
 		char* far_T=(char*) perspectives->Attribute("far");
-		sscanf(far_T,"%f",&far);
-		printf("        far: %f\n",far);
+		if (!far_T || !sscanf(far_T,"%f",&far))
+			valid = false;
+		else printf("        far: %f\n",far);
 
 		//angle
 		char* angle_T=(char*) perspectives->Attribute("angle");
-		sscanf(angle_T,"%f",&angle);
-		printf("        angle: %f\n",angle);
+		if (!angle_T || !sscanf(angle_T,"%f",&angle))
+			valid = false;
+		else printf("        angle: %f\n",angle);
 		
 
 		//pos
 		char* pos_T=(char*) perspectives->Attribute("pos");
-		readXYZcoord(pos_T,pos[0],pos[1],pos[2]);
-		printf("        pos: %s\n",pos_T);
-		//cgfCamera->setX(pos[0]);
-		//cgfCamera->setY(pos[1]);
-		//cgfCamera->set>(pos[2]);
-
+		if (!pos_T || !readXYZcoord(pos_T,pos[0],pos[1],pos[2]))
+			valid = false;
+		else printf("        pos: %s\n",pos_T);
 
 		//target
 		char* target_T=(char*) perspectives->Attribute("target");
-		printf("        target: %s\n",target_T);
+		if (!target_T || !readXYZcoord(target_T,target[0],target[1],target[2]))
+			valid = false;
+		else printf("        target: %s\n",target_T);
 
-		cameras->push_back(Camera(new Perspective(near,far,angle,&pos[0],&target[0]),id, "Perspective"));
-
+		if (valid)
+			cameras->push_back(Camera(new Perspective(near,far,angle,&pos[0],&target[0]),(string) id, "Perspective"));
+		else printf ("ERROR reading one of the Perspective cameras. Program will try to run anyway.\n");
+		printf("-------------------------------\n");
 		perspectives=perspectives->NextSiblingElement("perspective");
 	}
 
@@ -318,7 +333,8 @@ bool XMLSceneMod::readCameras(TiXmlElement* dgxElement){
 	TiXmlElement * orthos = camerasElement->FirstChildElement("ortho");
 	while(orthos)
 	{
-		string id;
+		bool valid = true;
+
 		char* direction;
 		float near;
 		float far;
@@ -329,8 +345,10 @@ bool XMLSceneMod::readCameras(TiXmlElement* dgxElement){
 
 		
 		//id
-		id=string( orthos->Attribute("id"));
-			printf("        id: %s \n",id);
+		char* id= (char*) orthos->Attribute("id");
+		if (!id)
+			valid = false;
+		else printf("        id: %s \n",id);
 
 		//direction
 		direction=(char*) orthos->Attribute("direction");
@@ -343,60 +361,79 @@ bool XMLSceneMod::readCameras(TiXmlElement* dgxElement){
 			else printf("Error parsing camera: bad direction input \n");
 			
 		}
-		else printf("Error parsing camera: missing direction\n");
+		else {
+			valid = false;
+			printf("Error parsing camera: missing direction\n");
+		}
 
 
 		//near
 		char* near_T=(char*) orthos->Attribute("near");
-		sscanf(near_T,"%f",&near);
-		printf("        near: %f\n",near);
+		if (!near_T || !sscanf(near_T,"%f",&near))
+			valid = false;
+		else printf("        near: %f\n",near);
 
 		//far
 		char* far_T=(char*) orthos->Attribute("far");
-		sscanf(far_T,"%f",&far);
-		printf("        far: %f\n",far)	;
+		if (!far_T || !sscanf(far_T,"%f",&far))
+			valid = false;
+		else printf("        far: %f\n",far);
 
 		//left
 		char* left_T=(char*) orthos->Attribute("left");
-		sscanf(left_T,"%f",&left);
-		printf("        left: %f\n",left);
+		if (!left_T || !sscanf(left_T,"%f",&left))
+			valid = false;
+		else printf("        left: %f\n",left);
 
 		//right
 		char* right_T=(char*) orthos->Attribute("right");
-		sscanf(right_T,"%f",&right);
-		printf("        right: %f\n",right)	;
+		if (!right_T || !sscanf(right_T,"%f",&right))
+			valid = false;
+		else printf("        right: %f\n",right);
 		
 		//top
 		char* top_T=(char*) orthos->Attribute("top");
-		sscanf(top_T,"%f",&top);
-		printf("        top: %f\n",top)	;
+		if (!top_T || !sscanf(top_T,"%f",&top))
+			valid = false;
+		else printf("        top: %f\n",top);
 		
 		//bottom
 		char* bottom_T=(char*) orthos->Attribute("bottom");
-		sscanf(far_T,"%f",&bottom);
-		printf("        bottom: %f\n",bottom)	;
+		if (!bottom_T || !sscanf(far_T,"%f",&bottom))
+			valid = false;
+		else printf("        bottom: %f\n",bottom);
 
-		cameras->push_back(Camera(new Ortho(direction,near,far,left,right,top,bottom),id, "Ortho"));
+		if (valid)
+			cameras->push_back(Camera(new Ortho(direction,near,far,left,right,top,bottom),id, "Ortho"));
+		else printf ("ERROR reading one of the Ortho cameras. Program will try to run anyway.\n");
+		
+		printf("-------------------------------\n");
+
 		orthos=orthos->NextSiblingElement("ortho");
 	}
 
 	//verificar se a câmera indicada como inicial existe
+	if (cameras->size() == 0){
+		printf("No cameras read... Program will end...\n");
+		return false;
+	}
+
 	for (unsigned int i = 0; i < cameras->size(); i++){
 		if (cameras->at(i).getId() == (string) initial_T){
 			initialCamera = &(cameras->at(i));
-			printf("set da initial camera\n");
+			//printf("set da initial camera\n");
 			return true;
 		}
 	}
-
+	printf("Initial camera wasn't loaded... Program will end...\n");
 	return false;
 }
 
 bool XMLSceneMod::readLights(TiXmlElement* dgxElement){
 	cout<<"\nParsing lights:\n";
 	lightsElement=dgxElement->FirstChildElement("lights");
-	if(lightsElement==NULL){
-		printf("lights block not found!\n");
+	if(!lightsElement){
+		printf("Lights block not found! Program will end...\n");
 		return false;
 	}
 
@@ -469,11 +506,12 @@ bool XMLSceneMod::readLights(TiXmlElement* dgxElement){
 			}
 			else{ pos[0] = x; pos[1] = y; pos[2] = z;}
 		}
-		else validLight = false;
+		else{
+			validLight = false;
+			printf("	Light position missing\n");
+		}
 
 		
-
-
 
 		//angle and exponent - only for spot lights
 		if ( strcmp(type, "omni") == 0 ){
@@ -498,7 +536,7 @@ bool XMLSceneMod::readLights(TiXmlElement* dgxElement){
 				}
 				else{ target[0] = x; target[1] = y; target[2] = z;}
 			}
-			else validLight = false;
+			else{ validLight = false; printf ("	Unexpected problem with angle, target or exponent light values\n");}
 		}
 	
 
@@ -509,9 +547,14 @@ bool XMLSceneMod::readLights(TiXmlElement* dgxElement){
 		while(components)
 		{
 			char* typeComponent = (char*) components->Attribute("type");
-			printf("	type: %s   ",typeComponent);
+			if (!typeComponent)
+				validLight = false;
+			else printf("	type: %s   ",typeComponent);
+
 			char* valueComponent=(char*) components->Attribute("value");
-			printf("	values: %s \n",valueComponent);
+			if (!valueComponent)
+				validLight = false;
+			else printf("	values: %s \n",valueComponent);
 
 
 			if (typeComponent && valueComponent){ //se estes valores existem
@@ -558,12 +601,18 @@ bool XMLSceneMod::readLights(TiXmlElement* dgxElement){
 					break;
 				}
 		}
-
+		else printf ("Problem reading light... Program will try to run anyway...\n");
+		printf("-------------------------------\n");
 		lights=lights->NextSiblingElement();
 
 	}
 	
-	return (destinationLights[0] != NULL); //vê se fez load de pelo menos uma luz
+	if (destinationLights[0] != NULL ) //vê se fez load de pelo menos uma luz
+		return true;
+
+	else printf("No lights loaded... Program will end...\n");
+
+	return false;
 }
 
 bool XMLSceneMod::readTextures(TiXmlElement* dgxElement, vector<Texture*> &text){
@@ -572,50 +621,70 @@ bool XMLSceneMod::readTextures(TiXmlElement* dgxElement, vector<Texture*> &text)
 
 
 	texturesElement=dgxElement->FirstChildElement("textures");
+	if (!texturesElement){
+		printf("Missing textures block. Program will end...\n");
+		return false;
+	}
 	
 	TiXmlElement * texture = texturesElement->FirstChildElement("texture");
 	while(texture)
 	{
+		bool validTexture = true;
+
 		char* id;
 		char* file;
 		float texlength_s;
 		float texlength_t;
 
 		 id = (char*) texture->Attribute("id");
-		 printf("-Id: %s\n",id);
+		 if (!id){
+			 printf("	Problem with texture id\n");
+			 validTexture = false;
+		 }
+		 else printf("	-Id: %s\n",id);
+
 		 file=(char*) texture->Attribute("file");
-		 printf("        File: %s\n",file);
+		 if (!file){
+			 validTexture = false;
+			 printf("	Problem with texture file name\n");
+		 }
+		 else printf("	File: %s\n",file);
+
 
 		 char* texlength_s_T=(char*) texture->Attribute("texlength_s");
-		 sscanf(texlength_s_T,"%f",&texlength_s);
-		 printf("        Textlength_s: %s\n",texlength_s_T);
+		 if (!texlength_s_T || !sscanf(texlength_s_T,"%f",&texlength_s)){
+			 validTexture = false;
+			 printf("	Problem with texture texlength_s value...\n");
+		 }
+		 else printf("        Textlength_s: %s\n",texlength_s_T);
 
 		 char* texlength_t_T=(char*) texture->Attribute("texlength_t");
-		 sscanf(texlength_t_T,"%f",&texlength_t);
-		 printf("        Texlength_t: %s\n",texlength_t_T);
+		 if (!texlength_t_T || !sscanf(texlength_t_T,"%f",&texlength_t)){
+			 validTexture = false;
+			 printf("	Problem with texture texlength_t value...\n");
+		 }
+		 else printf("        Texlength_t: %s\n",texlength_t_T);
 
-		 text.push_back(new Texture(id,file,texlength_s,texlength_t));
-
-		texture=texture->NextSiblingElement();
+		 if (validTexture)
+			 text.push_back(new Texture(id,file,texlength_s,texlength_t));
+		 else printf ("Problem loading texture. Program will try to run anyway...\n");
+		 printf("-------------------------------\n");
+		 texture=texture->NextSiblingElement();
 	}
 	cout<<endl;
-
-
-	return false;
+	
+	return true;
 }
 
 
 bool XMLSceneMod::readAppearances(TiXmlElement* dgxElement, vector<Appearance*> &appearances, vector<Texture*> &text){
-	cout<<"\nParsing appearances:\n";
+	cout<<"\nParsing appearances:\n\n";
 
 	appearancesElement=dgxElement->FirstChildElement("appearances");
-
-	if(appearancesElement==NULL){
-		printf("appearances block not found!\n");
+	if (!appearancesElement){
+		printf("Missing appearances block. Program will end...\n");
 		return false;
 	}
-
-
 
 	TiXmlElement * appearance = appearancesElement->FirstChildElement("appearance");
 	
@@ -625,42 +694,44 @@ bool XMLSceneMod::readAppearances(TiXmlElement* dgxElement, vector<Appearance*> 
 
 	while(appearance){
 
-		
+		bool validAppearance = true;
 
 		//read the appearance's id
 		id = (char*)appearance->Attribute("id");
-		if(id != ""){
-			printf("-Appearance id: %s\n",id);
+		if(!id){
+			validAppearance = false;
+			printf("	Problem with appearance id...\n");
 		}
-		else cout<<"Error parsing appearance: missing id\n";
+		else printf("	id: %s\n",id);
 
 		Appearance* appearanceObject= new Appearance(id);
 
 		//read the appearance's shininess
 		char* ss = (char*)appearance->Attribute("shininess");
-			sscanf(ss,"%f",&shininess);
-		if(ss != ""){
-			cout<<"        Shininess: "<<shininess<<endl;
+		if (!ss || !sscanf(ss,"%f",&shininess)){
+			validAppearance = false;
+			printf("	Problem with appearance shininess value...\n");
+		}
+		else{
+			printf("	shininess: %f\n", shininess);
 			appearanceObject->setShininess(shininess);
 		}
-		else cout<<"        Error parsing appearance: missing shininess\n";
 
-		appearanceObject->setShininess(shininess);
 
 		//read the appearance's textured reference
 		textureref = (char*)appearance->Attribute("textureref");
 		if(textureref){
 			bool exists=false;
-			for(int i=0;i<text.size();i++)
+			for(unsigned int i=0;i<text.size();i++)
 				if(strcmp(text[i]->getId(),textureref)==0){
 					exists=true;
 					appearanceObject->setTexture(text[i]);
 				}
 
 			if(exists) cout<<"        Textureref: "<<textureref<<endl;
-			else cout<<"			Error parsing appearance: texture does not exist\n";
+			else {cout<<"			Error parsing appearance: texture does not exist\n"; validAppearance = false;}
 		}
-		else cout<<"        Error parsing appearance: missing textureref\n";
+		
 
 
 		//read the appearence's elements(ambient,diffuse,specular)
@@ -700,17 +771,26 @@ bool XMLSceneMod::readAppearances(TiXmlElement* dgxElement, vector<Appearance*> 
 		}
 
 		//If all the elements(ambient, diffuse, specular) are present
-		if(a&&d&&s)
+		if(!(a&&d&&s))
 		{
-			appearances.push_back(appearanceObject);
-			
+			cout<<"        One or more components couldn't be found\n";
+			validAppearance = false;			
 		}
-		else
-			cout<<"        One or more atributes couldn't be found\n";
-
-		cout<<endl;
+		
+		if (validAppearance){
+			appearances.push_back(appearanceObject);
+		}
+		else printf("This appearance wasn't loaded... Problems were detected... Program will try to run anyway...\n");
+		
+		printf("-------------------------------\n");
 		appearance = appearance->NextSiblingElement("appearance");
 	}	
+
+
+	if (appearances.size() == 0){
+		printf("No appearances have been loaded... Program will end...\n");
+		return false;
+	}
 
 	return true;
 }
@@ -823,7 +903,7 @@ bool XMLSceneMod::readGraph(TiXmlElement* dgxElement, vector<Appearance* > &appe
 			}
 			else{
 			
-			for(int i=0;i<appearances.size();i++)
+			for(unsigned int i=0;i<appearances.size();i++)
 				if(strcmp(appearances[i]->getId(),appearance)==0){
 					exists=true;
 					n->setAparencia(appearances[i]);
@@ -975,9 +1055,9 @@ bool XMLSceneMod::readGraph(TiXmlElement* dgxElement, vector<Appearance* > &appe
 
 
 
-	//mostrar dois nos
-	for(int i =0;i<destinationGraph->getNumberOfNodes();i++)
-		cout<<destinationGraph->searchForNode(i)->mostrarNo();
+	//mostrar nos
+	/*for(unsigned int i =0;i<destinationGraph->getNumberOfNodes();i++)
+		cout<<destinationGraph->searchForNode(i)->mostrarNo();*/
 
 
 	return true;
