@@ -105,9 +105,10 @@ void ProjectScene::drawAux(Node* node){
 	glPushMatrix();
 	glMultMatrixf(node->getMatrix());
 		for (unsigned int j = 0; j < node->getNumeroDePrimitivas(); j++){
-			node->getAppearance()->apply();
+			
 			if (node->getAppearance() != NULL){
 				if (node->getAppearance()->getTexture() != NULL){
+					node->getAppearance()->apply();
 					//printf("Node: %s\n", node->getId().c_str());
 					//printf("	Textura: %s\n", node->getAppearance()->getTexture()->getId());
 					Appearance::texlength_s=node->getAppearance()->getTexture()->getTexlengths();

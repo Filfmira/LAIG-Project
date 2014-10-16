@@ -301,7 +301,7 @@
                 <transform type="scale" factor="1 0.8 1" />
                 <transform type="translate" to="0 1 0" />
             </transforms>
-            <appearanceref id="ss" />
+            <appearanceref id="greyMetal" />
             <primitives>
             </primitives>
 
@@ -362,7 +362,7 @@
                 <transform type="translate" to="0 0 -0.3" />
                 <transform type="rotate" axis="y" angle="180" /> 
             </transforms>
-            <appearanceref id="greyMetal" />
+            <appearanceref id="inherit" />
             <primitives>
             </primitives>
 
@@ -375,7 +375,7 @@
             <transforms>
                 <transform type="translate" to="0 0 0.3" />
             </transforms>
-            <appearanceref id="greyMetal" />
+            <appearanceref id="inherit" />
             <primitives>
             </primitives>
 
@@ -387,7 +387,7 @@
         <node id="trianguloPerna">
             <transforms>
             </transforms>
-            <appearanceref id="ss" />
+            <appearanceref id="inherit" />
             <primitives>
                  <triangle xyz1="0 1 0" xyz2="-1 -1 0" xyz3="1 -1 0" />
             </primitives>

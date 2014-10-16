@@ -899,6 +899,7 @@ bool XMLSceneMod::readGraph(TiXmlElement* dgxElement, vector<Appearance* > &appe
 			char* appearance = (char*) appearanceref->Attribute("id"); 
 			bool exists=false;
 			if(strcmp(appearance,"inherit")==0){
+				n->setAparencia(NULL);
 				exists=true;
 			}
 			else{

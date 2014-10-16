@@ -49,13 +49,21 @@ public:
 		this->target[3]=target[3];
 	}
 
+	/*
 	void updateProjectionMatrix(int width, int height){
 		glMatrixMode(GL_PROJECTION);
 		glLoadIdentity();
 		float aspect = (float) width / (float) height;
 		gluPerspective(angle, aspect, near, far);
 	}
-
+	*/
+	void updateProjectionMatrix (int width, int height){//reshape
+ glViewport(0,0,width,height) ;
+ glMatrixMode (GL_PROJECTION ) ;
+ glLoadIdentity();
+ gluPerspective(angle,width/height,near,far);
+ glMatrixMode(GL_MODELVIEW);
+}
 	void applyView() {
 		CGFcamera::applyView();
 	gluPerspective(angle, 1.0, near, far);
