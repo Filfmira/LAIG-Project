@@ -332,8 +332,8 @@
             </primitives>
 
             <descendants>
-                <noderef id="perna1" />
                 <noderef id="perna2" />
+                <noderef id="perna1" />
             </descendants>
         </node>
 

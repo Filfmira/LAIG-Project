@@ -221,6 +221,9 @@ class Torus: public Primitive{
 private:
 	float innerRadius;
 	float outerRadius;
+	std::vector<std::vector<float>> textCoords;
+	std::vector<std::vector<float>> vertexCoords;
+	std::vector<std::vector<float>> normalsCoords;
 	int slices;
 	int loops;
 
@@ -230,18 +233,81 @@ public:
 		this->outerRadius = outerRadius;
 		this->slices = slices;
 		this->loops = loops;
+		calculateCoordinates();
 	};
 
 	void draw(){		
-		glPushMatrix();
-			/*void glutSolidTorus(GLdouble innerRadius,
-                    GLdouble outerRadius,
-                    GLint nsides, GLint rings);*/
-			glutSolidTorus(innerRadius, outerRadius, slices, loops);
-		glPopMatrix();
+		glBegin(GL_TRIANGLE_STRIP);
+	for(unsigned int i=0; i<vertexCoords.size();i++) {
+		glTexCoord2f(textCoords[i][0], textCoords[i][1]);
+		glNormal3f(normalsCoords[i][0], normalsCoords[i][1], normalsCoords[i][2]);
+		glVertex3f(vertexCoords[i][0], vertexCoords[i][1], vertexCoords[i][2]);
+	}
+	glEnd();
 	};
 
 	char* getNome(){return "Torus";};
+
+
+
+	void calculateCoordinates() {
+	 std::vector<float> vert(3);
+	 std::vector<float> vNormal(3);
+	 std::vector<float> text(2);
+	 float pi=acos(-1.0);
+	 float majorStep = 2.0f*pi / slices;   
+	 float minorStep = 2.0f*pi / loops;   
+
+	 for (unsigned int i=0; i<slices; ++i) {   
+	  float a0 = i * majorStep;   
+	  float a1 = a0 + majorStep;   
+	  float x0 = cos(a0);   
+	  float y0 = sin(a0);   
+	  float x1 = cos(a1);   
+	  float y1 = sin(a1);   
+
+	  for (unsigned int j=0; j<=loops; ++j)  {   
+	   float b = j * minorStep;   
+	   float c = cos(b);   
+	   float r = innerRadius * c + outerRadius;   
+	   float z = innerRadius * sin(b);   
+
+	   text[0] = (float) i/slices;
+	   text[1] = (float) j/loops;
+	   textCoords.push_back(text);
+	   vNormal[0] = x0*c;   
+	   vNormal[1] = y0*c;   
+	   vNormal[2] = z/innerRadius;   
+	   normalsCoords.push_back(vNormal);  
+	   vert[0] = x0*r;
+	   vert[1] = y0*r;
+	   vert[2] = z;
+	   vertexCoords.push_back(vert);
+
+	   text[0] = (float) (i+1)/slices;
+	   text[1] = (float) j/loops;
+	   textCoords.push_back(text);
+	   vNormal[0] = x1*c;   
+	   vNormal[1] = y1*c;   
+	   vNormal[2] = z/innerRadius;   
+	   normalsCoords.push_back(vNormal);
+	   vert[0] = x1*r;
+	   vert[1] = y1*r;
+	   vert[2] = z;
+	   vertexCoords.push_back(vert);
+  }
+ }
+}
+
+
+
+
+
+
+
+
+
+
 };
 
 
