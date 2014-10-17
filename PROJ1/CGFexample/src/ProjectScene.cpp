@@ -76,7 +76,8 @@ void ProjectScene::display()
 
 	for (unsigned int i = 0; i < 8; i++)
 		if (lights[i] != NULL){
-			lights[i]->getLight()->draw();
+			if (lights[i]->getMarker())
+				lights[i]->getLight()->draw();
 			lights[i]->getLight()->update();
 		}
 
@@ -104,17 +105,16 @@ void ProjectScene::drawAux(Node* node){
 		glMultMatrixf(node->getMatrix());
 		
 		if (node->getAppearance() != NULL){
-			if (node->getAppearance()->getTexture() != NULL){
+			this->appearancesStack.push(node->getAppearance());			
+		}
+		
+		this->appearancesStack.top()->apply();		
+		if (this->appearancesStack.top()->getTexture() != NULL){
 				//printf("Node: %s\n", node->getId().c_str());
 				//printf("	Textura: %s\n", node->getAppearance()->getTexture()->getId());
-				Appearance::texlength_s = node->getAppearance()->getTexture()->getTexlengths();
-				Appearance::texlength_t = node->getAppearance()->getTexture()->getTexlengtht();
-			}
-			node->getAppearance()->apply();
-			this->appearancesStack.push(node->getAppearance());
+				Appearance::texlength_s = this->appearancesStack.top()->getTexture()->getTexlengths();
+				Appearance::texlength_t = this->appearancesStack.top()->getTexture()->getTexlengtht();
 		}
-		else appearancesStack.top()->apply();
-	
 
 		for (unsigned int j = 0; j < node->getNumeroDePrimitivas(); j++){
 			node->getPrimitiva(j)->draw();

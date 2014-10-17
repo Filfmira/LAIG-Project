@@ -32,6 +32,7 @@ public:
 	void setAngle(float angle){this->angle=angle;}
 	int getLightId(){return lightId;}
 	CGFlight* getLight(){return light;}
+	bool getMarker(){return marker;}
 };
 
 

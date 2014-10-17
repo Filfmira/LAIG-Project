@@ -799,11 +799,13 @@ bool XMLSceneMod::readAppearances(TiXmlElement* dgxElement, vector<Appearance*> 
 bool XMLSceneMod::readGraph(TiXmlElement* dgxElement, vector<Appearance* > &appearances){
 	graphElement = dgxElement->FirstChildElement( "graph" );
 	char* rootNodeId = "";
-	if (graphElement == NULL)
+	if (graphElement == NULL){
 		printf("Graph block not found!\n");
+		return false;
+	}
 	else
 	{
-		//criar grafo aqui
+
 		printf("\nProcessing Graph:\n");
 		//falta ler o atributo "root" do graph
 
@@ -1037,7 +1039,8 @@ bool XMLSceneMod::readGraph(TiXmlElement* dgxElement, vector<Appearance* > &appe
 			//std::cout << n->mostrarNo();
 			node = node->NextSiblingElement();
 		}
-		//ao sair do while, é preciso verificar se existe pelo menos um nó
+
+		//ao sair do while, é preciso verificar se existe pelo menos um nó (pelo menos o root node tem de existir
 		if (destinationGraph->searchForNode((string)rootNodeId) == NULL)
 			return false;
 		destinationGraph->setRoot(destinationGraph->searchForNode((string)rootNodeId));
