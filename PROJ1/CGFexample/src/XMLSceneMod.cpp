@@ -669,7 +669,7 @@ bool XMLSceneMod::readTextures(TiXmlElement* dgxElement, vector<Texture*> &text)
 			 text.push_back(new Texture(id,file,texlength_s,texlength_t));
 		 else printf ("Problem loading texture. Program will try to run anyway...\n");
 		 printf("-------------------------------\n");
-		 texture=texture->NextSiblingElement();
+		 texture=texture->NextSiblingElement("texture");
 	}
 	cout<<endl;
 	
@@ -1012,29 +1012,29 @@ bool XMLSceneMod::readGraph(TiXmlElement* dgxElement, vector<Appearance* > &appe
 					primitive = primitive->NextSiblingElement();
 				}
 				
-
+			}
 
 			TiXmlElement *descendants  = node->FirstChildElement("descendants");
 			if (!descendants){
-				printf("	Error: Descendants block not found!\n");
-				break;
+				printf("	No descendants block\n");
+				//break;
 			}
-
-			TiXmlElement *noderef = descendants->FirstChildElement("noderef");  
-			vector<char*> descendentesNo;
-			string idDesc;
-			cout<<"	Descendentes: ";
-			while(noderef)
-				{
-					descendentesNo.push_back((char*) noderef->Attribute("id"));
-					noderef=noderef->NextSiblingElement();
-				}
-			//cout<<endl;
-			descendentes.push_back(descendentesNo);
+			else {
+				TiXmlElement *noderef = descendants->FirstChildElement("noderef");  
+				vector<char*> descendentesNo;
+				string idDesc;
+				cout<<"	Descendentes: ";
+				while(noderef)
+					{
+						descendentesNo.push_back((char*) noderef->Attribute("id"));
+						noderef=noderef->NextSiblingElement();
+					}
+				cout<<"------------------------------\n";
+				descendentes.push_back(descendentesNo);
 			}
 			
 			destinationGraph->addNode(n);
-			std::cout << n->mostrarNo();
+			//std::cout << n->mostrarNo();
 			node = node->NextSiblingElement();
 		}
 		//ao sair do while, é preciso verificar se existe pelo menos um nó

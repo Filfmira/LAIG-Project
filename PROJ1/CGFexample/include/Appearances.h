@@ -18,7 +18,7 @@ public:
 	Appearance(char* id):CGFappearance()
 	{
 		this->id=id;
-		t = NULL;
+		this->t = NULL;
 	}
 
 	void setTexture(Texture* t){

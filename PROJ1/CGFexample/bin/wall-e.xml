@@ -1,4 +1,4 @@
-﻿<anf>
+<anf>
 
     <!-- bloco de configuracoes globais -->
     <!-- a declaracao dos componentes deste bloco e' obrigatoria -->
@@ -54,17 +54,28 @@
                 <component type="diffuse" value="1 1 1 1" />
                 <component type="specular" value="1 1 1 1" /> 
 
-            </light> 
+            </light>  
+
+            <light id="2" type="omni" enabled="true" marker="true" pos="-5 0 0" >
+               <component type="ambient" value="1 1 1 1" />
+               <component type="diffuse" value="1 1 1 1" />
+               <component type="specular" value="1 1 1 1" />
+
+            </light>
+
+
     </lights>
 
     <!-- bloco de texturas. Este bloco tem de existir mas pode estar vazio, se nao forem usadas texturas -->
     <!--   ver topico 'Notas finais' no enunciado sobre os parametros texlength_... -->
     <textures>      
-          <texture id="ss" file="metal.jpg" texlength_s="1" texlength_t="1" />
-		   <texture id="greyMetal" file="metaleyes.jpg" texlength_s="1" texlength_t="1" />
-		    <texture id="eyeGlobe" file="eye.jpg" texlength_s="1" texlength_t="1" />
-			 <texture id="tire" file="tire.png" texlength_s="1" texlength_t="1" />
-			  <texture id="planet" file="planet.jpg" texlength_s="1" texlength_t="1" />
+        <texture id="ss" file="metal.jpg" texlength_s="2" texlength_t="2" />
+		<texture id="greyMetal" file="metaleyes.jpg" texlength_s="2" texlength_t="2" />
+		<texture id="eyeGlobe" file="eye.jpg" texlength_s="1" texlength_t="1" />
+		<texture id="tire" file="tire.png" texlength_s="0.6" texlength_t="2.5" />
+        <texture id="stars" file="stars-5.jpg" texlength_s="1" texlength_t="1" />
+		<texture id="planet" file="planet.jpg" texlength_s="1" texlength_t="1" />
+        
     </textures>
 
     <!-- bloco de materiais; -->
@@ -73,35 +84,48 @@
         <!-- IMPORTANTE: -->
         <!--   textureref e opcional, a utilizar caso haja textura associada a esta aparencia -->
         <appearance id="ss" shininess="10" >
-               <component type="ambient" value="0.1 0.1 0.1 1" />
-                <component type="diffuse" value="0.4 0.33 0.25 1" />
-               <component type="specular" value="0.8 0.67 0.5 1" />
+            <component type="ambient" value="0.1 0.1 0.1 1" />
+            <component type="diffuse" value="0.4 0.33 0.25 1" />
+            <component type="specular" value="0.8 0.67 0.5 1" />
         </appearance>
+
         <appearance id="s2" shininess="1" textureref="ss" >
                <component type="ambient" value="0.1 0.1 0.1 1" />
                 <component type="diffuse" value="1 1 0 1" />
                <component type="specular" value="0.8 0.67 0.5 1" />
         </appearance>
+
 		<appearance id="greyMetal" shininess="1" textureref="greyMetal" >
-               <component type="ambient" value="0.5 0.5 0.5 1" />
+               <component type="ambient" value="0.1 0.1 0.1 1" />
                 <component type="diffuse" value="1 1 1 1" />
                <component type="specular" value="0.4 0.4 0.4 1" />
         </appearance>
+
 		<appearance id="eyeGlobe" shininess="1" textureref="eyeGlobe" >
                <component type="ambient" value="0.1 0.1 0.1 1" />
                 <component type="diffuse" value="1 1 1 1" />
                <component type="specular" value="0.4 0.4 0.4 1" />
         </appearance>
+
 		<appearance id="tire" shininess="1" textureref="tire" >
                <component type="ambient" value="0.1 0.1 0.1 1" />
                 <component type="diffuse" value="1 1 1 1" />
                <component type="specular" value="0.4 0.4 0.4 1" />
         </appearance>
+            
 		<appearance id="planet" shininess="1" textureref="planet" >
                <component type="ambient" value="0.1 0.1 0.1 1" />
                 <component type="diffuse" value="1 1 1 1" />
                <component type="specular" value="0.4 0.4 0.4 1" />
         </appearance>
+
+
+        <appearance id="stars1" shininess="1" textureref="stars" >
+            <component type="ambient" value="1 1 1 1" />
+            <component type="diffuse" value="0 0 0 1" />
+            <component type="specular" value="0 0 0 1" />
+        </appearance>
+
     </appearances>
 
     <graph rootid="root">
@@ -127,6 +151,8 @@
                 <noderef id="pescoco" />
                 <noderef id="olhos" />
 				<noderef id="planet" />
+                <noderef id="ceu" />
+
             </descendants>
         </node>
 
@@ -316,7 +342,7 @@
                 <transform type="translate" to="1.3 0 0" />
                 <transform type="rotate" axis="y" angle="90" />
             </transforms>
-            <appearanceref id="greyMetal" />
+            <appearanceref id="inherit" />
             <primitives>
             </primitives>
 
@@ -330,7 +356,7 @@
                 <transform type="translate" to="-1.3 0 0" />
                 <transform type="rotate" axis="y" angle="-90" />
             </transforms>
-            <appearanceref id="greyMetal" />
+            <appearanceref id="inherit" />
             <primitives>
             </primitives>
 
@@ -342,7 +368,7 @@
         <node id="prismaPerna">
             <transforms>
             </transforms>
-            <appearanceref id="greyMetal" />
+            <appearanceref id="inherit" />
             <primitives>
             </primitives>
 
@@ -623,6 +649,123 @@
             <descendants>
             </descendants>
         </node> 
+
+
+        
+        <!-- ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||-->
+        <!-- ||||||||||||||||||||||||||||||||CEU|||||||||||||||||||||||||||||||-->
+        <!-- ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||-->
+
+        <node id="ceu">
+            <transforms>
+            </transforms>
+            <appearanceref id="stars1" />
+            <primitives>
+            </primitives>
+
+            <descendants>
+                <noderef id="ceu_tras" />
+                <noderef id="ceu_esq" />
+                <noderef id="ceu_dir" />
+                <noderef id="ceu_frente" />
+                <noderef id="ceu_topo" />
+                <noderef id="ceu_fundo" />
+            </descendants>
+        </node>
+
+        <node id="ceu_dir">
+            <transforms>
+            <transform type="rotate" axis="y" angle="-90" />
+            </transforms>
+            <appearanceref id="inherit" />
+            <primitives>
+            </primitives>
+
+            <descendants>
+                <noderef id="rectangulo_ceu" />
+            </descendants>
+        </node>
+
+
+        <node id="ceu_tras">
+            <transforms>
+            </transforms>
+            <appearanceref id="inherit" />
+            <primitives>
+            </primitives>
+
+            <descendants>
+                <noderef id="rectangulo_ceu" />
+            </descendants>
+        </node>
+
+        <node id="ceu_esq">
+            <transforms>
+            <transform type="rotate" axis="y" angle="90" />
+            </transforms>
+            <appearanceref id="inherit" />
+            <primitives>
+            </primitives>
+
+            <descendants>
+                <noderef id="rectangulo_ceu" />
+            </descendants>
+        </node>
+
+        <node id="ceu_frente">
+            <transforms>
+            <transform type="rotate" axis="y" angle="180" />
+            </transforms>
+            <appearanceref id="inherit" />
+            <primitives>
+            </primitives>
+
+            <descendants>
+                <noderef id="rectangulo_ceu" />
+            </descendants>
+        </node>
+
+        <node id="ceu_topo">
+            <transforms>
+            <transform type="rotate" axis="x" angle="90" />
+            </transforms>
+            <appearanceref id="inherit" />
+            <primitives>
+            </primitives>
+
+            <descendants>
+                <noderef id="rectangulo_ceu" />
+            </descendants>
+        </node>
+
+        <node id="ceu_fundo">
+            <transforms>
+            <transform type="rotate" axis="x" angle="-90" />
+            </transforms>
+            <appearanceref id="inherit" />
+            <primitives>
+            </primitives>
+
+            <descendants>
+                <noderef id="rectangulo_ceu" />
+            </descendants>
+        </node>
+
+
+        <node id="rectangulo_ceu">
+            <transforms>
+                <transform type="translate" to="0 0 -20" />
+                <transform type="scale" factor="40 40 1" />
+            </transforms>
+            <appearanceref id="inherit" />
+            <primitives>
+                <rectangle xy1="-0.5 -0.5" xy2="0.5 0.5" />
+            </primitives>
+
+            <descendants>
+            </descendants>
+        </node>
+        
 
 
     </graph>

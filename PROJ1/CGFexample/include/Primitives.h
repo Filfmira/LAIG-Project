@@ -3,6 +3,12 @@
 
 #include "CGFobject.h"
 #include <math.h>
+#include "Appearances.h"
+
+static float distanciaPontos(float x1, float y1, float x2, float y2){
+	return sqrt((x2-x1)*(x2-x1) + (y2-y1)*(y2-y1));
+}
+
 
 class Primitive{
 public:
@@ -17,28 +23,34 @@ private:
 	float x2;
 	float y1;
 	float y2;
+	float length;
+	float height;
+
 public:
 	Rectangle(float x1, float y1, float x2, float y2){
 		this->x1 = x1;	
 		this->x2 = x2;
-
 		this->y1 = y1;	
 		this->y2 = y2;
+
+		this->length = distanciaPontos(x1,y1,x2,y1);
+		this->height = distanciaPontos(x1,y1,x1,y2);
+
 	}
 		
 	void draw(){
-
+		float s = this->length/Appearance::texlength_s;
+		float t = this->height/Appearance::texlength_t;
 		glPushMatrix();
 			glNormal3d(0,0,1) ;
-			
 			glBegin(GL_QUADS);
 				glTexCoord2d(0,0);
 				glVertex3d(x1,y1,0);
-				glTexCoord2d(0,1);
+				glTexCoord2d(s,0);
 				glVertex3d(x2,y1,0);
-				glTexCoord2d(1,1);
+				glTexCoord2d(s,t);
 				glVertex3d(x2,y2,0);
-				glTexCoord2d(1,0);
+				glTexCoord2d(0,t);
 				glVertex3d(x1,y2,0);				
 			glEnd();
 
@@ -80,9 +92,9 @@ public:
 		this->z2 = z2;
 		this->z3 = z3;
 
-		this->a=sqrt(pow(x1-x3,2)+pow(y1-y3,2)+pow(z1-z3,2));
-		this->b=sqrt(pow(x2-x1,2)+pow(y2-y1,2)+pow(z2-z1,2));
-		this->c=sqrt(pow(x3-x2,2)+pow(y3-y2,2)+pow(z3-z2,2));
+		this->a=sqrt(pow(x1-x3,2)+pow(y1-y3,2)+pow(z1-z3,2)); //distancia de x1 a x3
+		this->b=sqrt(pow(x2-x1,2)+pow(y2-y1,2)+pow(z2-z1,2)); //distancia de x1 a x2
+		this->c=sqrt(pow(x3-x2,2)+pow(y3-y2,2)+pow(z3-z2,2)); //distancia de x2 a x3
 		this->cos3=(a*a-b*b+c*c)/(2*a*c);
 		this->sin3=sqrt(1-pow(cos3,2));
 	}
@@ -91,11 +103,11 @@ public:
 		glPushMatrix();			
 			glNormal3f(0,0,1) ;
 			glBegin(GL_TRIANGLES);
-				glTexCoord2d(c-a*cos3,a*sin3);
+				glTexCoord2d( (c-a*cos3)/Appearance::texlength_s,a*sin3/Appearance::texlength_t);
 				glVertex3d(x1,y1,z1);
 				glTexCoord2d(0,0);
 				glVertex3d(x2,y2,z2);
-				glTexCoord2d(c,0);
+				glTexCoord2d(c/Appearance::texlength_s,0);
 				glVertex3d(x3,y3,z3);
 			glEnd();
 		glPopMatrix();

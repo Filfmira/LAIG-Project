@@ -82,7 +82,7 @@ void ProjectScene::display()
 
 
 	// Draw axis
-	axis.draw();
+	//axis.draw();
 
 	// ---- END Background, camera and axis setup
 
@@ -93,8 +93,6 @@ void ProjectScene::display()
 	drawAux(sceneGraph.getRoot());
 	// ---- END Primitive drawing section
 
-
-
 	// We have been drawing in a memory area that is not visible - the back buffer, 
 	// while the graphics card is showing the contents of another buffer - the front buffer
 	// glutSwapBuffers() will swap pointers so that the back buffer becomes the front buffer and vice-versa
@@ -103,26 +101,33 @@ void ProjectScene::display()
 void ProjectScene::drawAux(Node* node){
 
 	glPushMatrix();
-	glMultMatrixf(node->getMatrix());
-		for (unsigned int j = 0; j < node->getNumeroDePrimitivas(); j++){
-			
-			if (node->getAppearance() != NULL){
-				if (node->getAppearance()->getTexture() != NULL){
-					node->getAppearance()->apply();
-					//printf("Node: %s\n", node->getId().c_str());
-					//printf("	Textura: %s\n", node->getAppearance()->getTexture()->getId());
-					Appearance::texlength_s=node->getAppearance()->getTexture()->getTexlengths();
-					Appearance::texlength_t=node->getAppearance()->getTexture()->getTexlengtht();
-				}
+		glMultMatrixf(node->getMatrix());
+		
+		if (node->getAppearance() != NULL){
+			if (node->getAppearance()->getTexture() != NULL){
+				//printf("Node: %s\n", node->getId().c_str());
+				//printf("	Textura: %s\n", node->getAppearance()->getTexture()->getId());
+				Appearance::texlength_s = node->getAppearance()->getTexture()->getTexlengths();
+				Appearance::texlength_t = node->getAppearance()->getTexture()->getTexlengtht();
 			}
-			
-			node->getPrimitiva(j)->draw();
-			
+			node->getAppearance()->apply();
+			this->appearancesStack.push(node->getAppearance());
 		}
-		for (unsigned int i = 0; i < node->getDescendentes().size(); i++){
+		else appearancesStack.top()->apply();
+	
 
-			drawAux(node->getDescendentes()[i]);
+		for (unsigned int j = 0; j < node->getNumeroDePrimitivas(); j++){
+			node->getPrimitiva(j)->draw();
 		}
+
+
+		for (unsigned int i = 0; i < node->getDescendentes().size(); i++)
+			drawAux(node->getDescendentes()[i]);
+
+		if (node->getAppearance() != NULL)
+			appearancesStack.pop();
+
+
 	glPopMatrix();
 }
 ProjectScene::~ProjectScene() 

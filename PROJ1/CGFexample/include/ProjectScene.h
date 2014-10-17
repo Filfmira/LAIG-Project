@@ -8,7 +8,7 @@
 #include "Appearances.h"
 #include "Cameras.h"
 #include "CGFapplication.h"
-
+#include <stack>
 
 class ProjectScene : public CGFscene
 {
@@ -24,7 +24,7 @@ public:
 	vector<Appearance* > appearances;
 	vector<Camera> cameras;
 	Camera* activeCamera;
-
+	stack<Appearance*> appearancesStack;
 	
 	bool wireFrame;
 
