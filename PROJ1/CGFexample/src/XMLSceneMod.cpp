@@ -14,7 +14,7 @@ using namespace std;
 //como vamos guardar os Appearances? talvez uma especia de map, tabela tipo <id,CGFappearance>
 //é preciso por os nos com links entre eles?!?*****
 
-XMLSceneMod::XMLSceneMod(char *filename, Graph* gr, Light** lig, vector<Texture* > &textures, vector<Appearance* > &appearances, vector<Camera >*cameras, Camera* &activeCamera): destinationGraph(gr), destinationLights(lig)
+XMLSceneMod::XMLSceneMod(char *filename, Graph* gr, Light** lig, vector<Texture* > &textures, vector<Appearance* > &appearances, vector<Camera >*cameras, Camera* &activeCamera, Global *globals): destinationGraph(gr), destinationLights(lig)
 {
 
 	// Read XML from file
@@ -26,6 +26,7 @@ XMLSceneMod::XMLSceneMod(char *filename, Graph* gr, Light** lig, vector<Texture*
 	//this->appearances=appearances;
 	this->cameras=cameras;
 	this->initialCamera = NULL;
+	this->globals=globals;
 	doc=new TiXmlDocument( filename );
 	bool loadOkay = doc->LoadFile();
 
@@ -40,7 +41,7 @@ XMLSceneMod::XMLSceneMod(char *filename, Graph* gr, Light** lig, vector<Texture*
 	if (dgxElement == NULL)
 	{
 		printf("Main anf block element not found! Exiting!\n");
-		cin.get();
+		//cin.get();
 		exit(1);
 	}
 
@@ -49,39 +50,39 @@ XMLSceneMod::XMLSceneMod(char *filename, Graph* gr, Light** lig, vector<Texture*
 	readGlobals(dgxElement);
 
 	if (!readCameras(dgxElement)){
-		cin.get();
+		//cin.get();
 		exit(1);
 	}
 	activeCamera = initialCamera;
-	cin.get();
+	//cin.get();
 
 
 	if (!readLights(dgxElement)){
-		cin.get();
+		//cin.get();
 		exit(1);
 	}
-	cin.get();
+	//cin.get();
 
 
 	if(!readTextures(dgxElement, textures)){
-		cin.get();
+		//cin.get();
 		exit(1);
 	}
-	cin.get();
+	//cin.get();
 
 
 	if (!readAppearances(dgxElement, appearances, textures)){
-		cin.get();
+		//cin.get();
 		exit(1);
 	}
-	cin.get();
+	//cin.get();
 		
 
 	if (!readGraph(dgxElement, appearances)){
-		cin.get();
+		//cin.get();
 		exit(1);
 	}
-	cin.get();
+	//cin.get();
 
 }
 
@@ -120,8 +121,19 @@ bool XMLSceneMod::readGlobals(TiXmlElement* dgxElement){
 
 	globalsElement = dgxElement->FirstChildElement( "globals" );
 	//camerasElement = dgxElement->FirstChildElement( "cameras" );
-	
-	
+			//drawing
+	char* mode;
+	char* shading;
+    float background[4];
+	//culling
+	char* face;
+	char* order;
+
+	//lighting
+	bool doublesided;
+	bool local;
+	bool enabled;
+	float ambient[4];
 
 	/////////////globals/////////////////
 	if (globalsElement == NULL){
@@ -137,8 +149,7 @@ bool XMLSceneMod::readGlobals(TiXmlElement* dgxElement){
 		if (drawingElement)
 		{
 			printf("- Drawing:\n");
-			char* mode = NULL;
-			char* shading = NULL;
+			
 
 			mode = (char *) drawingElement->Attribute("mode");
 			shading = (char *) drawingElement->Attribute("shading");
@@ -147,6 +158,7 @@ bool XMLSceneMod::readGlobals(TiXmlElement* dgxElement){
 				printf("Error parsing drawing: wrong/missing mode variable\n");
 				mode = "error";
 			}
+			
 			if (strcmp(shading, "gouraud") != 0 && strcmp(shading, "flat") != 0){
 				printf("Error parsing drawing: missing shading variable\n");
 				shading = "error";
@@ -154,14 +166,13 @@ bool XMLSceneMod::readGlobals(TiXmlElement* dgxElement){
 			
 			printf("	mode: %s\n	shading: %s\n", mode, shading);
 
-			char *background=NULL;
-			float red, green, blue, alpha;
+			char *backgroundS=NULL;
 
-			background=(char *) drawingElement->Attribute("background");
+			backgroundS=(char *) drawingElement->Attribute("background");
 			//if(background && sscanf(background,"%f %f %f %f",&red, &green, &blue, &alpha)== 4)
-			if(background && readRGBcomponents(background,red, green, blue, alpha))
+			if(backgroundS && readRGBcomponents(backgroundS,background[0], background[1], background[2], background[3]))
 			{
-					printf("	background: R-%f, G-%f, B-%f, A-%f\n", red, green, blue, alpha);
+					printf("	background: R-%f, G-%f, B-%f, A-%f\n", background[0], background[1], background[2], background[3]);
 			}
 			else{
 				printf("Error parsing background\n");
@@ -177,8 +188,7 @@ bool XMLSceneMod::readGlobals(TiXmlElement* dgxElement){
 		if (cullingElement)
 		{
 			printf("- Culling:\n");
-			char* face = NULL;
-			char* order = NULL;
+			
 
 			face = (char *) cullingElement->Attribute("face");
 			order = (char *) cullingElement->Attribute("order");
@@ -201,41 +211,51 @@ bool XMLSceneMod::readGlobals(TiXmlElement* dgxElement){
 
 		////////////lighting/////////////
 		TiXmlElement* lightingElement = globalsElement->FirstChildElement("lighting");
+		
 		if (lightingElement)
 		{
 			printf("- Lighting:\n");
 
-			char* doublesided = NULL;
-			char* local = NULL;
-			char* enabled = NULL;
-
-			doublesided = (char *) lightingElement->Attribute("doublesided");
-			local = (char *) lightingElement->Attribute("local");
-			enabled = (char *) lightingElement->Attribute("enabled");
-
-			if (strcmp(doublesided,"true") != 0 && strcmp(doublesided,"false") != 0){
+			char* doublesidedS = (char *) lightingElement->Attribute("doublesided");
+			char* localS = (char *) lightingElement->Attribute("local");
+			char* enabledS = (char *) lightingElement->Attribute("enabled");
+			cout<<"------------------2\n";
+			if (strcmp(doublesidedS,"true") != 0)		doublesided=true;
+			else if(strcmp(doublesidedS,"false") != 0)	doublesided=false;
+			else
+			{
 				printf("Error parsing lighting: missing or wrong type doublesided variable\n");
-				doublesided = "error";
+				doublesidedS = "error";
 			}
-			if (strcmp(local,"true") != 0 && strcmp(local,"false") != 0){
-				printf("Error parsing lighting: missing or wrong type local variable\n");
-				local = "error";
-			}
-			if (strcmp(enabled,"true") != 0 && strcmp(enabled,"false") != 0){
-				printf("Error parsing lighting: missing or wrong type enabled variable\n");
-				enabled = "error";
-			}
+			cout<<"------------------3\n";
 
-			printf("	doublesided: %s\n	local: %s\n	enabled: %s\n", doublesided, local, enabled);
+			if (strcmp(localS,"true") != 0)			local=true;
+			else if(strcmp(localS,"false") != 0)	local=false;
+			else{
+				printf("Error parsing lighting: missing or wrong type local variable\n");
+				localS = "error";
+			}
+			cout<<"------------------4\n";
+			if (strcmp(enabledS,"true") != 0)			enabled=true;
+			else if(strcmp(enabledS,"false") != 0)		enabled=false;
+			else{
+				printf("Error parsing lighting: missing or wrong type local variable\n");
+				localS = "error";
+			}
+			cout<<"------------------5\n";
+
+			printf("	doublesided: %s\n	local: %s\n	enabled: %s\n", doublesidedS, localS, enabledS);
 		
 
-			char *ambient=NULL;
+			char *ambientS=NULL;
 			float red, green, blue, alpha;
-
-			ambient=(char *) lightingElement->Attribute("ambient");
-			if(ambient && readRGBcomponents(ambient,red, green, blue, alpha))
+			cout<<"------------------6\n";
+			ambientS=(char *) lightingElement->Attribute("ambient");
+			if(ambient && readRGBcomponents(ambientS,ambient[0], ambient[1], ambient[2], ambient[3]))
 			{
-					printf("	ambient: R-%f, G-%f, B-%f, A-%f\n", red, green, blue, alpha);
+				cout<<"------------------7\n";
+					printf("	ambient: R-%f, G-%f, B-%f, A-%f\n",  ambient[1], ambient[2], ambient[3]);
+					cout<<"------------------8\n";
 			}
 			else{
 				printf("Error parsing ambient\n");
@@ -247,6 +267,16 @@ bool XMLSceneMod::readGlobals(TiXmlElement* dgxElement){
 		/////////////////end lighting ////////////////////////
 	}
 
+	globals->setMode(mode);
+	globals->setShading(shading);
+	globals->setBackground(&background[0]);
+	globals->setFace(face);
+	globals->setOrder(order);
+	globals->setDoublesided(doublesided);
+	globals->setLocal(local);
+	globals->setEnabled(enabled);
+	globals->setAmbient(&ambient[0]);
+	//globals= new Global(mode,shading,&background[0],face,order,doublesided,local,enabled,&ambient[0]);
 	return true;
 	////////////////////// END GLOBALS /////////////////////
 }

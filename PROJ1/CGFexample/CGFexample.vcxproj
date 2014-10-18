@@ -80,6 +80,7 @@
   <ItemGroup>
     <ClInclude Include="include\Appearances.h" />
     <ClInclude Include="include\Cameras.h" />
+    <ClInclude Include="include\Globals.h" />
     <ClInclude Include="include\Lights.h" />
     <ClInclude Include="include\Primitives.h" />
     <ClInclude Include="include\ProjectScene.h" />

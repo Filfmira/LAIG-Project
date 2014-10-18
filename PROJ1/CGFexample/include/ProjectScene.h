@@ -9,7 +9,7 @@
 #include "Cameras.h"
 #include "CGFapplication.h"
 #include <stack>
-
+#include "Globals.h"
 class ProjectScene : public CGFscene
 {
 public:
@@ -25,6 +25,7 @@ public:
 	vector<Camera> cameras;
 	Camera* activeCamera;
 	stack<Appearance*> appearancesStack;
+	Global globals;
 	
 	bool wireFrame;
 
