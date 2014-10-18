@@ -1,6 +1,6 @@
 #include "TPinterface.h"
 #include <sstream>
-
+#include <iostream>
 
 #define initialId 2
 
@@ -17,10 +17,13 @@ void TPinterface::initGUI()
 
 	for (unsigned int i = 0; i < 8; i++){
 		if (((ProjectScene*) scene)->lights[i] != NULL){
-			ostringstream ss;
-			ss << "Light " << ((ProjectScene*) scene)->lights[i]->getLightId()-GL_LIGHT0;
-			lightCheckboxes.push_back(addCheckboxToPanel(lightsPanel,(char *) ss.str().c_str(), 0, initialId+i));
-			if (glIsEnabled(((ProjectScene*) scene)->lights[i]->getLightId())){
+			//ostringstream ss;
+			//ss << "Light " << ((ProjectScene*) scene)->lights[i]->getLightId()-GL_LIGHT0;
+			/*ss <<  ((ProjectScene*) scene)->lights[i]->getLightId();
+			std::cout << "abc\n" << ss.str();*/
+			//printf("Light  %s\n", ((ProjectScene*) scene)->lights[i]->getLightId() );
+			lightCheckboxes.push_back(addCheckboxToPanel(lightsPanel,/*(char *) ss.str().c_str()*/(char*) ((ProjectScene*) scene)->lights[i]->getLightId().c_str(), 0, initialId+i));
+			if (glIsEnabled(((ProjectScene*) scene)->lights[i]->getCGFlightIndex())){
 				lightCheckboxes[i]->set_int_val(GL_TRUE);
 			}
 		}
@@ -33,7 +36,7 @@ void TPinterface::initGUI()
 	GLUI_Panel *visualizationMode= addPanel("Visualization", GLUI_PANEL_EMBOSSED);
 	visualizationRadGroup = addRadioGroupToPanel (visualizationMode, &visualizationId, initialId+8);
 	GLUI_RadioButton * 	wireMode = addRadioButtonToGroup (visualizationRadGroup, "WireFrame");
-	GLUI_RadioButton * 	textMode = addRadioButtonToGroup (visualizationRadGroup, "Textured");
+	GLUI_RadioButton * 	textMode = addRadioButtonToGroup (visualizationRadGroup, "Fill");
 	wireMode->set_id(0);
 	textMode->set_id(1);
 	visualizationRadGroup->set_int_val(1);

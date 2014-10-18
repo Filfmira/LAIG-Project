@@ -4,12 +4,14 @@
 #include <gl/glu.h>
 #include <gl/glut.h>
 
-Light::Light(string tipo, int lightId, bool enabled, bool marker, float pos[4], 
+Light::Light(string tipo, string lightId, bool enabled, bool marker, float pos[4], 
 		float target[3], float angle, float exponent,
-		float* ambient, float* diffuse, float* specular){
+		float* ambient, float* diffuse, float* specular, int index){
 	
 	this->tipo = tipo;	
-	this->lightId = GL_LIGHT0 + lightId;
+	//this->lightId = GL_LIGHT0 + lightId;
+	this->CGFlightIndex = GL_LIGHT0 + index;
+	this->lightId = lightId;
 	this->enabled = enabled;
 	this->marker = marker;
 	
@@ -17,7 +19,6 @@ Light::Light(string tipo, int lightId, bool enabled, bool marker, float pos[4],
 	this->pos[1] = pos[1];
 	this->pos[2] = pos[2];
 	this->pos[3] = 1.0;
-
 	this->angle = angle;
 	this->exponent = exponent;
 	
@@ -26,12 +27,12 @@ Light::Light(string tipo, int lightId, bool enabled, bool marker, float pos[4],
 		this->target[1] = target[1]-pos[1];
 		this->target[2] = target[2]-pos[2];
 		
-		light = new CGFlight(this->lightId, this->pos, this->target);
+		light = new CGFlight(this->CGFlightIndex, this->pos, this->target);
 		
-		glLightf(lightId + GL_LIGHT0, GL_SPOT_EXPONENT, exponent);
+		glLightf(CGFlightIndex, GL_SPOT_EXPONENT, exponent);
 		light->setAngle(angle);
 	}
-	else light = new CGFlight(this->lightId, this->pos);
+	else light = new CGFlight(this->CGFlightIndex, this->pos);
 
 	light->setAmbient(ambient);
 	light->setDiffuse(diffuse);

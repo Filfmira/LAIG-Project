@@ -76,7 +76,12 @@ XMLSceneMod::XMLSceneMod(char *filename, Graph* gr, Light** lig, vector<Texture*
 	}
 	cin.get();
 		
-	readGraph(dgxElement, appearances);
+
+	if (!readGraph(dgxElement, appearances)){
+		cin.get();
+		exit(1);
+	}
+	cin.get();
 
 }
 
@@ -439,11 +444,12 @@ bool XMLSceneMod::readLights(TiXmlElement* dgxElement){
 
 	TiXmlElement * lights = lightsElement->FirstChildElement("light");
 
-	while(lights){
-		
+	//while(lights){
+	for (unsigned int i = 0; lights && i < 8; i++){
+
 		bool validLight = true;
 
-		int id;
+		char* id = "gg";
 		char* type;
 		bool enabled;
 		bool marker;
@@ -456,10 +462,11 @@ bool XMLSceneMod::readLights(TiXmlElement* dgxElement){
 		float exponent;
 
 		//id
-		char* id_T = (char*) lights->Attribute("id");
-		if (id_T){
-			id = atoi(id_T);
-			printf("id: %d \n",id);
+		id = (char*) lights->Attribute("id");
+		if (id){
+			/*id = atoi(id_T);
+			printf("id: %d \n",id);*/
+			printf("id: %s\n", id);
 		}
 		else validLight = false;
 
@@ -594,12 +601,14 @@ bool XMLSceneMod::readLights(TiXmlElement* dgxElement){
 		}
 
 		if (validLight && amb && dif && spec){
-			Light* newLight = new Light((string) type, id, enabled, marker, pos, target, angle, exponent, ambient, diffuse, specular);
-			for (unsigned int i = 0; i < 8; i++)
+			unsigned int i = 0;
+			for (i = 0; i < 8; i++)
 				if (destinationLights[i] == NULL){
+					Light* newLight = new Light((string) type, (string) id, enabled, marker, pos, target, angle, exponent, ambient, diffuse, specular, i);
 					destinationLights[i] = newLight;
 					break;
 				}
+			if (i == 8) printf("	Limit number of lights reached (8). This, and any further lights read, will be discarded...\n");
 		}
 		else printf ("Problem reading light... Program will try to run anyway...\n");
 		printf("-------------------------------\n");
@@ -807,14 +816,16 @@ bool XMLSceneMod::readGraph(TiXmlElement* dgxElement, vector<Appearance* > &appe
 	{
 
 		printf("\nProcessing Graph:\n");
-		//falta ler o atributo "root" do graph
 
+		rootNodeId = (char*) graphElement->Attribute("rootid");
+		
 		char *prefix="  -";
+		
 		TiXmlElement *node = graphElement->FirstChildElement("node");
 		
-		if (node)
+		/*if (node)
 			rootNodeId = (char*) node->Attribute("id");
-
+		*/
 
 		vector<vector<char* > > descendentes;
 		while (node)
@@ -831,7 +842,7 @@ bool XMLSceneMod::readGraph(TiXmlElement* dgxElement, vector<Appearance* > &appe
 			TiXmlElement *transforms  = node->FirstChildElement();
 			if (!transforms){
 				printf("	Error: Transforms block not found!\n");
-				break;
+				return false;
 			}
 			printf("	Transforms:\n");
 			TiXmlElement *transform = transforms->FirstChildElement("transform");  
@@ -844,14 +855,14 @@ bool XMLSceneMod::readGraph(TiXmlElement* dgxElement, vector<Appearance* > &appe
 
 				char* tipo = (char*) transform->Attribute("type");
 							
-				
 				if (strcmp(tipo,"translate") == 0){
 					char* to = (char*) transform->Attribute("to");
 					printf("	-Type: %s -> %s\n", tipo, to);
 
 					float x,y,z;
-					readXYZcoord(to,x,y,z);
-					glTranslatef(x,y,z);
+					if (!to || !readXYZcoord(to,x,y,z))
+						printf("	Unexpected problem with translation... Program will try to run anyway...\n");
+					else glTranslatef(x,y,z);
 				} 
 				else if (strcmp(tipo,"rotate") == 0){					
 					char* axis = (char*) transform->Attribute("axis");
@@ -860,14 +871,17 @@ bool XMLSceneMod::readGraph(TiXmlElement* dgxElement, vector<Appearance* > &appe
 
 
 					float angulo;
-					sscanf(angle,"%f",&angulo);
-					if(strcmp(axis,"x") == 0)
-						glRotatef(angulo, 1,0,0);
-					else if(strcmp(axis,"y") == 0)
-						glRotatef(angulo, 0,1,0);
-					else if(strcmp(axis,"z") == 0)
-						glRotatef(angulo, 0,0,1);
-					else printf("	Unexpected problem with rotation\n");
+					if (sscanf(angle,"%f",&angulo) != 1)
+						printf("	Problem with angle value in rotate transform... Program will try to run anyway...\n");
+					else{
+						if(strcmp(axis,"x") == 0)
+							glRotatef(angulo, 1,0,0);
+						else if(strcmp(axis,"y") == 0)
+							glRotatef(angulo, 0,1,0);
+						else if(strcmp(axis,"z") == 0)
+							glRotatef(angulo, 0,0,1);
+						else printf("	Unexpected problem with rotation... Program will try to run anyway...\n");
+					}
 				} 
 
 				else if (strcmp(tipo,"scale") == 0){
@@ -875,12 +889,12 @@ bool XMLSceneMod::readGraph(TiXmlElement* dgxElement, vector<Appearance* > &appe
 					printf("	-Type: %s -> %s\n", tipo, factor);
 
 					float x,y,z;
-					readXYZcoord(factor,x,y,z);
-
-					glScalef(x,y,z);
+					if (!factor || !readXYZcoord(factor,x,y,z))
+						printf("	Invalid scale transform... Program will try to run anyway...\n");
+					else glScalef(x,y,z);
 
 				} 
-				else printf("	Missing/invalid transform\n");
+				else printf("	Missing/invalid transform.. Program will try to run anyway...\n");
 				
 				transform = transform->NextSiblingElement();
 			}
@@ -896,8 +910,9 @@ bool XMLSceneMod::readGraph(TiXmlElement* dgxElement, vector<Appearance* > &appe
 			TiXmlElement *appearanceref  = node->FirstChildElement("appearanceref");
 			if (!appearanceref){
 				printf("	Error: Appearances block not found!\n");
-				break;
+				return false;
 			}
+			
 			char* appearance = (char*) appearanceref->Attribute("id"); 
 			bool exists=false;
 			if(strcmp(appearance,"inherit")==0){
@@ -905,16 +920,17 @@ bool XMLSceneMod::readGraph(TiXmlElement* dgxElement, vector<Appearance* > &appe
 				exists=true;
 			}
 			else{
-			
-			for(unsigned int i=0;i<appearances.size();i++)
-				if(strcmp(appearances[i]->getId(),appearance)==0){
-					exists=true;
-					n->setAparencia(appearances[i]);
-				}
+
+				for(unsigned int i=0;i<appearances.size();i++)
+					if(strcmp(appearances[i]->getId(),appearance)==0){
+						exists=true;
+						n->setAparencia(appearances[i]);
+						break;
+					}
 			}
 
 			if(exists) printf("	Appearance: %s\n", appearance);
-			else cout<<"			Error parsing node: appearance does not exist\n";
+			else {cout<<"	Error parsing node: appearance does not exist. Program will end...\n"; return false;}
 
 			
 			
@@ -935,7 +951,7 @@ bool XMLSceneMod::readGraph(TiXmlElement* dgxElement, vector<Appearance* > &appe
 							Rectangle* rect = new Rectangle(x1,y1,x2,y2);
 							n->addPrimitiva(rect);
 						}
-						else printf("		rectangle: invalid values or wrong format\n");
+						else printf("		rectangle: invalid values or wrong format. Program will try to run anyway without this Primitive...\n");
 						
 					}
 
@@ -956,7 +972,7 @@ bool XMLSceneMod::readGraph(TiXmlElement* dgxElement, vector<Appearance* > &appe
 							Triangle* tri = new Triangle(x1,y1,z1,x2,y2,z2,x3,y3,z3);
 							n->addPrimitiva(tri);
 						}
-						else printf("		triangle: invalid values or wrong format\n");
+						else printf("		triangle: invalid values or wrong format. Program will try to run anyway without this Primitive...\n");
 						
 					}
 
@@ -971,7 +987,7 @@ bool XMLSceneMod::readGraph(TiXmlElement* dgxElement, vector<Appearance* > &appe
 						printf("		cylinder: base-%.2f, top-%.2f, height-%.2f, slices-%d, stacks-%d\n",
 							base, top, height, slices, stacks);
 						if (base == 0 || top == 0 || height == 0 || slices == 0 || stacks == 0)
-							printf("		cylinder: invalid values or wrong format\n");
+							printf("		cylinder: invalid values or wrong format. Program will try to run anyway without this Primitive...\n");
 						else{
 							Cylinder* cil = new Cylinder(base,top,height,slices,stacks);
 							n->addPrimitiva(cil);
@@ -986,7 +1002,7 @@ bool XMLSceneMod::readGraph(TiXmlElement* dgxElement, vector<Appearance* > &appe
 						int stacks = atoi((char*) primitive->Attribute("stacks"));
 						printf("		sphere: radius-%.2f, slices-%d, stacks-%d\n", radius, slices, stacks);
 						if (radius == 0 || slices == 0 || stacks == 0)
-							printf("		sphere: invalid values or wrong format\n");
+							printf("		sphere: invalid values or wrong format. Program will try to run anyway without this Primitive...\n");
 						else{
 							Sphere* esf = new Sphere(radius,slices,stacks);
 							n->addPrimitiva(esf);
@@ -1003,13 +1019,13 @@ bool XMLSceneMod::readGraph(TiXmlElement* dgxElement, vector<Appearance* > &appe
 						printf("		torus: inner-%.2f, outer-%.2f, slices-%d, loops-%d\n",
 							inner, outer, slices, loops);
 						if (inner == 0 || outer == 0 || slices == 0 || loops == 0)
-							printf("		torus: invalid values or wrong format\n");
+							printf("		torus: invalid values or wrong format. Program will try to run anyway without this Primitive...\n");
 						else{
 							Torus* tor = new Torus(inner, outer , slices, loops);
 							n->addPrimitiva(tor);
 						}
 					}
-					else printf("		Invalid primitive detected\n");
+					else printf("		Invalid primitive detected.  Program will try to run anyway...\n");
 
 					primitive = primitive->NextSiblingElement();
 				}
@@ -1025,25 +1041,25 @@ bool XMLSceneMod::readGraph(TiXmlElement* dgxElement, vector<Appearance* > &appe
 				TiXmlElement *noderef = descendants->FirstChildElement("noderef");  
 				vector<char*> descendentesNo;
 				string idDesc;
-				cout<<"	Descendentes: ";
+				cout<<"	Descendants: ";
 				while(noderef)
 					{
 						descendentesNo.push_back((char*) noderef->Attribute("id"));
 						noderef=noderef->NextSiblingElement();
 					}
-				cout<<"------------------------------\n";
 				descendentes.push_back(descendentesNo);
 			}
-			
+			cout<<"\n------------------------------\n";
 			destinationGraph->addNode(n);
 			//std::cout << n->mostrarNo();
 			node = node->NextSiblingElement();
 		}
 
-		//ao sair do while, é preciso verificar se existe pelo menos um nó (pelo menos o root node tem de existir
-		if (destinationGraph->searchForNode((string)rootNodeId) == NULL)
+		//ao sair do while, é preciso verificar se existe pelo menos um nó (pelo menos o root node tem de existir)
+		Node* rootTemp = destinationGraph->searchForNode((string)rootNodeId);
+		if (rootTemp == NULL)
 			return false;
-		destinationGraph->setRoot(destinationGraph->searchForNode((string)rootNodeId));
+		destinationGraph->setRoot(rootTemp);
 
 		for (unsigned int i = 0; i < descendentes.size(); i++){
 			Node* tempNode = destinationGraph->searchForNode(i);
@@ -1062,7 +1078,6 @@ bool XMLSceneMod::readGraph(TiXmlElement* dgxElement, vector<Appearance* > &appe
 	//mostrar nos
 	/*for(unsigned int i =0;i<destinationGraph->getNumberOfNodes();i++)
 		cout<<destinationGraph->searchForNode(i)->mostrarNo();*/
-
 
 	return true;
 

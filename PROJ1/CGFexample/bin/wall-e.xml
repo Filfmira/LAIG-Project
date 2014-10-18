@@ -448,8 +448,7 @@
                 <rectangle xy1="-0.3 -2.236067977" xy2="0.3 0" />
             </primitives>
 
-            <descendants>
-            </descendants>
+      
         </node>
 
         <node id="restoPernaBaixo">

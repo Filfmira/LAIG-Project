@@ -8,7 +8,7 @@
 class Light{
 
 private:
-	int lightId;
+	string lightId;
 	string tipo;
 	float pos[4];
 	float target[3];
@@ -17,12 +17,13 @@ private:
 	float angle;
 	float exponent;
 	CGFlight* light;
+	unsigned int CGFlightIndex;
 
 public:
 
-	Light(string tipo, int lightId, bool enabled, bool marker, float pos[4], 
+	Light(string tipo, string lightId, bool enabled, bool marker, float pos[4], 
 		float target[3], float angle, float exponent,
-		float* ambient, float* diffuse, float* specular);
+		float* ambient, float* diffuse, float* specular, int index);
 
 	void apply();
 	~Light();
@@ -30,9 +31,11 @@ public:
 	string showLight();
 	float getAngle(){return this->angle;}
 	void setAngle(float angle){this->angle=angle;}
-	int getLightId(){return lightId;}
+	string getLightId(){return this->lightId;}
 	CGFlight* getLight(){return light;}
 	bool getMarker(){return marker;}
+	void setCGFlightIndex(int i){this->CGFlightIndex = i;}
+	int getCGFlightIndex(){return this->CGFlightIndex;}
 };
 
 
