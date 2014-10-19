@@ -6,7 +6,7 @@ using namespace std;
 #include "glut.h"
 #include "GL/glui.h"
 #include "GL/glut.h"
-#include <stdlib.h>     /* strtol */
+#include <stdlib.h>     /* strtof */
 #include <cstdlib>
 #include "CGFapplication.h"
 
@@ -1010,17 +1010,30 @@ bool XMLSceneMod::readGraph(TiXmlElement* dgxElement, vector<Appearance* > &appe
 					////////////cylinder//////////////
 					else if (strcmp("cylinder", primitive->Value()) == 0){
 						float base = atof((char*) primitive->Attribute("base"));
-						float top = atof((char*) primitive->Attribute("top"));
+						//float top = atof((char*) primitive->Attribute("top"));
 						float height = atof((char*) primitive->Attribute("height"));
-						int slices = atoi((char*) primitive->Attribute("slices"));
-						int stacks = atoi((char*) primitive->Attribute("stacks"));
-						printf("		cylinder: base-%.2f, top-%.2f, height-%.2f, slices-%d, stacks-%d\n",
-							base, top, height, slices, stacks);
-						if (base == 0 || top == 0 || height == 0 || slices == 0 || stacks == 0)
-							printf("		cylinder: invalid values or wrong format. Program will try to run anyway without this Primitive...\n");
+						
+						//topo é algumas vezes igual a zero, pelo que atof não pode ser utilizado
+						char* endptr;
+						char* top_S = (char*) primitive->Attribute("top");
+						errno = 0;    /* To distinguish success/failure after call */
+						double top = strtod(top_S, &endptr);
+						/* Check for various possible errors */
+						if ((errno == ERANGE && (top == HUGE_VAL || top == -HUGE_VAL))) {
+								printf("		cylinder: error with top value. Program will try to run anyway without this primitive\n");
+						}
+
 						else{
-							Cylinder* cil = new Cylinder(base,top,height,slices,stacks);
-							n->addPrimitiva(cil);
+							int slices = atoi((char*) primitive->Attribute("slices"));
+							int stacks = atoi((char*) primitive->Attribute("stacks"));
+							printf("		cylinder: base-%.2f, top-%.2f, height-%.2f, slices-%d, stacks-%d\n",
+								base, top, height, slices, stacks);
+							if (base == 0 || height == 0 || slices == 0 || stacks == 0)
+								printf("		cylinder: invalid values or wrong format. Program will try to run anyway without this Primitive...\n");
+							else{
+								Cylinder* cil = new Cylinder(base,top,height,slices,stacks);
+								n->addPrimitiva(cil);
+							}
 						}
 					}
 
@@ -1066,6 +1079,8 @@ bool XMLSceneMod::readGraph(TiXmlElement* dgxElement, vector<Appearance* > &appe
 			if (!descendants){
 				printf("	No descendants block\n");
 				//break;
+				vector<char*> descendentesNo;
+				descendentes.push_back(descendentesNo);
 			}
 			else {
 				TiXmlElement *noderef = descendants->FirstChildElement("noderef");  

@@ -131,13 +131,8 @@ private:
 public:
 	Cylinder (float base, float top, float height, int slices, int stacks){
 		
-		if (base <=0)
-			this->base = 0.0001;	
-		else this->base = base;
-		if (top <= 0)
-			this->top = 0.0001;
-		else this->top = top;
-
+		this->base = base;
+		this->top = top;
 		this->height = height;
 		this->slices = slices;
 		this->stacks = stacks;
