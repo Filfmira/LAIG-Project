@@ -139,7 +139,9 @@ void ProjectScene::display()
 	glLoadIdentity();
 
 	// Apply transformations corresponding to the camera position relative to the origin
-	activeCamera->getCamera()->applyView();
+	if (activeCamera == NULL)
+		CGFscene::activeCamera->applyView();
+	else activeCamera->getCamera()->applyView();
 	//CGFscene::activeCamera->applyView();
 	//VisualizationMode
 	if (wireFrame)

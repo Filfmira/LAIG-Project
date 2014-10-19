@@ -50,14 +50,18 @@ void TPinterface::initGUI()
 	unsigned int sizeCameras = ((ProjectScene*) scene)->cameras.size();
 	Camera* activeCamera = ((ProjectScene*) scene)->activeCamera;
 
+	camerasRadioButtons.push_back(addRadioButtonToGroup (camerasRadGroup, "Standard"));
+	camerasRadioButtons.back()->set_id(0);
+
+
 	for (unsigned int i = 0; i < sizeCameras; i++){
 		Camera* temp = &((ProjectScene*) scene)->cameras[i];
 		ostringstream ss;
 		ss << temp->getType() << " camera " << temp->getId();
 		camerasRadioButtons.push_back(addRadioButtonToGroup (camerasRadGroup, (char*) ss.str().c_str() ));
-		camerasRadioButtons.back()->set_id(i);
+		camerasRadioButtons.back()->set_id(i+1);
 		if (temp->getId() == activeCamera->getId())
-			camerasRadGroup->set_int_val(i);
+			camerasRadGroup->set_int_val(i+1);
 	}
 
 }
@@ -86,8 +90,12 @@ void TPinterface::processGUI(GLUI_Control *ctrl)
 
 	//////////CAMERAS////////
 	case(initialId+9): 
-		((ProjectScene*) scene)->activeCamera = &((ProjectScene*) scene)->cameras[ctrl->get_int_val()];
-		camerasRadGroup->set_int_val(ctrl->get_int_val());
+		if (ctrl->get_int_val() == 0)
+			((ProjectScene*) scene)->activeCamera = NULL;
+		else{
+			((ProjectScene*) scene)->activeCamera = &((ProjectScene*) scene)->cameras[ctrl->get_int_val()-1];
+			camerasRadGroup->set_int_val(ctrl->get_int_val());
+		}
 		break;
 	/////////////////////////
 
