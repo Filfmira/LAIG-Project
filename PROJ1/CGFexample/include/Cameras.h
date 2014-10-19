@@ -102,11 +102,11 @@ glOrtho(left, right, bottom, top, near, far);
 
 	void applyView()
 	{
-		//CGFcamera::applyView();
+		CGFcamera::applyView();
 		if(direction=="x")
 		{
 			//glOrtho(left, right, bottom, top, near, far);
-gluLookAt(near, 0.0, 0.0, far, 0.0, 0.0, 0.0, 1.0, 0.0);
+			gluLookAt(near, 0.0, 0.0, far, 0.0, 0.0, 0.0, 1.0, 0.0);
 		}
 		else if(direction=="y")
 		{
