@@ -126,19 +126,28 @@ private:
 	int slices;
 	int stacks;
 	GLUquadric* cylinder;
+	double alphaStep;
 
 public:
 	Cylinder (float base, float top, float height, int slices, int stacks){
-		this->base = base;
-		this->top = top;
+		
+		if (base <=0)
+			this->base = 0.0001;	
+		else this->base = base;
+		if (top <= 0)
+			this->top = 0.0001;
+		else this->top = top;
+
 		this->height = height;
 		this->slices = slices;
 		this->stacks = stacks;
 		cylinder=gluNewQuadric();
+
+		alphaStep = (360.0/(float)slices)*acos(-1.0)/180.0;
 	};
 
 	void draw(){
-		double alphaStep = (360.0/(float)slices)*acos(-1.0)/180.0;
+		
 
 		float x1,y1;
 		glPushMatrix();
@@ -152,7 +161,7 @@ public:
 					x1=top*cos(i* alphaStep);
 					y1=top*sin(i* alphaStep);
 					glTexCoord2d(x1*0.5+0.5,y1*0.5+0.5);
-					glVertex3f(x1,y1, height); //guardar estes senos e cossenos para não calcular???
+					glVertex3f(x1,y1, height); 
 					
 				}
 			glEnd();
@@ -168,7 +177,7 @@ public:
 						x1=base*cos(i* alphaStep);
 						y1=base*sin(i* alphaStep);
 						glTexCoord2d(x1*0.5+0.5,y1*0.5+0.5);
-						glVertex3d(x1,y1,0); //guardar estes senos e cossenos para não calcular???
+						glVertex3d(x1,y1,0); 
 						
 					}
 				glEnd();
