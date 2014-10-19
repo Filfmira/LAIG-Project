@@ -23,7 +23,7 @@ void ProjectScene::init()
 		lights[i] = NULL;
 	
 	globals=Global();
-	XMLSceneMod temp = XMLSceneMod("wall-e.xml", &sceneGraph, lights ,textures,appearances,&cameras, activeCamera, &globals);
+	XMLSceneMod temp = XMLSceneMod("LAIG_TP1_ANF_T01_G03_v2.anf", &sceneGraph, lights ,textures,appearances,&cameras, activeCamera, &globals);
 
 	glFrontFace(GL_CCW); //este parametro deve ser lido do anf file
 //GL_CCW torna os poligonos CCW nas frontFaces (outra opção é GL_CW)
@@ -158,7 +158,7 @@ void ProjectScene::display()
 
 
 	// Draw axis
-	axis.draw();
+	//axis.draw();
 
 	// ---- END Background, camera and axis setup
 

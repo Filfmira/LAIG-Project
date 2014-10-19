@@ -94,37 +94,47 @@ public:
 	void updateProjectionMatrix(int width, int height)
 	{
 		glMatrixMode(GL_PROJECTION);
-glLoadIdentity();
-float aspect = (float) width / (float) height;
-glOrtho(left, right, bottom, top, near, far);
+		glLoadIdentity();
+		//float aspect = (float) width / (float) height;
+		glOrtho(left, right, bottom, top, near, far);
 
 	}
 
 	void applyView()
 	{
+		
+
+		CGFcamera::applyView();
+		if(direction=="x")
+			glRotatef(-90,0,1,0);
+		else if (direction=="y")
+			glRotatef(90,1,0,0);
+		/*
+		
 		CGFcamera::applyView();
 		if(direction=="x")
 		{
 			//glOrtho(left, right, bottom, top, near, far);
-			gluLookAt(near, 0.0, 0.0, far, 0.0, 0.0, 0.0, 1.0, 0.0);
+			gluLookAt(1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0);
 		}
 		else if(direction=="y")
 		{
 			//glOrtho(left, right, bottom, top, near, far);
-			gluLookAt(0.0, near, 0.0, 0.0, far, 0.0, 0, 0, 1.0);
+			gluLookAt(0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0, 0, 1.0);
 
 		}
 		else if(direction=="z")
 		{
 
 			//glOrtho(left, right, bottom, top, near, far);
-			gluLookAt(0.0, 0.0, near, 0.0, 0.0, far, 0.0, 1.0, 0.0);
+			gluLookAt(0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0);
 		}
 		else
 		{
 			printf("%s\n",direction);
 			return;
 		}
+		*/
 	}
 
 };

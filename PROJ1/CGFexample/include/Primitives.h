@@ -92,10 +92,10 @@ public:
 		this->z2 = z2;
 		this->z3 = z3;
 
-		this->a=sqrt(pow(x1-x3,2)+pow(y1-y3,2)+pow(z1-z3,2)); //distancia de x1 a x3
-		this->b=sqrt(pow(x2-x1,2)+pow(y2-y1,2)+pow(z2-z1,2)); //distancia de x1 a x2
-		this->c=sqrt(pow(x3-x2,2)+pow(y3-y2,2)+pow(z3-z2,2)); //distancia de x2 a x3
-		this->cos3=(a*a-b*b+c*c)/(2*a*c);
+		this->a=sqrt(pow(x3-x2,2)+pow(y3-y2,2)+pow(z3-z2,2)); //distancia de x2 a x3
+  this->b=sqrt(pow(x1-x3,2)+pow(y1-y3,2)+pow(z1-z3,2)); //distancia de x1 a x3
+  this->c=sqrt(pow(x2-x1,2)+pow(y2-y1,2)+pow(z2-z1,2)); //distancia de x1 a x2
+  this->cos3=(a*a-b*b+c*c)/(2*a*c);
 		this->sin3=sqrt(1-pow(cos3,2));
 	}
 	
@@ -103,11 +103,11 @@ public:
 		glPushMatrix();			
 			glNormal3f(0,0,1) ;
 			glBegin(GL_TRIANGLES);
-				glTexCoord2d( (c-a*cos3)/Appearance::texlength_s,a*sin3/Appearance::texlength_t);
-				glVertex3d(x1,y1,z1);
 				glTexCoord2d(0,0);
-				glVertex3d(x2,y2,z2);
+				glVertex3d(x1,y1,z1);
 				glTexCoord2d(c/Appearance::texlength_s,0);
+				glVertex3d(x2,y2,z2);
+				glTexCoord2d( (c-a*cos3)/Appearance::texlength_s,(a*sin3)/Appearance::texlength_t);
 				glVertex3d(x3,y3,z3);
 			glEnd();
 		glPopMatrix();
