@@ -58,17 +58,13 @@ public:
 	}
 	*/
 	void updateProjectionMatrix (int width, int height){//reshape
-//glViewport(0,0,width,height) ;
- glMatrixMode (GL_PROJECTION ) ;
- glLoadIdentity();
- gluPerspective(angle,width/height,near,far);
- //glMatrixMode(GL_MODELVIEW);
+		glMatrixMode (GL_PROJECTION ) ;
+		glLoadIdentity();
+		gluPerspective(angle,width/height,near,far);
 }
 	void applyView() {
-		CGFcamera::applyView();
-	//gluPerspective(angle, 1.0, near, far);
+	//	CGFcamera::applyView();
 	gluLookAt(pos[0],pos[1],pos[2],target[0],target[1],target[2],0.0,1.0,0.0);
-	//printf("targets: %f %f %f", target[0],target[1],target[2]);
 
 	}
 
@@ -97,20 +93,20 @@ public:
 
 	void updateProjectionMatrix(int width, int height)
 	{
-		glMatrixMode(GL_PROJECTION);//lens
-		glLoadIdentity();
-		glOrtho(left, right, bottom, top, near, far);
+		glMatrixMode(GL_PROJECTION);
+glLoadIdentity();
+float aspect = (float) width / (float) height;
+glOrtho(left, right, bottom, top, near, far);
 
 	}
 
 	void applyView()
 	{
-		CGFcamera::applyView();
+		//CGFcamera::applyView();
 		if(direction=="x")
 		{
 			//glOrtho(left, right, bottom, top, near, far);
-			printf("entou no x\n");
-			gluLookAt(1, 0.0, 0.0, far, 0.0, 0.0, 0.0, 1.0, 0.0);
+gluLookAt(near, 0.0, 0.0, far, 0.0, 0.0, 0.0, 1.0, 0.0);
 		}
 		else if(direction=="y")
 		{

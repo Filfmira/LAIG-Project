@@ -1,4 +1,4 @@
-<anf>
+﻿<anf>
 
     <!-- bloco de configuracoes globais -->
     <!-- a declaracao dos componentes deste bloco e' obrigatoria -->
@@ -6,7 +6,7 @@
         <!-- Parametros de desenho -->
         <!-- Valores para mode: "fill" , "line", "point" -->
         <!-- Valores para shading: "flat", "gouraud" ) -->
-        <drawing mode="fill" shading="gouraud" background="0.5 0.2 0.1 0.8" />
+        <drawing mode="fill" shading="gouraud" background="0.0 0.0 0.0 1" />
  
         <!-- Parametros de culling -->
         <!-- Valores para cullface: "none", "back" , "front" ou "both" -->
@@ -14,7 +14,7 @@
         <culling face="back" order="ccw" />
  
         <!-- Parametros de iluminacao; seguem os parametros do OpenGL  -->
-        <lighting doublesided="true" local="false" enabled="true" ambient="0.8 0.8 0.8 0.8" />
+        <lighting doublesided="true" local="false" enabled="true" ambient="0.2 0.2 0.2 1" />
  
     </globals>
 
@@ -27,7 +27,8 @@
         <ortho id="landscapez" direction="z" near="10" far="-10" left="-10" right="10" top="10" bottom="-10" />
         <ortho id="landscapex" direction="x" near="10" far="-10" left="-10" right="10" top="10" bottom="-10" />
         <ortho id="landscapey" direction="y" near="10" far="-10" left="-10" right="10" top="10" bottom="-10" />
-        <perspective id="0" near="1.0" far="20.0" angle="90" pos="4.0 4.0 4.0" target="0.0 0.0 0.0" />
+        <perspective id="0" near="1.0" far="20.0" angle="45" pos="15.0 10.0 15.0" target="5.0 0.0 0.0" />
+		<perspective id="1" near="1.0" far="20.0" angle="45" pos="-10 0.0 10.0" target="5.0 0.0 0.0" />
 
     </cameras>
 
@@ -448,7 +449,8 @@
                 <rectangle xy1="-0.3 -2.236067977" xy2="0.3 0" />
             </primitives>
 
-      
+            <descendants>
+            </descendants>
         </node>
 
         <node id="restoPernaBaixo">
@@ -643,7 +645,7 @@
             </transforms>
             <appearanceref id="planet" />
             <primitives>
-                   <torus inner="3.5" outer="20" slices="30" loops="50" /> 
+                   <torus inner="3.5" outer="20" slices="30" loops="20" /> 
             </primitives>
             <descendants>
             </descendants>

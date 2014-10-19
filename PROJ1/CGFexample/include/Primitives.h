@@ -146,12 +146,14 @@ public:
 			//topo
 			glNormal3f(0,0,1) ;
 			glBegin(GL_TRIANGLE_FAN);
+				glTexCoord2d(0.5,0.5);
 				glVertex3f(0, 0, height);
 				for(int i = 0; i <= slices; i++){
 					x1=top*cos(i* alphaStep);
 					y1=top*sin(i* alphaStep);
-					glVertex3f(x1,y1, height); //guardar estes senos e cossenos para não calcular???
 					glTexCoord2d(x1*0.5+0.5,y1*0.5+0.5);
+					glVertex3f(x1,y1, height); //guardar estes senos e cossenos para não calcular???
+					
 				}
 			glEnd();
 
@@ -160,12 +162,14 @@ public:
 				glRotated(180,0,1,0);
 				glNormal3f(0,0,1) ;
 				glBegin(GL_TRIANGLE_FAN);
+				glTexCoord2d(0.5,0.5);
 					glVertex3f(0, 0, 0);
 					for(int i = 0; i <= slices; i++){
 						x1=base*cos(i* alphaStep);
 						y1=base*sin(i* alphaStep);
-						glVertex3d(x1,y1,0); //guardar estes senos e cossenos para não calcular???
 						glTexCoord2d(x1*0.5+0.5,y1*0.5+0.5);
+						glVertex3d(x1,y1,0); //guardar estes senos e cossenos para não calcular???
+						
 					}
 				glEnd();
 			glPopMatrix();

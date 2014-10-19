@@ -41,7 +41,7 @@ XMLSceneMod::XMLSceneMod(char *filename, Graph* gr, Light** lig, vector<Texture*
 	if (dgxElement == NULL)
 	{
 		printf("Main anf block element not found! Exiting!\n");
-		//cin.get();
+		cin.get();
 		exit(1);
 	}
 
@@ -50,39 +50,39 @@ XMLSceneMod::XMLSceneMod(char *filename, Graph* gr, Light** lig, vector<Texture*
 	readGlobals(dgxElement);
 
 	if (!readCameras(dgxElement)){
-		//cin.get();
+		cin.get();
 		exit(1);
 	}
 	activeCamera = initialCamera;
-	//cin.get();
+	cin.get();
 
 
 	if (!readLights(dgxElement)){
-		//cin.get();
+		cin.get();
 		exit(1);
 	}
-	//cin.get();
+	cin.get();
 
 
 	if(!readTextures(dgxElement, textures)){
-		//cin.get();
+		cin.get();
 		exit(1);
 	}
-	//cin.get();
+	cin.get();
 
 
 	if (!readAppearances(dgxElement, appearances, textures)){
-		//cin.get();
+		cin.get();
 		exit(1);
 	}
-	//cin.get();
+	cin.get();
 		
 
 	if (!readGraph(dgxElement, appearances)){
-		//cin.get();
+		cin.get();
 		exit(1);
 	}
-	//cin.get();
+	cin.get();
 
 }
 

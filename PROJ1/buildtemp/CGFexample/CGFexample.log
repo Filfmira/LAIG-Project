@@ -1,4 +1,4 @@
-﻿Build started 18/10/2014 23:33:24.
+﻿Build started 19/10/2014 15:20:54.
      1>Project "C:\Users\filipe\Desktop\LAIG\PROJ1\CGFexample\CGFexample.vcxproj" on node 2 (build target(s)).
      1>InitializeBuildStatus:
          Creating "..\buildtemp\CGFexample\CGFexample.unsuccessfulbuild" because "AlwaysCreate" was specified.
@@ -14,4 +14,4 @@
 
 Build succeeded.
 
-Time Elapsed 00:00:00.19
+Time Elapsed 00:00:00.26
