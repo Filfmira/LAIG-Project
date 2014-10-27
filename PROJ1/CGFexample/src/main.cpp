@@ -1,10 +1,9 @@
 #include <iostream>
 #include <exception>
 
-//#include "CGFapplication.h"
 #include "XMLSceneMod.h"
 #include "TPinterface.h"
-//#include "ProjectScene.h"
+
 
 using std::cout;
 using std::exception;
@@ -31,8 +30,6 @@ int main(int argc, char* argv[]) {
 		cin.get();
 		return -1;
 	}
-
-	
 
 	return 0;
 }

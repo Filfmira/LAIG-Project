@@ -50,6 +50,7 @@
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>glew32.lib;CGFlib.lib;tinyxml.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <IgnoreSpecificDefaultLibraries>LIBCMT.lib</IgnoreSpecificDefaultLibraries>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -66,33 +67,29 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="src\DemoScene.cpp" />
-    <ClCompile Include="src\ExampleObject.cpp" />
+    <ClCompile Include="src\Appearances.cpp" />
     <ClCompile Include="src\Graph.cpp" />
     <ClCompile Include="src\Lights.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\Node.cpp" />
-    <ClCompile Include="src\Primitives.cpp" />
     <ClCompile Include="src\ProjectScene.cpp" />
     <ClCompile Include="src\TPinterface.cpp" />
     <ClCompile Include="src\XMLSceneMod.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="include\Appearances.h" />
-    <ClInclude Include="include\Cameras.h" />
-    <ClInclude Include="include\Globals.h" />
-    <ClInclude Include="include\Lights.h" />
-    <ClInclude Include="include\Primitives.h" />
-    <ClInclude Include="include\ProjectScene.h" />
-    <ClInclude Include="include\Textures.h" />
-    <ClInclude Include="include\tinystr.h" />
-    <ClInclude Include="include\tinyxml.h" />
-    <ClInclude Include="include\TPinterface.h" />
-    <ClInclude Include="include\XMLSceneMod.h" />
-    <ClInclude Include="src\DemoScene.h" />
-    <ClInclude Include="src\ExampleObject.h" />
+    <ClInclude Include="src\Appearances.h" />
+    <ClInclude Include="src\Cameras.h" />
+    <ClInclude Include="src\Globals.h" />
     <ClInclude Include="src\Graph.h" />
+    <ClInclude Include="src\Lights.h" />
     <ClInclude Include="src\Node.h" />
+    <ClInclude Include="src\Primitives.h" />
+    <ClInclude Include="src\ProjectScene.h" />
+    <ClInclude Include="src\Textures.h" />
+    <ClInclude Include="src\tinystr.h" />
+    <ClInclude Include="src\tinyxml.h" />
+    <ClInclude Include="src\TPinterface.h" />
+    <ClInclude Include="src\XMLSceneMod.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -80,25 +80,25 @@ public:
 		float x2, float y2, float z2,
 		float x3, float y3, float z3){
 
-		this->x1 = x1;	
-		this->x2 = x2;
-		this->x3 = x3;
+			this->x1 = x1;	
+			this->x2 = x2;
+			this->x3 = x3;
 
-		this->y1 = y1;	
-		this->y2 = y2;
-		this->y3 = y3;
+			this->y1 = y1;	
+			this->y2 = y2;
+			this->y3 = y3;
 
-		this->z1 = z1;	
-		this->z2 = z2;
-		this->z3 = z3;
+			this->z1 = z1;	
+			this->z2 = z2;
+			this->z3 = z3;
 
-		this->a=sqrt(pow(x3-x2,2)+pow(y3-y2,2)+pow(z3-z2,2)); //distancia de x2 a x3
-  this->b=sqrt(pow(x1-x3,2)+pow(y1-y3,2)+pow(z1-z3,2)); //distancia de x1 a x3
-  this->c=sqrt(pow(x2-x1,2)+pow(y2-y1,2)+pow(z2-z1,2)); //distancia de x1 a x2
-  this->cos3=(a*a-b*b+c*c)/(2*a*c);
-		this->sin3=sqrt(1-pow(cos3,2));
+			this->a=sqrt(pow(x3-x2,2)+pow(y3-y2,2)+pow(z3-z2,2)); //distancia de x2 a x3
+			this->b=sqrt(pow(x1-x3,2)+pow(y1-y3,2)+pow(z1-z3,2)); //distancia de x1 a x3
+			this->c=sqrt(pow(x2-x1,2)+pow(y2-y1,2)+pow(z2-z1,2)); //distancia de x1 a x2
+			this->cos3=(a*a-b*b+c*c)/(2*a*c);
+			this->sin3=sqrt(1-pow(cos3,2));
 	}
-	
+
 	void draw(){
 		glPushMatrix();			
 			glNormal3f(0,0,1) ;
@@ -215,9 +215,7 @@ public:
 		gluQuadricDrawStyle(sphere, GLU_FILL);
 		gluQuadricTexture(sphere, GLU_TRUE);	
 		gluQuadricNormals(sphere, GLU_SMOOTH);
-		
 			//void gluSphere(GLUquadric*  quad,  GLdouble  radius,  GLint  slices,  GLint  stacks);
-			
 		glPopMatrix();
 	};
 

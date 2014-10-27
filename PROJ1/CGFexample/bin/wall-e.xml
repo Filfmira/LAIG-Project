@@ -6,7 +6,7 @@
         <!-- Parametros de desenho -->
         <!-- Valores para mode: "fill" , "line", "point" -->
         <!-- Valores para shading: "flat", "gouraud" ) -->
-        <drawing mode="fill" shading="gouraud" background="0.0 0.0 0.0 1" />
+        <drawing mode="point" shading="gouraud" background="0.0 0.0 0.0 1" />
  
         <!-- Parametros de culling -->
         <!-- Valores para cullface: "none", "back" , "front" ou "both" -->
@@ -24,11 +24,15 @@
         <!-- no caso da camara ortho, o atributo "direction" define o eixo segundo o qual se efetua a projecao -->
 
 
-        <ortho id="landscapez" direction="z" near="10" far="-10" left="-10" right="10" top="10" bottom="-10" />
-        <ortho id="landscapex" direction="x" near="10" far="-10" left="-10" right="10" top="10" bottom="-10" />
-        <ortho id="landscapey" direction="y" near="10" far="-10" left="-10" right="10" top="10" bottom="-10" />
+        <ortho id="landscapez" direction="z" near="1" far="100" left="-10" right="10" top="10" bottom="-10" />
+        <ortho id="landscapex" direction="x" near="1" far="10" left="-10" right="10" top="10" bottom="-10" />
+        <ortho id="landscapey" direction="y" near="1" far="10" left="-10" right="10" top="10" bottom="-10" />
         <perspective id="0" near="1.0" far="20.0" angle="45" pos="15.0 10.0 15.0" target="5.0 0.0 0.0" />
 		<perspective id="1" near="1.0" far="20.0" angle="45" pos="-10 3.0 10.0" target="5.0 0.0 0.0" />
+		<!--<perspective id="persp1" near="1.0" far="20.0" angle="45" pos="0 0 13" target="0.0 5.0 0.0" />
+		<perspective id="persp2" near="1.0" far="20.0" angle="45" pos="0 0 13" target="5.0 0.0 0.0" />
+		<perspective id="persp3" near="1.0" far="20.0" angle="45" pos="0 0 13" target="0 -5.0 0.0" />-->
+
 
     </cameras>
 
@@ -147,10 +151,7 @@
               
              <!-- bloco "descendants" -->
             <descendants>
-                <noderef id="corpo" />
-                <noderef id="pernas" />
-                <noderef id="pescoco" />
-                <noderef id="olhos" />
+                <noderef id="wall-e" />
 				<noderef id="planet" />
                 <noderef id="ceu" />
 
@@ -176,6 +177,27 @@
             <descendants>
             </descendants>
         </node> -->
+
+
+
+
+
+        <node id="wall-e">
+            <transforms>
+                <transform type="translate" to="-5 -5 -5" />
+                <transform type="rotate" axis="y" angle="45" />
+            </transforms>
+            <appearanceref id="ss" />
+            <primitives>
+            </primitives>
+
+            <descendants>
+                <noderef id="corpo" />
+                <noderef id="pernas" />
+                <noderef id="pescoco" />
+                <noderef id="olhos" />
+            </descendants>
+        </node>
 
 
         <!-- ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||-->
@@ -518,7 +540,8 @@
 
         <node id="olhos">
             <transforms>
-                <transform type="translate" to="0 3.5 0" />
+                <transform type="translate" to="0 3.5 0" /> <!-- olhar para cima -->
+                <transform type="rotate" axis="x" angle="-35" />
             </transforms>
             <appearanceref id="greyMetal" />
             <primitives>
@@ -614,7 +637,7 @@
 		
 		<node id="planet">
             <transforms>
-			<transform type="translate" to="7 2 0" />
+				<transform type="translate" to="6 6 6" />
                 <transform type="rotate" axis="x" angle="-45" />
             </transforms>
             <appearanceref id="planet" />

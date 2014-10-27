@@ -1,9 +1,7 @@
 #include "XMLSceneMod.h"
 
-using namespace std;
+
 #include <iostream>
-#include "glui.h"
-#include "glut.h"
 #include "GL/glui.h"
 #include "GL/glut.h"
 #include <stdlib.h>     /* strtof */
@@ -11,19 +9,9 @@ using namespace std;
 #include "CGFapplication.h"
 
 
-//como vamos guardar os Appearances? talvez uma especia de map, tabela tipo <id,CGFappearance>
-//é preciso por os nos com links entre eles?!?*****
-
 XMLSceneMod::XMLSceneMod(char *filename, Graph* gr, Light** lig, vector<Texture* > &textures, vector<Appearance* > &appearances, vector<Camera >*cameras, Camera* &activeCamera, Global *globals): destinationGraph(gr), destinationLights(lig)
 {
 
-	// Read XML from file
-	
-	//Graph graph = Graph();
-	
-	
-	//this->textures=textures;
-	//this->appearances=appearances;
 	this->cameras=cameras;
 	this->initialCamera = NULL;
 	this->globals=globals;
@@ -120,8 +108,7 @@ bool XMLSceneMod::readGlobals(TiXmlElement* dgxElement){
 
 
 	globalsElement = dgxElement->FirstChildElement( "globals" );
-	//camerasElement = dgxElement->FirstChildElement( "cameras" );
-			//drawing
+	//drawing
 	char* mode;
 	char* shading;
     float background[4];
@@ -135,7 +122,7 @@ bool XMLSceneMod::readGlobals(TiXmlElement* dgxElement){
 	bool enabled;
 	float ambient[4];
 
-	/////////////globals/////////////////
+
 	if (globalsElement == NULL){
 		printf("globals block not found!\n");
 		return false;
@@ -169,7 +156,6 @@ bool XMLSceneMod::readGlobals(TiXmlElement* dgxElement){
 			char *backgroundS=NULL;
 
 			backgroundS=(char *) drawingElement->Attribute("background");
-			//if(background && sscanf(background,"%f %f %f %f",&red, &green, &blue, &alpha)== 4)
 			if(backgroundS && readRGBcomponents(backgroundS,background[0], background[1], background[2], background[3]))
 			{
 					printf("	background: R-%f, G-%f, B-%f, A-%f\n", background[0], background[1], background[2], background[3]);
@@ -193,7 +179,7 @@ bool XMLSceneMod::readGlobals(TiXmlElement* dgxElement){
 			face = (char *) cullingElement->Attribute("face");
 			order = (char *) cullingElement->Attribute("order");
 
-			if (strlen(face) == 0){ //aqui tem de verificar as opções ainda...
+			if (strlen(face) == 0){ 
 				printf("Error parsing culling: missing face variable\n");
 				face = "error";
 			}
@@ -219,7 +205,6 @@ bool XMLSceneMod::readGlobals(TiXmlElement* dgxElement){
 			char* doublesidedS = (char *) lightingElement->Attribute("doublesided");
 			char* localS = (char *) lightingElement->Attribute("local");
 			char* enabledS = (char *) lightingElement->Attribute("enabled");
-			cout<<"------------------2\n";
 			if (strcmp(doublesidedS,"true") != 0)		doublesided=true;
 			else if(strcmp(doublesidedS,"false") != 0)	doublesided=false;
 			else
@@ -227,7 +212,6 @@ bool XMLSceneMod::readGlobals(TiXmlElement* dgxElement){
 				printf("Error parsing lighting: missing or wrong type doublesided variable\n");
 				doublesidedS = "error";
 			}
-			cout<<"------------------3\n";
 
 			if (strcmp(localS,"true") != 0)			local=true;
 			else if(strcmp(localS,"false") != 0)	local=false;
@@ -235,27 +219,23 @@ bool XMLSceneMod::readGlobals(TiXmlElement* dgxElement){
 				printf("Error parsing lighting: missing or wrong type local variable\n");
 				localS = "error";
 			}
-			cout<<"------------------4\n";
 			if (strcmp(enabledS,"true") != 0)			enabled=true;
 			else if(strcmp(enabledS,"false") != 0)		enabled=false;
 			else{
 				printf("Error parsing lighting: missing or wrong type local variable\n");
 				localS = "error";
 			}
-			cout<<"------------------5\n";
 
 			printf("	doublesided: %s\n	local: %s\n	enabled: %s\n", doublesidedS, localS, enabledS);
 		
 
 			char *ambientS=NULL;
 			float red, green, blue, alpha;
-			cout<<"------------------6\n";
+
 			ambientS=(char *) lightingElement->Attribute("ambient");
 			if(ambient && readRGBcomponents(ambientS,ambient[0], ambient[1], ambient[2], ambient[3]))
 			{
-				cout<<"------------------7\n";
 					printf("	ambient: R-%f, G-%f, B-%f, A-%f\n",  ambient[1], ambient[2], ambient[3]);
-					cout<<"------------------8\n";
 			}
 			else{
 				printf("Error parsing ambient\n");
@@ -276,7 +256,6 @@ bool XMLSceneMod::readGlobals(TiXmlElement* dgxElement){
 	globals->setLocal(local);
 	globals->setEnabled(enabled);
 	globals->setAmbient(&ambient[0]);
-	//globals= new Global(mode,shading,&background[0],face,order,doublesided,local,enabled,&ambient[0]);
 	return true;
 	////////////////////// END GLOBALS /////////////////////
 }
@@ -306,7 +285,6 @@ bool XMLSceneMod::readCameras(TiXmlElement* dgxElement){
 	TiXmlElement * perspectives = camerasElement->FirstChildElement("perspective");
 	while(perspectives)
 	{
-		//CGFcamera* cgfCamera= new CGFcamera();
 
 		bool valid = true;
 
@@ -456,7 +434,6 @@ bool XMLSceneMod::readCameras(TiXmlElement* dgxElement){
 	for (unsigned int i = 0; i < cameras->size(); i++){
 		if (cameras->at(i).getId() == (string) initial_T){
 			initialCamera = &(cameras->at(i));
-			//printf("set da initial camera\n");
 			return true;
 		}
 	}
@@ -474,7 +451,6 @@ bool XMLSceneMod::readLights(TiXmlElement* dgxElement){
 
 	TiXmlElement * lights = lightsElement->FirstChildElement("light");
 
-	//while(lights){
 	for (unsigned int i = 0; lights && i < 8; i++){
 
 		bool validLight = true;
@@ -494,8 +470,6 @@ bool XMLSceneMod::readLights(TiXmlElement* dgxElement){
 		//id
 		id = (char*) lights->Attribute("id");
 		if (id){
-			/*id = atoi(id_T);
-			printf("id: %d \n",id);*/
 			printf("id: %s\n", id);
 		}
 		else validLight = false;
@@ -552,8 +526,8 @@ bool XMLSceneMod::readLights(TiXmlElement* dgxElement){
 
 		//angle and exponent - only for spot lights
 		if ( strcmp(type, "omni") == 0 ){
-			angle = 360; // ????
-			exponent = 1; // ????
+			angle = 360; 
+			exponent = 1; 
 			target[0] = NULL; target[1] = NULL; target[2] = NULL;
 		}
 		else{
@@ -853,9 +827,6 @@ bool XMLSceneMod::readGraph(TiXmlElement* dgxElement, vector<Appearance* > &appe
 		
 		TiXmlElement *node = graphElement->FirstChildElement("node");
 		
-		/*if (node)
-			rootNodeId = (char*) node->Attribute("id");
-		*/
 
 		vector<vector<char* > > descendentes;
 		while (node)
@@ -865,9 +836,7 @@ bool XMLSceneMod::readGraph(TiXmlElement* dgxElement, vector<Appearance* > &appe
 			char* charString=(char *)node->Attribute("id");
 
 			string s=string(charString);
-			//cout<<s;
 			Node* n = new Node(s);
-			//cout<<"id do no"+n.getId();
 
 			TiXmlElement *transforms  = node->FirstChildElement();
 			if (!transforms){
@@ -1018,6 +987,7 @@ bool XMLSceneMod::readGraph(TiXmlElement* dgxElement, vector<Appearance* > &appe
 						char* top_S = (char*) primitive->Attribute("top");
 						errno = 0;    /* To distinguish success/failure after call */
 						double top = strtod(top_S, &endptr);
+						
 						/* Check for various possible errors */
 						if ((errno == ERANGE && (top == HUGE_VAL || top == -HUGE_VAL))) {
 								printf("		cylinder: error with top value. Program will try to run anyway without this primitive\n");
@@ -1078,7 +1048,6 @@ bool XMLSceneMod::readGraph(TiXmlElement* dgxElement, vector<Appearance* > &appe
 			TiXmlElement *descendants  = node->FirstChildElement("descendants");
 			if (!descendants){
 				printf("	No descendants block\n");
-				//break;
 				vector<char*> descendentesNo;
 				descendentes.push_back(descendentesNo);
 			}
@@ -1096,7 +1065,6 @@ bool XMLSceneMod::readGraph(TiXmlElement* dgxElement, vector<Appearance* > &appe
 			}
 			cout<<"\n------------------------------\n";
 			destinationGraph->addNode(n);
-			//std::cout << n->mostrarNo();
 			node = node->NextSiblingElement();
 		}
 
@@ -1117,12 +1085,6 @@ bool XMLSceneMod::readGraph(TiXmlElement* dgxElement, vector<Appearance* > &appe
 			}
 		}
 	}
-
-
-
-	//mostrar nos
-	/*for(unsigned int i =0;i<destinationGraph->getNumberOfNodes();i++)
-		cout<<destinationGraph->searchForNode(i)->mostrarNo();*/
 
 	return true;
 

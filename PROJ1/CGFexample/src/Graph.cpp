@@ -4,8 +4,6 @@ void Graph::addNode(Node * noPai, string novoId)
 {
 		Node* novo= new Node(novoId);
 		nodes.push_back(novo);
-		Node * n = nodes.at(nodes.size()-1);//???
-		//noPai->addDescendente(n);
 }
 
 void Graph::addNode(string paiId, string novoId)

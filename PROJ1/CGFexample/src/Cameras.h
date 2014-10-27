@@ -5,7 +5,6 @@
 #include "CGFcamera.h"
 #include "CGFapplication.h"
 #include <string>
-#include <sstream>
 
 class Camera{
 
@@ -49,23 +48,14 @@ public:
 		this->target[2]=target[2];
 	}
 
-	/*
-	void updateProjectionMatrix(int width, int height){
-		glMatrixMode(GL_PROJECTION);
-		glLoadIdentity();
-		float aspect = (float) width / (float) height;
-		gluPerspective(angle, aspect, near, far);
-	}
-	*/
 	void updateProjectionMatrix (int width, int height){//reshape
 		glMatrixMode (GL_PROJECTION ) ;
 		glLoadIdentity();
 		gluPerspective(angle,width/height,near,far);
-}
-	void applyView() {
-	//	CGFcamera::applyView();
-	gluLookAt(pos[0],pos[1],pos[2],target[0],target[1],target[2],0.0,1.0,0.0);
+	}
 
+	void applyView() {
+		gluLookAt(pos[0],pos[1],pos[2],target[0],target[1],target[2],0.0,1.0,0.0);
 	}
 
 
@@ -91,50 +81,18 @@ public:
 		this->type = "ortho";
 	}
 
-	void updateProjectionMatrix(int width, int height)
-	{
+	void updateProjectionMatrix(int width, int height){
 		glMatrixMode(GL_PROJECTION);
 		glLoadIdentity();
-		//float aspect = (float) width / (float) height;
 		glOrtho(left, right, bottom, top, near, far);
-
 	}
 
-	void applyView()
-	{
-		
-
+	void applyView(){	
 		CGFcamera::applyView();
 		if(direction=="x")
 			glRotatef(-90,0,1,0);
 		else if (direction=="y")
 			glRotatef(90,1,0,0);
-		/*
-		
-		CGFcamera::applyView();
-		if(direction=="x")
-		{
-			//glOrtho(left, right, bottom, top, near, far);
-			gluLookAt(1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0);
-		}
-		else if(direction=="y")
-		{
-			//glOrtho(left, right, bottom, top, near, far);
-			gluLookAt(0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0, 0, 1.0);
-
-		}
-		else if(direction=="z")
-		{
-
-			//glOrtho(left, right, bottom, top, near, far);
-			gluLookAt(0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0);
-		}
-		else
-		{
-			printf("%s\n",direction);
-			return;
-		}
-		*/
 	}
 
 };

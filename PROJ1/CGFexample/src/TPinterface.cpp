@@ -13,16 +13,9 @@ void TPinterface::initGUI()
 {
 	GLUI_Panel *lightsPanel= addPanel("Lights", GLUI_PANEL_EMBOSSED);
 
-	//int initialId = 2;
-
 	for (unsigned int i = 0; i < 8; i++){
 		if (((ProjectScene*) scene)->lights[i] != NULL){
-			//ostringstream ss;
-			//ss << "Light " << ((ProjectScene*) scene)->lights[i]->getLightId()-GL_LIGHT0;
-			/*ss <<  ((ProjectScene*) scene)->lights[i]->getLightId();
-			std::cout << "abc\n" << ss.str();*/
-			//printf("Light  %s\n", ((ProjectScene*) scene)->lights[i]->getLightId() );
-			lightCheckboxes.push_back(addCheckboxToPanel(lightsPanel,/*(char *) ss.str().c_str()*/(char*) ((ProjectScene*) scene)->lights[i]->getLightId().c_str(), 0, initialId+i));
+			lightCheckboxes.push_back(addCheckboxToPanel(lightsPanel,(char*) ((ProjectScene*) scene)->lights[i]->getLightId().c_str(), 0, initialId+i));
 			if (glIsEnabled(((ProjectScene*) scene)->lights[i]->getCGFlightIndex())){
 				lightCheckboxes[i]->set_int_val(GL_TRUE);
 			}

@@ -9,7 +9,6 @@ Light::Light(string tipo, string lightId, bool enabled, bool marker, float pos[4
 		float* ambient, float* diffuse, float* specular, int index){
 	
 	this->tipo = tipo;	
-	//this->lightId = GL_LIGHT0 + lightId;
 	this->CGFlightIndex = GL_LIGHT0 + index;
 	this->lightId = lightId;
 	this->enabled = enabled;

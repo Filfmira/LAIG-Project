@@ -8,6 +8,7 @@
 #include "Appearances.h"
 #include "Cameras.h"
 #include  "Globals.h"
+
 class XMLSceneMod
 {
 public:
@@ -36,17 +37,12 @@ protected:
 	vector<Camera >*cameras;
 	Camera* initialCamera;
 	Global* globals;
-	/////////////Projecto LAIG////////////
 	TiXmlElement* globalsElement;
 	TiXmlElement* camerasElement;
 	TiXmlElement* lightsElement;
 	TiXmlElement* graphElement;
 	TiXmlElement* appearancesElement;
 	TiXmlElement* texturesElement;
-	//////////////////////////////////////
-
-
-
 
 };
 

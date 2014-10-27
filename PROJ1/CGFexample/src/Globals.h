@@ -6,7 +6,7 @@
 class Global{
 
 private:
-		//drawing
+	//drawing
 	char* mode;
 	char* shading;
     float background[4];
@@ -24,11 +24,7 @@ public:
 	Global(){};
 	Global(char* mode, char*shading,float background[4], char* face, char* order, bool doublesided, bool local, bool enabled, float ambient[4])
 	{
-		printf("PUTAQUE PARIU ESTA MERDA %s",mode);
-		system("pause");
 		this->mode=mode;
-		printf("PUTAQUE PARIU ESTA MERDA %s",this->mode);
-		system("pause");
 		this->shading=shading;
 		this->background[0]=background[0];
 		this->background[1]=background[1];

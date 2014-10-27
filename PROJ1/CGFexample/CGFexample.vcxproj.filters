@@ -33,64 +33,52 @@
     <ClCompile Include="src\TPinterface.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Primitives.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\Lights.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\ExampleObject.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\DemoScene.cpp">
+    <ClCompile Include="src\Appearances.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="include\tinystr.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="src\Appearances.h">
+      <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\tinyxml.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="src\Cameras.h">
+      <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\XMLSceneMod.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="src\Globals.h">
+      <Filter>Source Files</Filter>
     </ClInclude>
     <ClInclude Include="src\Graph.h">
-      <Filter>Header Files</Filter>
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Lights.h">
+      <Filter>Source Files</Filter>
     </ClInclude>
     <ClInclude Include="src\Node.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\ProjectScene.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\TPinterface.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Primitives.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Lights.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Cameras.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Textures.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Appearances.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\ExampleObject.h">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\DemoScene.h">
+    <ClInclude Include="src\Primitives.h">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\Globals.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="src\ProjectScene.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Textures.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\tinystr.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\tinyxml.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\TPinterface.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\XMLSceneMod.h">
+      <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
