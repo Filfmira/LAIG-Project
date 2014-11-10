@@ -140,7 +140,7 @@ void ProjectScene::display()
 
 	//primitives
 	//drawAux(sceneGraph.getRoot());
-	Plane* p = new Plane(4);
+	Plane* p = new Plane(10);
 	glPushMatrix();
 		p->draw();
 	glPopMatrix();

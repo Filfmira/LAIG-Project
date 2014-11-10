@@ -1049,16 +1049,15 @@ bool XMLSceneMod::readGraph(TiXmlElement* dgxElement, vector<Appearance* > &appe
 							n->addPrimitiva(tor);
 						}
 					}
-					///////////////torus///////////////
+					///////////////plane///////////////
 					else if (strcmp("plane", primitive->Value()) == 0){
 						int parts = atoi((char*) primitive->Attribute("parts"));
-						printf("		plane: parts-%d\n",
-							inner, outer, slices, loops);
-						if (inner == 0 || outer == 0 || slices == 0 || loops == 0)
-							printf("		torus: invalid values or wrong format. Program will try to run anyway without this Primitive...\n");
+						printf("		plane: parts-%d\n");
+						if (parts == 0)
+							printf("		plane: invalid values or wrong format. Program will try to run anyway without this Primitive...\n");
 						else{
-							Torus* tor = new Torus(inner, outer , slices, loops);
-							n->addPrimitiva(tor);
+							Plane* pl = new Plane(parts);
+							n->addPrimitiva(pl);
 						}
 					}
 					else printf("		Invalid primitive detected.  Program will try to run anyway...\n");
