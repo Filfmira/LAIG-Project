@@ -100,9 +100,10 @@ void ProjectScene::init()
 		cout << lights[i]->showLight();
 	}*/
 
-
-	
-	this->processDisplayLists(this->sceneGraph.getRoot());
+	float coiso[4] = {1,0,0,1};
+	CGFappearance* tempA = new CGFappearance(coiso);
+	tempA->apply();
+	this->processDisplayLists(this->sceneGraph.getRoot(), this->sceneGraph.getRoot());
 
 }
 
@@ -138,8 +139,13 @@ void ProjectScene::display()
 	axis.draw();
 
 	//primitives
-	drawAux(sceneGraph.getRoot());
-	printf("%d\n", this->appearancesStack.size());
+	//drawAux(sceneGraph.getRoot());
+	Plane* p = new Plane(4);
+	glPushMatrix();
+		p->draw();
+	glPopMatrix();
+	free(p);
+	//printf("%d\n", this->appearancesStack.size());
 
 
 	// We have been drawing in a memory area that is not visible - the back buffer, 
@@ -193,14 +199,46 @@ ProjectScene::~ProjectScene()
 }
 
 
+Appearance* getClosestParentAppearance(Node* start, Node* dest){
+		
+	if (start->getDescendentes().size() == 0)
+		return NULL;
 
-void ProjectScene::processDisplayLists(Node* n){
+	for (int i = 0; i < start->getDescendentes().size();i++){
+		if (dest == start->getDescendenteIndex(i)){
+			return start->getAppearance();
+		}
+	}
+	Appearance* temp = NULL;
+	for (int i = 0; i < start->getDescendentes().size();i++){
+		 temp = getClosestParentAppearance(start->getDescendenteIndex(i), dest);
+		 if (temp != NULL)
+			 return temp;
+	}
+	return NULL;
+
+}
+
+
+void ProjectScene::processDisplayLists(Node* n, Node* graphRoot){
+	
+	
+
 	int numFilhos = n->getDescendentes().size();
 	for (int i = 0; i < numFilhos; i++)
-		this->processDisplayLists(n->getDescendenteIndex(i));
+		this->processDisplayLists(n->getDescendenteIndex(i), graphRoot);
+
 
 	if (n->getDisplayList()){
 		
+	/*	Appearance*  temp = NULL;
+		if (n->getAppearance() == NULL)
+			temp = getClosestParentAppearance(graphRoot, n);
+		else temp = n->getAppearance();
+		if (temp == NULL)
+			printf("Null...\n");
+		else temp->apply();*/
+
 		if (n->getDisplayListID() == -1){
 			int id = glGenLists(1);
 			n->setDisplayListID(id);

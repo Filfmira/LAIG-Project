@@ -42,35 +42,35 @@ XMLSceneMod::XMLSceneMod(char *filename, Graph* gr, Light** lig, vector<Texture*
 		exit(1);
 	}
 	activeCamera = initialCamera;
-	cin.get();
+	//cin.get();
 
 
 	if (!readLights(dgxElement)){
 		cin.get();
 		exit(1);
 	}
-	cin.get();
+	//cin.get();
 
 
 	if(!readTextures(dgxElement, textures)){
 		cin.get();
 		exit(1);
 	}
-	cin.get();
+	//cin.get();
 
 
 	if (!readAppearances(dgxElement, appearances, textures)){
 		cin.get();
 		exit(1);
 	}
-	cin.get();
+	//cin.get();
 		
 
 	if (!readGraph(dgxElement, appearances)){
 		cin.get();
 		exit(1);
 	}
-	cin.get();
+	//cin.get();
 
 }
 
@@ -1041,6 +1041,18 @@ bool XMLSceneMod::readGraph(TiXmlElement* dgxElement, vector<Appearance* > &appe
 						int slices = atoi((char*) primitive->Attribute("slices"));
 						int loops = atoi((char*) primitive->Attribute("loops"));
 						printf("		torus: inner-%.2f, outer-%.2f, slices-%d, loops-%d\n",
+							inner, outer, slices, loops);
+						if (inner == 0 || outer == 0 || slices == 0 || loops == 0)
+							printf("		torus: invalid values or wrong format. Program will try to run anyway without this Primitive...\n");
+						else{
+							Torus* tor = new Torus(inner, outer , slices, loops);
+							n->addPrimitiva(tor);
+						}
+					}
+					///////////////torus///////////////
+					else if (strcmp("plane", primitive->Value()) == 0){
+						int parts = atoi((char*) primitive->Attribute("parts"));
+						printf("		plane: parts-%d\n",
 							inner, outer, slices, loops);
 						if (inner == 0 || outer == 0 || slices == 0 || loops == 0)
 							printf("		torus: invalid values or wrong format. Program will try to run anyway without this Primitive...\n");

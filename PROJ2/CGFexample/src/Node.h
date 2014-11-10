@@ -5,6 +5,7 @@
 #include "CGFappearance.h"
 #include "CGFobject.h"
 #include "Primitives.h"
+#include "Evaluator.h"
 #include <vector>
 #include "Appearances.h"
 

@@ -69,6 +69,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="src\Appearances.cpp" />
+    <ClCompile Include="src\Evaluator.cpp" />
     <ClCompile Include="src\Graph.cpp" />
     <ClCompile Include="src\Lights.cpp" />
     <ClCompile Include="src\main.cpp" />
@@ -80,6 +81,7 @@
   <ItemGroup>
     <ClInclude Include="src\Appearances.h" />
     <ClInclude Include="src\Cameras.h" />
+    <ClInclude Include="src\Evaluator.h" />
     <ClInclude Include="src\Globals.h" />
     <ClInclude Include="src\Graph.h" />
     <ClInclude Include="src\Lights.h" />

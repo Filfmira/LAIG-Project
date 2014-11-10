@@ -10,6 +10,7 @@
 #include "CGFapplication.h"
 #include <stack>
 #include "Globals.h"
+
 class ProjectScene : public CGFscene
 {
 public:
@@ -49,7 +50,7 @@ public:
 	void drawAux(Node* node);
 
 
-	void processDisplayLists(Node* n);
+	void processDisplayLists(Node* n, Node* graphRoot);
 	
 };
 
