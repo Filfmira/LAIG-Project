@@ -133,6 +133,30 @@
 
     </appearances>
 
+		<!-- pode não existir qualquer nó “animation” se a cena não tiver animações -->
+	<!-- span é o tempo, em segundos, que a animação deve demorar *
+	<!-- nesta versão do formato ANF, type pode ter o valor “linear” ou "circular" -->
+	<animations>
+
+		 <animation id="clol" span="10" type="circular" center="0.0 0.0 0.0" radius="5.0" startang="0.0" rotang="90.0" />
+	
+		  <animation id="lol" span="10" type="linear">
+				<controlpoint xx="0" yy="0" zz="0" />
+				<controlpoint xx="1" yy="1" zz="1" />
+		  </animation>
+
+		  <animation id="circular" span="10" type="circular" center="0.0 0.0 0.0" radius="5.0" startang="0.0" rotang="90.0" />
+		  
+		  
+		  <animation id="lol" span="10" type="linear">
+				<controlpoint xx="0" yy="0" zz="0" />
+				<controlpoint xx="1" yy="1" zz="0" />
+				<controlpoint xx="0" yy="0" zz="0" />
+		  </animation>
+
+	</animations>
+	
+	
     <graph rootid="root">
 
         <node id="root">
@@ -182,12 +206,12 @@
 
 
 
-        <node id="wall-e" displaylist="true">
+        <node id="wall-e">
             <transforms>
                 <transform type="translate" to="-5 -5 -5" />
                 <transform type="rotate" axis="y" angle="45" />
             </transforms>
-            <appearanceref id="s2" />
+            <appearanceref id="ss" />
             <primitives>
             </primitives>
 
@@ -209,7 +233,7 @@
             <transforms>
                 <transform type="translate" to="0 1.5 0" />
             </transforms>
-            <appearanceref id="inherit" />
+            <appearanceref id="ss" />
             <primitives>
             </primitives>
 
@@ -309,7 +333,7 @@
         <node id="cuboCorpo">
             <transforms>
             </transforms>
-            <appearanceref id="inherit" />
+            <appearanceref id="s2" />
             <primitives>
                 <rectangle xy1="-1 -1" xy2="1 1" />
             </primitives>
@@ -345,7 +369,7 @@
         </node> -->
 
 
-        <node id="pernas" displaylist="true">
+        <node id="pernas">
             <transforms>
                 <transform type="scale" factor="1 0.8 1" />
                 <transform type="translate" to="0 1 0" />
@@ -388,7 +412,7 @@
             </descendants>
         </node>
 
-        <node id="prismaPerna" displaylist="true">
+        <node id="prismaPerna">
             <transforms>
             </transforms>
             <appearanceref id="inherit" />

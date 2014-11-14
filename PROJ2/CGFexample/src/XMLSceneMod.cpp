@@ -10,7 +10,7 @@
 
 
 XMLSceneMod::XMLSceneMod(char *filename, Graph* gr, Light** lig, vector<Texture* > &textures, 
-	vector<Appearance* > &appearances, vector<Camera >*cameras, Camera* &activeCamera, 
+	vector<Appearance* > &appearances,vector<Animation* > &animations, vector<Camera >*cameras, Camera* &activeCamera, 
 	Global *globals, vector<FlagShader*> &flagShaders): destinationGraph(gr), destinationLights(lig)
 {
 
@@ -73,6 +73,9 @@ XMLSceneMod::XMLSceneMod(char *filename, Graph* gr, Light** lig, vector<Texture*
 		exit(1);
 	}
 //	cin.get();
+
+	readAnimations(dgxElement,animations);
+	cin.get();
 
 }
 
@@ -807,6 +810,137 @@ bool XMLSceneMod::readAppearances(TiXmlElement* dgxElement, vector<Appearance*> 
 		return false;
 	}
 
+	return true;
+}
+
+bool XMLSceneMod::readAnimations(TiXmlElement* dgxElement, vector<Animation*> &animationsVector)
+{
+	cout<<"\nParsing animations:\n";
+
+	animationElement=dgxElement->FirstChildElement("animations");
+	if (!animationElement){
+		printf("There are no animations in this file...\n");
+		return true;
+	}
+	printf("-------------------------------\n");
+	TiXmlElement * animation = animationElement->FirstChildElement("animation");
+	while(animation)
+	{
+		printf("Uma animacao\n");
+		bool validAnimation = true;
+
+		char* id;
+		float span;
+		char* type;
+
+		 id = (char*) animation->Attribute("id");
+		 if (!id){
+			 printf("	Problem with animation id...\n");
+			 validAnimation = false;
+		 }
+		 else printf("	Id: %s\n",id);
+		 
+
+		 char* span_s=(char*) animation->Attribute("span");
+		 if (!span_s || !sscanf(span_s,"%f",&span)){
+			 validAnimation = false;
+			 printf("	Problem with animation span value...\n");
+		 }
+		 else printf("        Span: %s\n",span_s);
+
+
+		  type = (char*) animation->Attribute("type");
+		 if (!id){
+			 printf("	Problem with animation type...\n");
+			 validAnimation = false;
+		 }
+		 else printf("        Type: %s\n",type);
+
+		 if(strcmp(type,"circular")==0)
+		 {
+			 float x,y,z,radius,startang,rotang;
+
+			 char* center = (char*) animation->Attribute("center");
+				if (!center || !readXYZcoord(center,x,y,z)){
+					validAnimation=false;
+					printf("	Problem with circular animation center coordinates...\n");}
+				else printf("        -Center: %s\n",center);
+
+
+			 char* radius_s = (char*) animation->Attribute("radius");
+			 if (!radius_s || !sscanf(radius_s,"%f",&radius)){
+				 validAnimation = false;
+				 printf("	Problem with circular animation radius value...\n");
+			 }
+			 else printf("        -Radius: %s\n",radius_s);
+
+			 char* startang_s = (char*) animation->Attribute("startang");
+			 if (!startang_s || !sscanf(startang_s,"%f",&startang)){
+				 validAnimation = false;
+				 printf("	Problem with animation startang value...\n");
+			 }
+			 else printf("        -Startang: %s\n",startang_s);
+
+			  char* rotang_s = (char*) animation->Attribute("rotang");
+			 if (!rotang_s || !sscanf(rotang_s,"%f",&rotang)){
+				 validAnimation = false;
+				 printf("	Problem with animation rotang value...\n");
+			 }
+			 else printf("        -Rotang: %s\n",rotang_s);
+		 }
+
+		  if(strcmp(type,"linear")==0)
+		 {
+				vector< vector<float>> pontos;
+				TiXmlElement * controlpoint = animation->FirstChildElement("controlpoint");
+				while(controlpoint)
+				{
+					vector<float> ponto;
+					float x,y,z;
+
+					 char* x_s = (char*) controlpoint->Attribute("xx");
+					 if (!x_s || !sscanf(x_s,"%f",&x)){
+						 validAnimation = false;
+						 printf("	Problem with linear animation controlopoint on value x \n");
+					 }
+
+					  char* y_s = (char*) controlpoint->Attribute("yy");
+					 if (!y_s || !sscanf(y_s,"%f",&y)){
+						 validAnimation = false;
+						 printf("	Problem with linear animation controlopoint on value y \n");
+					 }
+
+					  char* z_s = (char*) controlpoint->Attribute("zz");
+					 if (!z_s || !sscanf(z_s,"%f",&z)){
+						 validAnimation = false;
+						 printf("	Problem with linear animation controlopoint on value z \n");
+					 }
+					ponto.push_back(x);
+					ponto.push_back(y);
+					ponto.push_back(z);
+
+					pontos.push_back(ponto);
+
+
+					controlpoint=controlpoint->NextSiblingElement("controlpoint");
+				}
+				for(int i=0;i<pontos.size();i++)
+					printf("x:%f y:%f z:%f\n",pontos.at(i).at(0),pontos.at(i).at(1),pontos.at(i).at(2));
+				Animation* ani= new LinearAnimation(id,span,pontos);
+				ani->show();
+				animationsVector.push_back(ani);
+				cout<<":::::"<<endl;
+				animationsVector.at(animationsVector.size()-1)->show();
+		  }
+
+		printf("-------------------------------\n");
+
+		
+
+		 animation=animation->NextSiblingElement("animation");
+	}
+	cout<<endl;
+	
 	return true;
 }
 

@@ -68,6 +68,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\Animation.cpp" />
     <ClCompile Include="src\Appearances.cpp" />
     <ClCompile Include="src\Evaluator.cpp" />
     <ClCompile Include="src\Flag.cpp" />
@@ -80,6 +81,7 @@
     <ClCompile Include="src\XMLSceneMod.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\Animation.h" />
     <ClInclude Include="src\Appearances.h" />
     <ClInclude Include="src\Cameras.h" />
     <ClInclude Include="src\Evaluator.h" />
