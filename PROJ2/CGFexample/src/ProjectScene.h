@@ -58,12 +58,12 @@ public:
 
 	void update(unsigned long t){
 		//cout<<t<<endl;
-		cout<<animations.size()<<endl;
+		//cout<<animations.size()<<endl;
 		animations.at(0)->update(t);
-		animations.at(0)->show();
-		cout<<"\n|||||||||||||||||||||||||||\n";
+		//animations.at(0)->show();
 		animations.at(1)->update(t);
 		//animations.at(1)->show();
+		//cout<<"\n|||||||||||||||||||||||||||\n";
 	}
 
 	void updateFlagsSpeed(float s);

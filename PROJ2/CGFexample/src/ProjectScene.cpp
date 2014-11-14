@@ -144,9 +144,9 @@ void ProjectScene::display()
 	//Plane* p = new Plane(10);
 	//drawAux(sceneGraph.getRoot());
 
-	animations.at(0)->draw();
-	animations.at(1)->draw();
-
+	//animations.at(0)->draw();
+	//animations.at(1)->draw();
+	drawAux(sceneGraph.getRoot());
 	/*Plane* p = new Plane(20);
 >>>>>>> .r52
 	glPushMatrix();

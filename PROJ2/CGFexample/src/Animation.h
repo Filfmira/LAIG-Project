@@ -7,12 +7,12 @@
 
 class Animation{
 protected:
-	char* id;
+	string id;
 	float time;
 public:
 	Animation(){};
 	void draw(){};
-	void update(float t){};
+	virtual void update(float t){};
 	virtual void show(){};
 
 };
@@ -30,24 +30,24 @@ class LinearAnimation:public Animation{
 
 public:
 	LinearAnimation(){};
-	LinearAnimation(char* idS, float span, vector< vector<float>> pC){
+	LinearAnimation(string idS, float span, vector< vector<float>> pC){
 		rad2degree=180/acos(-1.0);
 		x=y=z=0;
 		startTime=0;
 		id=idS;
 		time=span;
 		pontosDeControlo=pC;
-		cout<<"OUUUUU O ID É "<<id;
-		cout<<"   OUUUUUUUUUUU O SPAN É "<<time<<endl;
+		//cout<<"OUUUUU O ID É "<<id;
+		//cout<<"   OUUUUUUUUUUU O SPAN É "<<time<<endl;
 	};
 
 	vector< vector<float>> getPontosDeControlo(){return pontosDeControlo;}
 	float getStartTime(){return startTime;}
 
 	void show(){
-		cout<<"id:"<<id<<"startTime:"<<time<<endl;
-		/*for(int i =0;i<pontosDeControlo.size();i++)
-			cout<<"x:"<<pontosDeControlo.at(i)[0]<<" y:"<<pontosDeControlo.at(i)[1]<<" z:"<<pontosDeControlo.at(i)[2]<<endl;*/
+		cout<<"id:"<<id<<"TIME:"<<time<<"startTime:"<<startTime<<endl;
+		for(int i =0;i<pontosDeControlo.size();i++)
+			cout<<"x:"<<pontosDeControlo.at(i)[0]<<" y:"<<pontosDeControlo.at(i)[1]<<" z:"<<pontosDeControlo.at(i)[2]<<endl;
 
 	}
 	void update(int t,float tp,float tc){
@@ -90,15 +90,25 @@ public:
 		indice=int(tp/tc);
 		if(indice<length-1)
 		update(t,tp,tc);
-		show();
+	//cout<<tp<<"|"<<x<<"|"<<y<<"|"<<z<<endl;
 
 	};
 
 	
 
 	void draw(){
-		glPushMatrix();
-		glTranslated(x, y, z);
+		
+	glPushMatrix();
+	glRotated(-90,0,0,1);
+				glRotated(-90,0,1,0);
+				glBegin(GL_TRIANGLES);
+					glVertex2d( 1.0, 0);
+					glVertex2d( 0.0, 3.0);
+					glVertex2d(-1.0, 0);
+				glEnd();
+	glPopMatrix();
+		/*glPushMatrix();
+		/*glTranslated(x, y, z);
 		float xalpha=x-pontosDeControlo.at(indice).at(0);
 		float yalpha=y-pontosDeControlo.at(indice).at(1);
 		float zalpha=z-pontosDeControlo.at(indice).at(2);
@@ -146,7 +156,7 @@ public:
 
 		glRotatef(alpha1,0,1,0);
 		//glRotatef(alpha2,0,0,1);
-		
+		*//*
 				glRotated(-90,0,0,1);
 				glRotated(-90,0,1,0);
 				glBegin(GL_TRIANGLES);
@@ -156,9 +166,8 @@ public:
 				glEnd();
 
 
-		glPopMatrix();
+		glPopMatrix();*/
 	}
-
 
 };
 

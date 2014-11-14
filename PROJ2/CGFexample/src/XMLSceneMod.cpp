@@ -926,7 +926,7 @@ bool XMLSceneMod::readAnimations(TiXmlElement* dgxElement, vector<Animation*> &a
 				}
 				for(int i=0;i<pontos.size();i++)
 					printf("x:%f y:%f z:%f\n",pontos.at(i).at(0),pontos.at(i).at(1),pontos.at(i).at(2));
-				Animation* ani= new LinearAnimation(id,span,pontos);
+				Animation* ani= new LinearAnimation(string(id),span,pontos);
 				ani->show();
 				animationsVector.push_back(ani);
 				cout<<":::::"<<endl;
