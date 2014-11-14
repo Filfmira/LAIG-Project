@@ -154,7 +154,7 @@
                 <noderef id="wall-e" />
 				<noderef id="planet" />
                 <noderef id="ceu" />
-
+                <noderef id="bandeira" />
             </descendants>
         </node>
 
@@ -637,7 +637,7 @@
 		
 		<node id="planet">
             <transforms>
-				<transform type="translate" to="6 6 6" />
+				<transform type="translate" to="10 6 6" />
                 <transform type="rotate" axis="x" angle="-45" />
             </transforms>
             <appearanceref id="planet" />
@@ -789,6 +789,50 @@
             <descendants>
             </descendants>
         </node>
+
+
+
+
+
+        <node id="bandeira">
+            <transforms>
+            </transforms>
+            <appearanceref id="inherit" />
+
+            <descendants>
+                <noderef id="panoBandeira" />
+                <noderef id="mastro" />
+            </descendants>
+        </node>
+
+
+        <node id="panoBandeira">
+            <transforms>
+                <transform type="translate" to="2.5 5 0" />
+                <transform type="rotate" axis="x" angle="90" />
+                <transform type="scale" factor="5 1 5" />
+            </transforms>
+            <appearanceref id="inherit" />
+            <primitives>
+                <flag texture="flag.jpg" />
+            </primitives>
+
+            <descendants>
+            </descendants>
+        </node>
+
+        <node id="mastro">
+            <transforms>
+                <transform type="rotate" axis="x" angle="-90" />
+            </transforms>
+            <appearanceref id="inherit" />
+            <primitives>
+                <cylinder base="0.2" top="0.2" height="7.5" slices="20" stacks="10" />
+            </primitives>
+
+            <descendants>
+            </descendants>
+        </node> 
         
 
 

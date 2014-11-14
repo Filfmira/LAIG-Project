@@ -15,7 +15,7 @@ void ProjectScene::init()
 		lights[i] = NULL;
 	
 	globals=Global();
-	XMLSceneMod temp = XMLSceneMod("wall-e.xml", &sceneGraph, lights ,textures,appearances,&cameras, activeCamera, &globals);
+	XMLSceneMod temp = XMLSceneMod("wall-e.xml", &sceneGraph, lights ,textures,appearances,&cameras, activeCamera, &globals, flagShaders);
 	
 	glEnable(GL_LIGHTING);
 
@@ -100,11 +100,8 @@ void ProjectScene::init()
 		cout << lights[i]->showLight();
 	}*/
 
-	float coiso[4] = {1,0,0,1};
-	CGFappearance* tempA = new CGFappearance(coiso);
-	tempA->apply();
 	this->processDisplayLists(this->sceneGraph.getRoot(), this->sceneGraph.getRoot());
-
+	
 }
 
 void ProjectScene::display() 
@@ -139,12 +136,17 @@ void ProjectScene::display()
 	axis.draw();
 
 	//primitives
-	//drawAux(sceneGraph.getRoot());
-	Plane* p = new Plane(10);
+	drawAux(sceneGraph.getRoot());
+
+	/*Plane* p = new Plane(20);
 	glPushMatrix();
+		
+		testShader->bind();
+		glScaled(5,1,5);
 		p->draw();
+		testShader->unbind();
 	glPopMatrix();
-	free(p);
+	free(p);*/
 	//printf("%d\n", this->appearancesStack.size());
 
 
@@ -258,4 +260,8 @@ void ProjectScene::processDisplayLists(Node* n, Node* graphRoot){
 }
 
 
-
+void ProjectScene::updateFlagsSpeed(float s){
+	for (unsigned int i = 0; i < flagShaders.size(); i++){
+		flagShaders[i]->setSpeed(s);
+	}
+}

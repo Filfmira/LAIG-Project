@@ -25,7 +25,7 @@ void TPinterface::initGUI()
 
 	addColumn();
 
-
+	////////////VISUALIZATION MODE ////////////////
 	GLUI_Panel *visualizationMode= addPanel("Visualization", GLUI_PANEL_EMBOSSED);
 	visualizationRadGroup = addRadioGroupToPanel (visualizationMode, &visualizationId, initialId+8);
 	GLUI_RadioButton * 	wireMode = addRadioButtonToGroup (visualizationRadGroup, "WireFrame");
@@ -35,8 +35,15 @@ void TPinterface::initGUI()
 	visualizationRadGroup->set_int_val(1);
 	((ProjectScene*) scene)->wireFrame = false;
 
-	addColumn();
 
+	
+	//////SHADER//////
+	//addColumn();
+	GLUI_Panel *speedPanel = addPanel("Shader", GLUI_PANEL_EMBOSSED);
+	speedSpinner = addSpinnerToPanel(speedPanel, "flagSpeed", 2,NULL, initialId+10);
+
+	addColumn();
+	/////CAMERAS/////////////
 	GLUI_Panel *cameras= addPanel("Cameras", GLUI_PANEL_EMBOSSED);
 	camerasRadGroup = addRadioGroupToPanel (cameras, &cameraId, initialId+9);
 
@@ -56,6 +63,7 @@ void TPinterface::initGUI()
 		if (temp->getId() == activeCamera->getId())
 			camerasRadGroup->set_int_val(i+1);
 	}
+	
 
 }
 
@@ -76,11 +84,17 @@ void TPinterface::processGUI(GLUI_Control *ctrl)
 	}
 	//////////////////////
 	
-
+	float val = ctrl->float_val;
 
 	switch (ctrl->user_id)
 	{
-
+	///////FLAG SPEED//////
+	case(initialId+10): 
+		//printf("entrou no case %f\n", ctrl->float_val);
+		if (val > 50) {speedSpinner->set_float_val(50);break;}
+		if (val < 0) {speedSpinner->set_float_val(0);break;}
+		((ProjectScene*) scene)->updateFlagsSpeed(val);
+		break;
 	//////////CAMERAS////////
 	case(initialId+9): 
 		if (ctrl->get_int_val() == 0)

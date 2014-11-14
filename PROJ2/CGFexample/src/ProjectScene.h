@@ -10,7 +10,7 @@
 #include "CGFapplication.h"
 #include <stack>
 #include "Globals.h"
-
+#include "Flag.h"
 class ProjectScene : public CGFscene
 {
 public:
@@ -28,6 +28,8 @@ public:
 	stack<Appearance*> appearancesStack;
 	Global globals;
 	
+	vector<FlagShader*> flagShaders;
+
 	bool wireFrame;
 
 	void setWireFrameMode()
@@ -51,6 +53,8 @@ public:
 
 
 	void processDisplayLists(Node* n, Node* graphRoot);
+
+	void updateFlagsSpeed(float s);
 	
 };
 

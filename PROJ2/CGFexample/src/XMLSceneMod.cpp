@@ -9,7 +9,9 @@
 #include "CGFapplication.h"
 
 
-XMLSceneMod::XMLSceneMod(char *filename, Graph* gr, Light** lig, vector<Texture* > &textures, vector<Appearance* > &appearances, vector<Camera >*cameras, Camera* &activeCamera, Global *globals): destinationGraph(gr), destinationLights(lig)
+XMLSceneMod::XMLSceneMod(char *filename, Graph* gr, Light** lig, vector<Texture* > &textures, 
+	vector<Appearance* > &appearances, vector<Camera >*cameras, Camera* &activeCamera, 
+	Global *globals, vector<FlagShader*> &flagShaders): destinationGraph(gr), destinationLights(lig)
 {
 
 	this->cameras=cameras;
@@ -42,35 +44,35 @@ XMLSceneMod::XMLSceneMod(char *filename, Graph* gr, Light** lig, vector<Texture*
 		exit(1);
 	}
 	activeCamera = initialCamera;
-	//cin.get();
+//	cin.get();
 
 
 	if (!readLights(dgxElement)){
 		cin.get();
 		exit(1);
 	}
-	//cin.get();
+//	cin.get();
 
 
 	if(!readTextures(dgxElement, textures)){
 		cin.get();
 		exit(1);
 	}
-	//cin.get();
+//	cin.get();
 
 
 	if (!readAppearances(dgxElement, appearances, textures)){
 		cin.get();
 		exit(1);
 	}
-	//cin.get();
+//	cin.get();
 		
 
-	if (!readGraph(dgxElement, appearances)){
+	if (!readGraph(dgxElement, appearances,flagShaders)){
 		cin.get();
 		exit(1);
 	}
-	//cin.get();
+//	cin.get();
 
 }
 
@@ -809,7 +811,7 @@ bool XMLSceneMod::readAppearances(TiXmlElement* dgxElement, vector<Appearance*> 
 }
 
 
-bool XMLSceneMod::readGraph(TiXmlElement* dgxElement, vector<Appearance* > &appearances){
+bool XMLSceneMod::readGraph(TiXmlElement* dgxElement, std::vector<Appearance* > &appearances, vector<FlagShader*> &flagShaders){
 	graphElement = dgxElement->FirstChildElement( "graph" );
 	char* rootNodeId = "";
 	if (graphElement == NULL){
@@ -1060,6 +1062,19 @@ bool XMLSceneMod::readGraph(TiXmlElement* dgxElement, vector<Appearance* > &appe
 							n->addPrimitiva(pl);
 						}
 					}
+					///////////////flag///////////////
+					else if (strcmp("flag", primitive->Value()) == 0){
+						char* tex = (char*) primitive->Attribute("texture");
+						printf("		plane: texture-%s\n", tex);
+						if (!tex)
+							printf("		flag: invalid values or wrong format. Program will try to run anyway without this Primitive...\n");
+						else{
+							FlagShader* fl = new FlagShader(tex);
+							flagShaders.push_back(fl);
+							n->addPrimitiva(fl);
+						}
+					}
+
 					else printf("		Invalid primitive detected.  Program will try to run anyway...\n");
 
 					primitive = primitive->NextSiblingElement();
@@ -1088,6 +1103,7 @@ bool XMLSceneMod::readGraph(TiXmlElement* dgxElement, vector<Appearance* > &appe
 			cout<<"\n------------------------------\n";
 			destinationGraph->addNode(n);
 			node = node->NextSiblingElement();
+			//cin.get();
 		}
 
 		//ao sair do while, é preciso verificar se existe pelo menos um nó (pelo menos o root node tem de existir)
@@ -1108,7 +1124,7 @@ bool XMLSceneMod::readGraph(TiXmlElement* dgxElement, vector<Appearance* > &appe
 			}
 		}
 
-//		XMLSceneMod::processDisplayLists(destinationGraph->getRoot());
+	//	XMLSceneMod::processDisplayLists(destinationGraph->getRoot());
 	}
 
 	return true;

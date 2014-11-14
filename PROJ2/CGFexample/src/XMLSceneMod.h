@@ -9,11 +9,12 @@
 #include "Cameras.h"
 #include  "Globals.h"
 #include <stack>
+#include "Flag.h"
 
 class XMLSceneMod
 {
 public:
-	XMLSceneMod(char *filename, Graph* gr, Light** lig, std::vector<Texture* > &textures, std::vector<Appearance* > &appearances, vector<Camera >* cameras, Camera* &activeCamera, Global *globals);
+	XMLSceneMod(char *filename, Graph* gr, Light** lig, std::vector<Texture* > &textures, std::vector<Appearance* > &appearances, vector<Camera >* cameras, Camera* &activeCamera, Global *globals, vector<FlagShader*> &flagShaders);
 	~XMLSceneMod();
 
 	static TiXmlElement *findChildByAttribute(TiXmlElement *parent,const char * attr, const char *val);
@@ -28,7 +29,7 @@ public:
 	bool readLights(TiXmlElement* dgxElement);
 	bool readTextures(TiXmlElement* dgxElement, std::vector<Texture*> &text);
 	bool readAppearances(TiXmlElement* dgxElement, std::vector<Appearance* > &appearances, std::vector<Texture*> &text);
-	bool readGraph(TiXmlElement* dgxElement, std::vector<Appearance* > &appearances);
+	bool readGraph(TiXmlElement* dgxElement, std::vector<Appearance* > &appearances, vector<FlagShader*> &flagShaders);
 	
 	/*void processDisplayLists(Node* n);
 	void processDisplayListsAux(Node* n);*/

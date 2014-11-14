@@ -16,7 +16,7 @@ class TPinterface: public CGFinterface {
 		std::vector<GLUI_RadioButton*> camerasRadioButtons;
 		GLUI_RadioGroup * camerasRadGroup;
 		GLUI_RadioGroup * visualizationRadGroup;
-
+		GLUI_Spinner* speedSpinner;
 		int visualizationId;
 		int cameraId;
 };
