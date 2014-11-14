@@ -10,6 +10,7 @@
 #include "CGFapplication.h"
 #include <stack>
 #include "Globals.h"
+#include "Animation.h"
 #include "Flag.h"
 class ProjectScene : public CGFscene
 {
@@ -23,11 +24,11 @@ public:
 
 	vector<Texture *> textures;
 	vector<Appearance* > appearances;
+	vector<Animation* > animations;
 	vector<Camera> cameras;
 	Camera* activeCamera;
 	stack<Appearance*> appearancesStack;
 	Global globals;
-	
 	vector<FlagShader*> flagShaders;
 
 	bool wireFrame;
@@ -53,6 +54,17 @@ public:
 
 
 	void processDisplayLists(Node* n, Node* graphRoot);
+
+
+	void update(unsigned long t){
+		//cout<<t<<endl;
+		cout<<animations.size()<<endl;
+		animations.at(0)->update(t);
+		animations.at(0)->show();
+		cout<<"\n|||||||||||||||||||||||||||\n";
+		animations.at(1)->update(t);
+		//animations.at(1)->show();
+	}
 
 	void updateFlagsSpeed(float s);
 	

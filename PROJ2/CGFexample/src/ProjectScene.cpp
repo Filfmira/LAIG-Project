@@ -10,12 +10,12 @@ float Appearance::texlength_t = 0;
 
 void ProjectScene::init() 
 {
-
+	           
 	for (unsigned int i = 0; i < 8; i++)
 		lights[i] = NULL;
 	
 	globals=Global();
-	XMLSceneMod temp = XMLSceneMod("wall-e.xml", &sceneGraph, lights ,textures,appearances,&cameras, activeCamera, &globals, flagShaders);
+	XMLSceneMod temp = XMLSceneMod("wall-e.xml", &sceneGraph, lights ,textures,appearances,animations,&cameras, activeCamera, &globals, flagShaders);
 	
 	glEnable(GL_LIGHTING);
 
@@ -92,7 +92,6 @@ void ProjectScene::init()
 	glLightModelfv(GL_LIGHT_MODEL_AMBIENT, globals.getAmbient());  
 	
 
-
 	/*
 	for (unsigned int i = 0; i < 8; i++){
 		if (lights[i] == NULL)
@@ -102,6 +101,10 @@ void ProjectScene::init()
 
 	this->processDisplayLists(this->sceneGraph.getRoot(), this->sceneGraph.getRoot());
 	
+		// Animation-related code
+	unsigned long updatePeriod=50;
+	setUpdatePeriod(updatePeriod);
+
 }
 
 void ProjectScene::display() 
@@ -134,11 +137,18 @@ void ProjectScene::display()
 
 
 	axis.draw();
-
+	
+	
 	//primitives
-	drawAux(sceneGraph.getRoot());
+	//drawAux(sceneGraph.getRoot());
+	//Plane* p = new Plane(10);
+	//drawAux(sceneGraph.getRoot());
+
+	animations.at(0)->draw();
+	animations.at(1)->draw();
 
 	/*Plane* p = new Plane(20);
+>>>>>>> .r52
 	glPushMatrix();
 		
 		testShader->bind();
@@ -146,7 +156,15 @@ void ProjectScene::display()
 		p->draw();
 		testShader->unbind();
 	glPopMatrix();
+<<<<<<< .mine
+	glPopMatrix();
+	free(p);
+=======
 	free(p);*/
+	//lol.draw();
+	
+
+	glPopMatrix();
 	//printf("%d\n", this->appearancesStack.size());
 
 
