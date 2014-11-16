@@ -66,16 +66,19 @@ XMLSceneMod::XMLSceneMod(char *filename, Graph* gr, Light** lig, vector<Texture*
 		exit(1);
 	}
 //	cin.get();
-		
+	
+	if (!readAnimations(dgxElement,animations))
+	{
+		cin.get();
+		exit(1);
+	}
 
-	if (!readGraph(dgxElement, appearances,flagShaders)){
+	if (!readGraph(dgxElement, appearances,animations,flagShaders)){
 		cin.get();
 		exit(1);
 	}
 //	cin.get();
 
-	readAnimations(dgxElement,animations);
-	cin.get();
 
 }
 
@@ -887,6 +890,10 @@ bool XMLSceneMod::readAnimations(TiXmlElement* dgxElement, vector<Animation*> &a
 				 printf("	Problem with animation rotang value...\n");
 			 }
 			 else printf("        -Rotang: %s\n",rotang_s);
+
+			 Animation* ani= new CircularAnimation(id,span,radius,startang,rotang);
+				ani->show();
+				animationsVector.push_back(ani);
 		 }
 
 		  if(strcmp(type,"linear")==0)
@@ -924,13 +931,9 @@ bool XMLSceneMod::readAnimations(TiXmlElement* dgxElement, vector<Animation*> &a
 
 					controlpoint=controlpoint->NextSiblingElement("controlpoint");
 				}
-				for(int i=0;i<pontos.size();i++)
-					printf("x:%f y:%f z:%f\n",pontos.at(i).at(0),pontos.at(i).at(1),pontos.at(i).at(2));
 				Animation* ani= new LinearAnimation(string(id),span,pontos);
 				ani->show();
 				animationsVector.push_back(ani);
-				cout<<":::::"<<endl;
-				animationsVector.at(animationsVector.size()-1)->show();
 		  }
 
 		printf("-------------------------------\n");
@@ -945,7 +948,7 @@ bool XMLSceneMod::readAnimations(TiXmlElement* dgxElement, vector<Animation*> &a
 }
 
 
-bool XMLSceneMod::readGraph(TiXmlElement* dgxElement, std::vector<Appearance* > &appearances, vector<FlagShader*> &flagShaders){
+bool XMLSceneMod::readGraph(TiXmlElement* dgxElement, std::vector<Appearance* > &appearances, std::vector<Animation*> &animations,vector<FlagShader*> &flagShaders){
 	graphElement = dgxElement->FirstChildElement( "graph" );
 	char* rootNodeId = "";
 	if (graphElement == NULL){
@@ -1077,6 +1080,37 @@ bool XMLSceneMod::readGraph(TiXmlElement* dgxElement, std::vector<Appearance* > 
 
 			if(exists) printf("	Appearance: %s\n", appearance);
 			else {cout<<"	Error parsing node: appearance does not exist. Program will end...\n"; return false;}
+			
+			
+			TiXmlElement *animationref  = node->FirstChildElement("animationref");
+			
+			bool exists2=false;
+			if(animationref)
+			{
+			string animation_S = string(animationref->Attribute("id")); 
+			cout<<"        Animationref:"<<animation_S<<endl;
+			
+				for(unsigned int i=0;i<animations.size();i++)
+				{
+					cout<<animations[i]->getId()<<endl;
+					if(animations[i]->getId()==animation_S){
+						exists2=true;
+						n->setAnimation(animations[i]);
+						break;
+					}
+				}
+				if(!exists2)
+				{
+					cout<<"        Nao foi encontrada a Animacao"<<endl;
+					
+				}
+			}
+			else
+			{
+				n->setAnimation(NULL);
+				cout<<"        Nao tem animacao"<<endl;
+
+			}
 
 			
 			

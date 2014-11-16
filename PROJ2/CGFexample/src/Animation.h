@@ -11,10 +11,10 @@ protected:
 	float time;
 public:
 	Animation(){};
-	void draw(){};
+	virtual void draw(){};
 	virtual void update(float t){};
 	virtual void show(){};
-
+	string getId(){return id;};
 };
 
 
@@ -37,8 +37,8 @@ public:
 		id=idS;
 		time=span;
 		pontosDeControlo=pC;
-		//cout<<"OUUUUU O ID É "<<id;
-		//cout<<"   OUUUUUUUUUUU O SPAN É "<<time<<endl;
+		cout<<"OUUUUU O ID É "<<id;
+		cout<<"   OUUUUUUUUUUU O SPAN É "<<time<<endl;
 	};
 
 	vector< vector<float>> getPontosDeControlo(){return pontosDeControlo;}
@@ -75,7 +75,7 @@ public:
 		x=x0+(incX);
 		y=y0+(incY);
 		z=z0+(incZ);
-		//cout<</*"tp:"<<tp<<" tc:"<<tc<<*/" indice:"<<indice<<"  ia:"<<incX<<" ib:"<<incY<<" ic:"<<incZ<<"  x:"<<x<<" y:"<<y<<" z:"<<z<<endl;
+		cout<</*"tp:"<<tp<<" tc:"<<tc<<*/" indice:"<<indice<<"  ia:"<<incX<<" ib:"<<incY<<" ic:"<<incZ<<"  x:"<<x<<" y:"<<y<<" z:"<<z<<endl;
 
 	};
 
@@ -90,25 +90,20 @@ public:
 		indice=int(tp/tc);
 		if(indice<length-1)
 		update(t,tp,tc);
-	//cout<<tp<<"|"<<x<<"|"<<y<<"|"<<z<<endl;
+		else
+		{
+			startTime=0;
+			update(t);
+		}
+		cout<<tp<<"|"<<x<<"|"<<y<<"|"<<z<<endl;
 
 	};
 
 	
 
 	void draw(){
-		
-	glPushMatrix();
-	glRotated(-90,0,0,1);
-				glRotated(-90,0,1,0);
-				glBegin(GL_TRIANGLES);
-					glVertex2d( 1.0, 0);
-					glVertex2d( 0.0, 3.0);
-					glVertex2d(-1.0, 0);
-				glEnd();
-	glPopMatrix();
-		/*glPushMatrix();
-		/*glTranslated(x, y, z);
+		glPushMatrix();
+		glTranslated(x, y, z);
 		float xalpha=x-pontosDeControlo.at(indice).at(0);
 		float yalpha=y-pontosDeControlo.at(indice).at(1);
 		float zalpha=z-pontosDeControlo.at(indice).at(2);
@@ -155,9 +150,10 @@ public:
 		//cout<<xalpha<<"||"<<zalpha<<" alpha1:"<<alpha1<<endl;
 
 		glRotatef(alpha1,0,1,0);
+		glRotated(90,0,1,0);
 		//glRotatef(alpha2,0,0,1);
-		*//*
-				glRotated(-90,0,0,1);
+		
+			/*	glRotated(-90,0,0,1);
 				glRotated(-90,0,1,0);
 				glBegin(GL_TRIANGLES);
 					glVertex2d( 1.0, 0);
@@ -182,13 +178,14 @@ private:
 	float incAngle;
 public:
 	CircularAnimation(){};
-	CircularAnimation(float t,float r,float sA,float eA)
+	CircularAnimation(string idS,float span,float r,float sA,float eA)
 	{
-		time=t;
+		time=span;
 		raio=r;
 		startAngle=sA;
-		endAngle=eA;
+		endAngle=eA+startAngle;
 		startTime=0;
+		id=idS;
 	}
 
 
@@ -196,23 +193,21 @@ public:
 		if(startTime==0)
 			startTime=t;
 		float tp=(t-startTime)/1000;
+		if(incAngle+startAngle<endAngle)
 		 incAngle=(tp*(endAngle-startAngle))/time;
-
-
-		 /*if(incAngle>=endAngle)
-			 incAngle=endAngle;*/
 
 	}
 	void show(){
+		cout<<"lol"<<endl;
 	}
 	void draw(){
 		glPushMatrix();
 		glRotated(incAngle,0,1,0);
 		glRotated(startAngle,0,1,0);
-		
+	
 		glTranslated(raio,0,0);
-		/*glRotated(90,0,1,0);
-				glRotated(-90,0,0,1);
+		glRotated(90,0,1,0);
+		/*		glRotated(-90,0,0,1);
 				glRotated(-90,0,1,0);
 				glBegin(GL_TRIANGLES);
 					glVertex2d( 1.0, 0);

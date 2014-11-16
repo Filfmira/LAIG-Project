@@ -30,7 +30,7 @@ public:
 	bool readLights(TiXmlElement* dgxElement);
 	bool readTextures(TiXmlElement* dgxElement, std::vector<Texture*> &text);
 	bool readAppearances(TiXmlElement* dgxElement, std::vector<Appearance* > &appearances, std::vector<Texture*> &text);
-	bool readGraph(TiXmlElement* dgxElement, std::vector<Appearance* > &appearances, vector<FlagShader*> &flagShaders);
+	bool readGraph(TiXmlElement* dgxElement, std::vector<Appearance* > &appearances, std::vector<Animation*> &animationsVector,vector<FlagShader*> &flagShaders);
 
 	bool readAnimations(TiXmlElement* dgxElement, std::vector<Animation*> &animationsVector);
 	

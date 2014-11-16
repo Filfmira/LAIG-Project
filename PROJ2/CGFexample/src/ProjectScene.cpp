@@ -140,13 +140,13 @@ void ProjectScene::display()
 	
 	
 	//primitives
-	//drawAux(sceneGraph.getRoot());
+	drawAux(sceneGraph.getRoot());
 	//Plane* p = new Plane(10);
 	//drawAux(sceneGraph.getRoot());
 
 	//animations.at(0)->draw();
 	//animations.at(1)->draw();
-	drawAux(sceneGraph.getRoot());
+	//drawAux(sceneGraph.getRoot());
 	/*Plane* p = new Plane(20);
 >>>>>>> .r52
 	glPushMatrix();
@@ -162,8 +162,6 @@ void ProjectScene::display()
 =======
 	free(p);*/
 	//lol.draw();
-	
-
 	glPopMatrix();
 	//printf("%d\n", this->appearancesStack.size());
 
@@ -183,6 +181,10 @@ void ProjectScene::drawAux(Node* node){
 		glCallList(node->getDisplayListID());
 	}
 	else{
+		if(node->getAnimation()!=NULL)
+				{
+					node->getAnimation()->draw();
+				}
 			glMultMatrixf(node->getMatrix());
 		
 			if (node->getAppearance() != NULL){
@@ -191,25 +193,34 @@ void ProjectScene::drawAux(Node* node){
 		
 			
 			if (!this->appearancesStack.empty()){
-			//	printf("	appearance: %s\n", this->appearancesStack.top()->getId());
 				this->appearancesStack.top()->apply();		
 				if (this->appearancesStack.top()->getTexture() != NULL){
 						Appearance::texlength_s = this->appearancesStack.top()->getTexture()->getTexlengths();
 						Appearance::texlength_t = this->appearancesStack.top()->getTexture()->getTexlengtht();
 				}
 			}
+			
+				/*else
+					cout<<"lolitos"<<node->getId()<<endl;*/
 			for (unsigned int j = 0; j < node->getNumeroDePrimitivas(); j++){
 				node->getPrimitiva(j)->draw();
+				
 			}
-
-
+			
 			for (unsigned int i = 0; i < node->getDescendentes().size(); i++)
 				drawAux(node->getDescendentes()[i]);
+
+			if(node->getAnimation()!=NULL)
+				{
+			glPopMatrix();
+			}
+
 
 			if (node->getAppearance() != NULL)
 				appearancesStack.pop();
 	}
 	glPopMatrix();
+
 }
 
 

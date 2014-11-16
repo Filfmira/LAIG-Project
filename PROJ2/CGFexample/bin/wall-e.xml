@@ -130,6 +130,8 @@
             <component type="diffuse" value="0 0 0 1" />
             <component type="specular" value="0 0 0 1" />
         </appearance>
+		
+
 
     </appearances>
 
@@ -138,17 +140,18 @@
 	<!-- nesta versão do formato ANF, type pode ter o valor “linear” ou "circular" -->
 	<animations>
 
-		 <animation id="clol" span="10" type="circular" center="0.0 0.0 0.0" radius="5.0" startang="0.0" rotang="90.0" />
+		 <animation id="clol" span="3" type="circular" center="0.0 0.0 0.0" radius="4.0" startang="90.0" rotang="90.0" />
 	
-		  <animation id="lol" span="10" type="linear">
+		  <animation id="lol" span="15" type="linear">
 				<controlpoint xx="0" yy="0" zz="0" />
-				<controlpoint xx="1" yy="1" zz="1" />
+				<controlpoint xx="2" yy="0" zz="2" />
+				<controlpoint xx="-2" yy="0" zz="-2" />
 		  </animation>
 
 		  <animation id="circular" span="10" type="circular" center="0.0 0.0 0.0" radius="5.0" startang="0.0" rotang="90.0" />
 		  
 		  
-		  <animation id="lol" span="10" type="linear">
+		  <animation id="lol2" span="10" type="linear">
 				<controlpoint xx="0" yy="0" zz="0" />
 				<controlpoint xx="1" yy="1" zz="0" />
 				<controlpoint xx="0" yy="0" zz="0" />
@@ -208,10 +211,11 @@
 
         <node id="wall-e">
             <transforms>
-                <transform type="translate" to="-5 -5 -5" />
-                <transform type="rotate" axis="y" angle="45" />
+               <!-- <transform type="translate" to="-5 -5 -5" />
+                <transform type="rotate" axis="y" angle="45" /> -->
             </transforms>
             <appearanceref id="ss" />
+			<animationref id="lol" />
             <primitives>
             </primitives>
 
@@ -661,10 +665,11 @@
 		
 		<node id="planet">
             <transforms>
-				<transform type="translate" to="10 6 6" />
+				<!-- <transform type="translate" to="10 6 6" /> -->
                 <transform type="rotate" axis="x" angle="-45" />
             </transforms>
             <appearanceref id="planet" />
+			<animationref id="clol" />
             <primitives>
             </primitives>
 
@@ -691,6 +696,7 @@
 			 <transform type="scale" factor="0.5 0.5 0.1" />
             </transforms>
             <appearanceref id="planet" />
+			
             <primitives>
                    <torus inner="3.5" outer="20" slices="30" loops="20" /> 
             </primitives>

@@ -8,6 +8,7 @@
 #include "Evaluator.h"
 #include <vector>
 #include "Appearances.h"
+#include "Animation.h"
 
 class Node
 {
@@ -17,6 +18,7 @@ private:
 	vector<Node*> ascendentes; 
 	vector<Primitive*> primitivas;
 	Appearance * aparencia;
+	Animation * animation;
 	float matrix[16];
 	bool displayList;
 	int displayListID;
@@ -30,6 +32,7 @@ public:
 
 	void addPrimitiva(Primitive* primitiva);
 	void setAparencia(Appearance * aparencia);
+	void setAnimation(Animation * anomation);
 	void setMatrix(float matrix[16] );
 	string getId(){return id;}
 	void addDescendente(Node* n){descendentes.push_back(n);}
@@ -43,6 +46,7 @@ public:
 	Primitive* getPrimitiva(int i);
 	float* getMatrix(){return matrix;};
 	Appearance* getAppearance(){return aparencia;}
+	Animation* getAnimation(){return animation;}
 
 	bool getDisplayList(){return displayList;}
 	void setDisplayList(bool b){this->displayList=b;}

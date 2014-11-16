@@ -19,6 +19,7 @@ Node::Node(string id)
 {
 	this->id=id;
 	this->aparencia = NULL;
+	this->animation = NULL;
 	this->displayList = false;
 	this->displayListID = -1;
 }
@@ -31,6 +32,7 @@ Node::Node(string id, vector<Primitive*> primitivas, Appearance * aparencia,floa
 	this->setMatrix(matrix);
 	this->displayList = false;
 	this->displayListID = -1;
+	this->animation = NULL;
 }
 
 
@@ -52,6 +54,10 @@ void Node::setAparencia(Appearance * aparencia)
 	this->aparencia=aparencia;
 }
 
+void Node::setAnimation(Animation * animation)
+{
+	this->animation=animation;
+}
 
 
 string Node::mostrarNo(){
