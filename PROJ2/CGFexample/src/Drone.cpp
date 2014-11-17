@@ -1,5 +1,6 @@
-#include "Evaluator.h"
+#include "Drone.h"
 
+/*
 GLfloat ctrlpoints[4][3] = {	{  0.5, 0.0,  0.5},
 								{  0.5, 0.0, -0.5},
 								{ -0.5, 0.0,  0.5},
@@ -10,7 +11,7 @@ GLfloat nrmlcompon[4][3] = {
 								{  0.0, 1.0, 0.0},
 								{  0.0, 1.0, 0.0},
 								{  0.0, 1.0, 0.0},
-								{  0.0, 1.0, 0.0}};
+								{  0.0, 1.0, 0.0}};*/
 
 // As cores a atribuir a cada ponto de controlo:
 //   Nota: para uma boa percepcao do efeito de iluminacao, é
@@ -19,7 +20,7 @@ GLfloat nrmlcompon[4][3] = {
 								{ 0.0, 0.0, 0.7, 0}, 
 								{ 0.0, 0.7, 0.0, 0},
 								{ 0.7, 0.0, 0.0, 0} };*/
-GLfloat colorpoints[4][4] = {	{ 0.7, 0.7, 0.7, 0},
+/*GLfloat colorpoints[4][4] = {	{ 0.7, 0.7, 0.7, 0},
 								{ 0.7, 0.7, 0.7, 0}, 
 								{ 0.7, 0.7, 0.7, 0},
 								{ 0.7, 0.7, 0.7, 0} };
@@ -28,14 +29,19 @@ GLfloat textpoints[4][2] = {	{ 1.0, 0.0},
 								{ 1.0, 1.0},
 								{ 0.0, 0.0},
 								{ 0.0, 1.0}};
+*/
 
 
-Plane::Plane(unsigned int parts){
-	this->parts = parts;
+Drone::Drone(int order, int pU, int pV, GLenum compute, GLfloat* points){
+	this->order = order;
+	this->partsU = pU;
+	this->partsV = pV;
+	this->compute = compute;
+	this->ctrlpoints = points;
+}
 
-	}
 
-void Plane::draw(){
+void Drone::draw(){
 
 	glFrontFace(GL_CW);
 	 glEnable(GL_AUTO_NORMAL);
@@ -54,10 +60,10 @@ void Plane::draw(){
 	//     valor "2" (grau + 1) nos quatro casos
 	
 	//glColor3f(1.0,1.0,1.0);
-	glMap2f(GL_MAP2_VERTEX_3, 0.0, 1.0, 3, 2,  0.0, 1.0, 6, 2,  &ctrlpoints[0][0]);
-	glMap2f(GL_MAP2_NORMAL,   0.0, 1.0, 3, 2,  0.0, 1.0, 6, 2,  &nrmlcompon[0][0]);
-	glMap2f(GL_MAP2_COLOR_4,  0.0, 1.0, 4, 2,  0.0, 1.0, 8, 2,  &colorpoints[0][0]);
-	glMap2f(GL_MAP2_TEXTURE_COORD_2,  0.0, 1.0, 2, 2,  0.0, 1.0, 4, 2,  &textpoints[0][0]);
+	glMap2f(GL_MAP2_VERTEX_3, 0.0, 1.0, 3, partsU,  0.0, 1.0, 3*partsU, partsV,  ctrlpoints);
+	glMap2f(GL_MAP2_NORMAL,   0.0, 1.0, 3, 2,  0.0, 1.0, 6, 2,  nrmlcompon);
+	glMap2f(GL_MAP2_COLOR_4,  0.0, 1.0, 4, 2,  0.0, 1.0, 8, 2,  colorpoints);
+	glMap2f(GL_MAP2_TEXTURE_COORD_2,  0.0, 1.0, 2, 2,  0.0, 1.0, 4, 2,  textpoints);
 
 	// os interpoladores activam-se:
 	glEnable(GL_MAP2_VERTEX_3);
@@ -70,7 +76,7 @@ void Plane::draw(){
 	//        quando a variável U varia de 0 a 1
 	//    na direccao V, serao efectuadas divisoes em 60 passos
 	//        quando a variável U varia de 0 a 1
-	glMapGrid2f(this->parts, 0.0,1.0, this->parts, 0.0,1.0); 
+	glMapGrid2f(this->partsU, 0.0,1.0, this->partsV, 0.0,1.0); 
 
 	
 	// SEGUE-SE EXEMPLO DE UTILIZACAO DE "EVALUATORS"
@@ -81,7 +87,7 @@ void Plane::draw(){
 	//myTexture->apply();
 
 
-	glEvalMesh2(GL_FILL, 0,this->parts, 0,this->parts);		// GL_POINT, GL_LINE, GL_FILL
+	glEvalMesh2(GL_FILL, 0,this->partsU, 0,this->partsV);		// GL_POINT, GL_LINE, GL_FILL
 	//glEvalMesh2(GL_FILL, 10,30, 20,40);	// poligono incompleto...
 	//glEvalMesh2(GL_FILL, -10,50, -20,70);	// ...ou "transbordante"
 	// NOTA: os 4 ultimos parametros da funcao glEvalMesh2() nao sao 
@@ -91,7 +97,3 @@ void Plane::draw(){
 
 	glFrontFace(GL_CCW);
 }
-
-
-
-char* Plane::getNome(){return "Plano";};

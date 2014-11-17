@@ -70,6 +70,7 @@
   <ItemGroup>
     <ClCompile Include="src\Animation.cpp" />
     <ClCompile Include="src\Appearances.cpp" />
+    <ClCompile Include="src\Drone.cpp" />
     <ClCompile Include="src\Evaluator.cpp" />
     <ClCompile Include="src\Flag.cpp" />
     <ClCompile Include="src\Graph.cpp" />
@@ -84,6 +85,7 @@
     <ClInclude Include="src\Animation.h" />
     <ClInclude Include="src\Appearances.h" />
     <ClInclude Include="src\Cameras.h" />
+    <ClInclude Include="src\Drone.h" />
     <ClInclude Include="src\Evaluator.h" />
     <ClInclude Include="src\Flag.h" />
     <ClInclude Include="src\Globals.h" />

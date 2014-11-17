@@ -141,26 +141,7 @@ void ProjectScene::display()
 	
 	//primitives
 	drawAux(sceneGraph.getRoot());
-	//Plane* p = new Plane(10);
-	//drawAux(sceneGraph.getRoot());
 
-	//animations.at(0)->draw();
-	//animations.at(1)->draw();
-	//drawAux(sceneGraph.getRoot());
-	/*Plane* p = new Plane(20);
->>>>>>> .r52
-	glPushMatrix();
-		
-		testShader->bind();
-		glScaled(5,1,5);
-		p->draw();
-		testShader->unbind();
-	glPopMatrix();
-<<<<<<< .mine
-	glPopMatrix();
-	free(p);
-=======
-	free(p);*/
 	//lol.draw();
 	glPopMatrix();
 	//printf("%d\n", this->appearancesStack.size());
@@ -182,17 +163,17 @@ void ProjectScene::drawAux(Node* node){
 	}
 	else{
 		if(node->getAnimation().size()>0)
-				{
-					//se ja tiver acabado a animacao e nao tivermos na ultima
-					if(node->getAnimation()[node->getIndiceAnimacao()]->isEnd() && node->getIndiceAnimacao()<node->getAnimation().size()-1)
-					{
-						node->aumentaIndiceAnimacao();
-						node->getAnimation()[node->getIndiceAnimacao()]->restart();
-						node->getAnimation()[node->getIndiceAnimacao()]->update(0);
-					}
-					//aplica as transformacoes da animação
-					node->getAnimation()[node->getIndiceAnimacao()]->draw();
-				}
+		{
+			//se ja tiver acabado a animacao e nao tivermos na ultima
+			if(node->getAnimation()[node->getIndiceAnimacao()]->isEnd() && node->getIndiceAnimacao()<node->getAnimation().size()-1)
+			{
+				node->aumentaIndiceAnimacao();
+				node->getAnimation()[node->getIndiceAnimacao()]->restart();
+				node->getAnimation()[node->getIndiceAnimacao()]->update(0);
+			}
+			//aplica as transformacoes da animação
+			node->getAnimation()[node->getIndiceAnimacao()]->draw();
+		}
 
 			glMultMatrixf(node->getMatrix());
 		
@@ -219,7 +200,7 @@ void ProjectScene::drawAux(Node* node){
 
 			//faz pop da matrix da animação, caso esta 
 			if(node->getAnimation().size()>0)
-			glPopMatrix();
+				glPopMatrix();
 
 
 			if (node->getAppearance() != NULL)
@@ -237,21 +218,28 @@ ProjectScene::~ProjectScene()
 
 
 Appearance* getClosestParentAppearance(Node* start, Node* dest){
-		
-	if (start->getDescendentes().size() == 0)
+	//	return NULL; //temp
+	if (start->getDescendentes().size() == 0){
+		printf("retornou aparencia null\n");
 		return NULL;
+	}
 
 	for (int i = 0; i < start->getDescendentes().size();i++){
 		if (dest == start->getDescendenteIndex(i)){
+			printf("encontrou aparencia\n");
 			return start->getAppearance();
 		}
 	}
 	Appearance* temp = NULL;
 	for (int i = 0; i < start->getDescendentes().size();i++){
 		 temp = getClosestParentAppearance(start->getDescendenteIndex(i), dest);
-		 if (temp != NULL)
+		 if (temp != NULL){
+			 printf("retornou aparencia recursiva\n");
 			 return temp;
+		 }
 	}
+
+	printf("retornou aparencia null\n");
 	return NULL;
 
 }
@@ -267,14 +255,19 @@ void ProjectScene::processDisplayLists(Node* n, Node* graphRoot){
 
 
 	if (n->getDisplayList()){
-		
-	/*	Appearance*  temp = NULL;
-		if (n->getAppearance() == NULL)
+		printf("nome do no: %s\n", n->getId().c_str());
+		Appearance*  temp = NULL;
+		if (n->getAppearance() == NULL){
+			printf("vai procurar aparencia aos ascendentes\n");
 			temp = getClosestParentAppearance(graphRoot, n);
+		}
 		else temp = n->getAppearance();
 		if (temp == NULL)
 			printf("Null...\n");
-		else temp->apply();*/
+		else temp->apply();
+		n->setAparencia(temp);
+	//	n->setAparencia(appearances[0]);
+		printf("nome aparencia: %s\n",temp->getId());
 
 		if (n->getDisplayListID() == -1){
 			int id = glGenLists(1);
@@ -284,6 +277,7 @@ void ProjectScene::processDisplayLists(Node* n, Node* graphRoot){
 									  //este nó como um nó "normal" (sem lista)
 
 			printf("---------------------------\n fazer lista:\n");
+		//	n->setAparencia(temp);
 			glNewList(n->getDisplayListID(), GL_COMPILE);
 				this->drawAux(n);
 			glEndList();

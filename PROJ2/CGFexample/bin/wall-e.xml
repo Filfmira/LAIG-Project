@@ -219,14 +219,14 @@
 
 
 
-        <node id="wall-e">
+        <node id="wall-e" displaylist="true">
             <transforms>
                <!-- <transform type="translate" to="-5 -5 -5" />
                 <transform type="rotate" axis="y" angle="45" /> -->
             </transforms>
-            <appearanceref id="ss" />
-			<animationref id="teste" />
-			<animationref id="lol" />
+            <appearanceref id="inherit" />
+		<!--	<animationref id="teste" />
+			<animationref id="lol" /> -->
             <primitives>
             </primitives>
 
@@ -674,7 +674,7 @@
         <!-- ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||-->
 		
 		
-		<node id="planet">
+		<node id="planet" displaylist="true">
             <transforms>
 				<transform type="translate" to="10 6 6" />
                 <transform type="rotate" axis="x" angle="-45" />
@@ -721,7 +721,7 @@
         <!-- ||||||||||||||||||||||||||||||||CEU|||||||||||||||||||||||||||||||-->
         <!-- ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||-->
 
-        <node id="ceu">
+        <node id="ceu" displaylist="true">
             <transforms>
             </transforms>
             <appearanceref id="stars1" />
@@ -838,7 +838,7 @@
         <node id="bandeira">
             <transforms>
             </transforms>
-            <appearanceref id="inherit" />
+            <appearanceref id="ss" />
 
             <descendants>
                 <noderef id="panoBandeira" />
@@ -855,7 +855,7 @@
             </transforms>
             <appearanceref id="inherit" />
             <primitives>
-                <flag texture="flag.jpg" />
+                <flag texture="flag2.jpg" />
             </primitives>
 
             <descendants>

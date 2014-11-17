@@ -28,22 +28,12 @@ void main()
 //uniform float currentAngle;
 uniform float time;
 uniform float speed;
-//varying vec2 vTexCoord;
+varying float phase;
 //out vec3 vertex_to_fragment_color;
 
 void main(){
 
-	/*vertex_to_fragment_color = culoare;
-
-	vec4 v = vec4( in_position.x, in_position.y, in_position.z, 1.0 );
-
-	v.y  = sin( in_position.x + currentAngle );
-	v.y += sin( in_position.z + currentAngle );
-	v.y *= in_position.x * 0.08;*/
-
-	//gl_TexCoord[0] = gl_TextureMatrix[0] * gl_MultiTexCoord0;
-	
-   // gl_Position = ftransform();
+	phase = (time+gl_Vertex.x)*speed;
 
 	gl_Position = gl_ModelViewProjectionMatrix*(gl_Vertex + vec4(0.0, sin( (time+gl_Vertex.x)*speed), 0.0, 0.0)); 
 	gl_TexCoord[0].xy = gl_MultiTexCoord0.st;
