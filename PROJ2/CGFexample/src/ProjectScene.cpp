@@ -181,10 +181,19 @@ void ProjectScene::drawAux(Node* node){
 		glCallList(node->getDisplayListID());
 	}
 	else{
-		if(node->getAnimation()!=NULL)
+		if(node->getAnimation().size()>0)
 				{
-					node->getAnimation()->draw();
+					//se ja tiver acabado a animacao e nao tivermos na ultima
+					if(node->getAnimation()[node->getIndiceAnimacao()]->isEnd() && node->getIndiceAnimacao()<node->getAnimation().size()-1)
+					{
+						node->aumentaIndiceAnimacao();
+						node->getAnimation()[node->getIndiceAnimacao()]->restart();
+						node->getAnimation()[node->getIndiceAnimacao()]->update(0);
+					}
+					//aplica as transformacoes da animação
+					node->getAnimation()[node->getIndiceAnimacao()]->draw();
 				}
+
 			glMultMatrixf(node->getMatrix());
 		
 			if (node->getAppearance() != NULL){
@@ -200,8 +209,6 @@ void ProjectScene::drawAux(Node* node){
 				}
 			}
 			
-				/*else
-					cout<<"lolitos"<<node->getId()<<endl;*/
 			for (unsigned int j = 0; j < node->getNumeroDePrimitivas(); j++){
 				node->getPrimitiva(j)->draw();
 				
@@ -210,10 +217,9 @@ void ProjectScene::drawAux(Node* node){
 			for (unsigned int i = 0; i < node->getDescendentes().size(); i++)
 				drawAux(node->getDescendentes()[i]);
 
-			if(node->getAnimation()!=NULL)
-				{
+			//faz pop da matrix da animação, caso esta 
+			if(node->getAnimation().size()>0)
 			glPopMatrix();
-			}
 
 
 			if (node->getAppearance() != NULL)

@@ -1085,34 +1085,35 @@ bool XMLSceneMod::readGraph(TiXmlElement* dgxElement, std::vector<Appearance* > 
 			TiXmlElement *animationref  = node->FirstChildElement("animationref");
 			
 			bool exists2=false;
-			if(animationref)
+			vector<Animation *> animationsVector;
+			//percorre todas as animationref
+			while (animationref)
 			{
 			string animation_S = string(animationref->Attribute("id")); 
 			cout<<"        Animationref:"<<animation_S<<endl;
 			
+				//tenta encontrar no vector de animations
 				for(unsigned int i=0;i<animations.size();i++)
 				{
 					cout<<animations[i]->getId()<<endl;
+					//se encontrar adiciona ao vector de animacoes do no
 					if(animations[i]->getId()==animation_S){
 						exists2=true;
-						n->setAnimation(animations[i]);
+						animationsVector.push_back(animations[i]);
+						cout<<"animation:"<<animations[i]->getId()<<endl;
 						break;
 					}
 				}
+				//se nao, nao adiciona
 				if(!exists2)
 				{
 					cout<<"        Nao foi encontrada a Animacao"<<endl;
 					
 				}
-			}
-			else
-			{
-				n->setAnimation(NULL);
-				cout<<"        Nao tem animacao"<<endl;
-
+				animationref=animationref->NextSiblingElement("animationref");
 			}
 
-			
+			n->setAnimation(animationsVector);
 			
 			TiXmlElement *primitives  = node->FirstChildElement("primitives");
 			if (primitives){

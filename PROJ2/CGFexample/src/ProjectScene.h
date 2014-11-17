@@ -62,7 +62,7 @@ public:
 		for(int k=0;k<animations.size();k++)
 					animations.at(k)->update(t);
 		//animations.at(0)->show();
-		//animations.at(1)->update(t);
+		//animations.at(0)->update(t);
 		//animations.at(1)->show();
 		//cout<<"\n|||||||||||||||||||||||||||\n";
 	}

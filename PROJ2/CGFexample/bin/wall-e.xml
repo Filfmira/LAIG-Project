@@ -140,12 +140,20 @@
 	<!-- nesta versão do formato ANF, type pode ter o valor “linear” ou "circular" -->
 	<animations>
 
+		<animation id="teste" span="5" type="linear">
+				<controlpoint xx="5" yy="0" zz="0" />
+				<controlpoint xx="0" yy="5" zz="0" />
+				<controlpoint xx="-5" yy="0" zz="0" />
+				<controlpoint xx="0" yy="-5" zz="0" />
+		</animation>
+		
 		 <animation id="clol" span="3" type="circular" center="0.0 0.0 0.0" radius="4.0" startang="90.0" rotang="90.0" />
 	
 		  <animation id="lol" span="15" type="linear">
 				<controlpoint xx="0" yy="0" zz="0" />
 				<controlpoint xx="2" yy="0" zz="2" />
 				<controlpoint xx="-2" yy="0" zz="-2" />
+				<controlpoint xx="-2" yy="0" zz="5" />
 		  </animation>
 
 		  <animation id="circular" span="10" type="circular" center="0.0 0.0 0.0" radius="5.0" startang="0.0" rotang="90.0" />
@@ -156,6 +164,8 @@
 				<controlpoint xx="1" yy="1" zz="0" />
 				<controlpoint xx="0" yy="0" zz="0" />
 		  </animation>
+		  
+		  
 
 	</animations>
 	
@@ -215,6 +225,7 @@
                 <transform type="rotate" axis="y" angle="45" /> -->
             </transforms>
             <appearanceref id="ss" />
+			<animationref id="teste" />
 			<animationref id="lol" />
             <primitives>
             </primitives>
@@ -665,11 +676,11 @@
 		
 		<node id="planet">
             <transforms>
-				<!-- <transform type="translate" to="10 6 6" /> -->
+				<transform type="translate" to="10 6 6" />
                 <transform type="rotate" axis="x" angle="-45" />
             </transforms>
             <appearanceref id="planet" />
-			<animationref id="clol" />
+			
             <primitives>
             </primitives>
 
