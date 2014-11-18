@@ -145,15 +145,13 @@ void ProjectScene::display()
 	
 	//primitives
 	drawAux(sceneGraph.getRoot());
-	vehicle.draw();
-	//lol.draw();
-	glPopMatrix();
+	
 
-	glPopMatrix();
+	/*glPopMatrix();
 	Plane p=Plane(10);
 	p.draw();
 
-	glPopMatrix();
+	glPopMatrix();*/
 	//printf("%d\n", this->appearancesStack.size());
 
 

@@ -1356,6 +1356,11 @@ bool XMLSceneMod::readGraph(TiXmlElement* dgxElement, std::vector<Appearance* > 
 
 					}
 
+					else if (strcmp("vehicle", primitive->Value()) == 0){
+						Vehicle* v = new Vehicle();
+						n->addPrimitiva(v);
+					}
+
 					else printf("		Invalid primitive detected.  Program will try to run anyway...\n");
 
 

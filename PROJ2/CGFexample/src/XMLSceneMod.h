@@ -11,6 +11,7 @@
 #include  "Globals.h"
 #include <stack>
 #include "Flag.h"
+#include "Vehicle.h"
 #include "Patch.h"
 
 class XMLSceneMod

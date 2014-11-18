@@ -14,7 +14,7 @@ public:
 	
 	static float texlength_s;
 	static float texlength_t;
-	
+	Appearance(){};
 	Appearance(char* id):CGFappearance()
 	{
 		this->id=id;

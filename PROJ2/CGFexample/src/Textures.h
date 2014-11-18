@@ -15,7 +15,7 @@ private:
 public:
 	string getFileName(){return texName;}
 
-
+	Texture(){};
 	Texture(char* id, char* file, float texlength_s, float texlength_t):CGFtexture((string)file){
 		this->id=id;
 		this->texlength_s=texlength_s;

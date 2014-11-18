@@ -147,7 +147,7 @@
 				<controlpoint xx="0" yy="-5" zz="0" />
 		</animation>
 		
-		 <animation id="clol" span="3" type="circular" center="0.0 0.0 0.0" radius="4.0" startang="90.0" rotang="90.0" />
+		 <animation id="clol" span="60" type="circular" center="0.0 0.0 0.0" radius="4.0" startang="0.0" rotang="1000.0" />
 	
 		  <animation id="lol" span="15" type="linear">
 				<controlpoint xx="0" yy="0" zz="0" />
@@ -214,6 +214,7 @@
 				<noderef id="planet" />
                 <noderef id="ceu" />
                 <noderef id="bandeira" />
+				<noderef id="veiculo" />
             </descendants>
         </node>
 
@@ -236,6 +237,20 @@
             <descendants>
             </descendants>
         </node> -->
+		
+		 <node id="veiculo">
+            <transforms>
+            </transforms>
+            <appearanceref id="ss" />
+			<animationref id="clol" />
+            <primitives>
+            
+			<vehicle >
+			</vehicle>
+			</primitives>
+            <descendants>
+            </descendants>
+        </node>
 
 
 

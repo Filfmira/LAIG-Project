@@ -224,7 +224,7 @@ public:
 		glRotated(startAngle,0,1,0);
 	
 		glTranslated(raio,0,0);
-		glRotated(90,0,1,0);
+		glRotated(180,0,1,0);
 		/*		glRotated(-90,0,0,1);
 				glRotated(-90,0,1,0);
 				glBegin(GL_TRIANGLES);
