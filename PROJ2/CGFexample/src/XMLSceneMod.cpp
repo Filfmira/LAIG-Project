@@ -1277,14 +1277,18 @@ bool XMLSceneMod::readGraph(TiXmlElement* dgxElement, std::vector<Appearance* > 
 						}
 						else cout<<"		partsV:"<<partsV_s<<endl;
 
-						compute = string(primitive->Attribute("partsV"));
+						compute = string(primitive->Attribute("compute"));
 
-						if(compute=="fill"&&compute=="line"&&compute=="point")
+						if(compute=="fill" || compute=="line" || compute=="point")
 						{
-							cout<<"Error reading compute value"<<endl;
-							patchBool=false;
+							//cout<<"Error reading compute value"<<endl;
+							cout<<"		compute:"<<compute<<endl;
 						}
-						else cout<<"		compute:"<<partsV_s<<endl;
+						else{
+							patchBool=false;
+							cout<<"Error reading partsV value"<<compute<<endl;
+
+						}
 
 						
 
@@ -1302,7 +1306,7 @@ bool XMLSceneMod::readGraph(TiXmlElement* dgxElement, std::vector<Appearance* > 
 							float x,y,z;
 							x=y=z=0;
 							char* x_s = (char*) controlpoint->Attribute("x");
-							if (sscanf(x_s,"%f",&y) != 1)
+							if (sscanf(x_s,"%f",&x) != 1)
 							{
 								cout<<"Error reading x value"<<endl;
 									patchBool=false;
@@ -1343,6 +1347,7 @@ bool XMLSceneMod::readGraph(TiXmlElement* dgxElement, std::vector<Appearance* > 
 						if(patchBool)
 						{
 						Patch * p=new Patch(order,partsU,partsV,compute,cp);
+						n->addPrimitiva(p);
 						}
 						else
 							cout<<"Ocorreu um erro a ler o Patch"<<endl;

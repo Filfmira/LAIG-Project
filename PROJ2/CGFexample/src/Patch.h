@@ -17,7 +17,7 @@ private:
 	int u_stride;
 	int v_stride;
 	string compute;
-	vector< vector<float>> controlPoints;
+	GLfloat *controlPoints;
 
 public:
 	Patch(){};
@@ -26,14 +26,35 @@ public:
 		partsU=pU;
 		partsV=pV;
 		compute=comp;
-		for(int i=0;i<cp.size();i++)
+
+		int kkk=((order+1)*(order+1))*3;
+		controlPoints= new GLfloat[kkk];
+
+		for(int i =0;i<cp.size();i++)
 		{
-			controlPoints.push_back(cp[i]);
+			controlPoints[i*3+0]=cp[i][0];
+			controlPoints[i*3+1]=cp[i][1];
+			controlPoints[i*3+2]=cp[i][2];
+
 		}
-		/*for(int i=0;i<controlPoints.size();i++)
+	};
+
+	Patch(int o, int pU, int pV, string comp, float *arraycp ){
+		order=o;
+		partsU=pU;
+		partsV=pV;
+		compute=comp;
+
+		int kkk=((order+1)*(order+1))*3;
+		controlPoints= new GLfloat[kkk];
+		//controlPoints=arraycp;
+		for(int i =0;i<kkk;i++)
 		{
-			cout<<"x:"<<controlPoints[i][0]<<" y:"<<controlPoints[i][1]<<" z:"<<controlPoints[i][2]<<endl;
-		}*/
+			controlPoints[i]=arraycp[i];
+			controlPoints[i]=arraycp[i];
+			controlPoints[i]=arraycp[i];
+
+		}
 	};
 
 	void draw()
@@ -41,33 +62,9 @@ public:
 
 		glEnable(GL_CW);
 		glEnable(GL_AUTO_NORMAL);
-		/*GLfloat ctrl_pts[9][3];
-		for (int i =0;i<controlPoints.size();i++){
-			ctrl_pts[i][0] = controlPoints.at(i).at(0);
-			ctrl_pts[i][1] = controlPoints.at(i).at(1);
-			ctrl_pts[i][2] = controlPoints.at(i).at(2);
-		}
-		*/
-
-		GLfloat *exampleControlPoints= new GLfloat[(order+1)*3];
-
-		for(int i =0;i<controlPoints.size();i++)
-		{
-			exampleControlPoints[i*3+0]=controlPoints[i][0];
-			exampleControlPoints[i*3+1]=controlPoints[i][1];
-			exampleControlPoints[i*3+2]=controlPoints[i][2];
-
-		}
-
-		
-		for(int i=0;i<48;i++)
-		{
-			cout<<i<<":"<<exampleControlPoints[i]<<endl;
-		}
-		cin.get();
 
 		glMap2f(GL_MAP2_VERTEX_3, 0, 1, 3, order+1,
-			0, 1, 3*(order+1), order+1, &exampleControlPoints[0]);
+			0, 1, 3*(order+1), order+1, &controlPoints[0]);
 
 		glEnable(GL_MAP2_VERTEX_3);
 		glEnable(GL_AUTO_NORMAL);
@@ -75,16 +72,16 @@ public:
 		glMapGrid2f(partsU, 0.0, 1.0, partsV, 0.0, 1.0);
 
 		glPushMatrix();
-	glFrontFace(GL_CW);
+		glFrontFace(GL_CW);
 
-	//if(compute.compare("fill") == 0)
-		glEvalMesh2(GL_FILL, 0, partsU, 0, partsV);
-	/*else if(compute.compare("line") == 0)
-		glEvalMesh2(GL_LINE, 0, partsU, 0, partsV);
-	else glEvalMesh2(GL_POINT, 0, partsU, 0, partsV);*/
+		if(compute.compare("fill") == 0)
+			glEvalMesh2(GL_FILL, 0, partsU, 0, partsV);
+		else if(compute.compare("line") == 0)
+			glEvalMesh2(GL_LINE, 0, partsU, 0, partsV);
+		else glEvalMesh2(GL_POINT, 0, partsU, 0, partsV);
 	
-	glFrontFace(GL_CCW);
-	glPopMatrix();
+		glFrontFace(GL_CCW);
+		glPopMatrix();
 	};
 
 

@@ -145,7 +145,7 @@ void ProjectScene::display()
 	
 	//primitives
 	drawAux(sceneGraph.getRoot());
-	//vehicle.draw();
+	vehicle.draw();
 	//lol.draw();
 	glPopMatrix();
 
