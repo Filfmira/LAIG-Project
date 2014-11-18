@@ -129,6 +129,7 @@ private:
 	double alphaStep;
 
 public:
+	Cylinder(){};
 	Cylinder (float base, float top, float height, int slices, int stacks){
 		
 		this->base = base;

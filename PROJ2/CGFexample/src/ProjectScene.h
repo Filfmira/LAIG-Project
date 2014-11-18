@@ -12,6 +12,9 @@
 #include "Globals.h"
 #include "Animation.h"
 #include "Flag.h"
+#include "Vehicle.h"
+#include "Patch.h"
+#include "Evaluator.h"
 class ProjectScene : public CGFscene
 {
 public:
@@ -30,6 +33,9 @@ public:
 	stack<Appearance*> appearancesStack;
 	Global globals;
 	vector<FlagShader*> flagShaders;
+
+	Vehicle vehicle;
+	Patch patch;
 
 	bool wireFrame;
 

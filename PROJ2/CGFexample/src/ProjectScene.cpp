@@ -10,7 +10,10 @@ float Appearance::texlength_t = 0;
 
 void ProjectScene::init() 
 {
-	           
+
+	vehicle=Vehicle();
+	patch=Patch();
+
 	for (unsigned int i = 0; i < 8; i++)
 		lights[i] = NULL;
 	
@@ -110,6 +113,8 @@ void ProjectScene::init()
 void ProjectScene::display() 
 {
 
+
+
 	// Clear image and depth buffer everytime we update the scene
 	glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
 
@@ -141,8 +146,19 @@ void ProjectScene::display()
 	
 	//primitives
 	drawAux(sceneGraph.getRoot());
-
+	//vehicle.draw();
+	glPushMatrix();
+	//glScaled(5,5,5);
+	appearances[1]->apply();
+	patch.draw();
+	glPopMatrix();
 	//lol.draw();
+	glPopMatrix();
+
+	glPopMatrix();
+	Plane p=Plane(10);
+	p.draw();
+
 	glPopMatrix();
 	//printf("%d\n", this->appearancesStack.size());
 

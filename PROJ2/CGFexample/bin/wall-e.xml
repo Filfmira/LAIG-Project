@@ -221,8 +221,8 @@
 
         <node id="wall-e" displaylist="true">
             <transforms>
-               <!-- <transform type="translate" to="-5 -5 -5" />
-                <transform type="rotate" axis="y" angle="45" /> -->
+               <transform type="translate" to="-5 -5 -5" />
+                <transform type="rotate" axis="y" angle="45" /> 
             </transforms>
             <appearanceref id="inherit" />
 		<!--	<animationref id="teste" />
