@@ -1,3 +1,6 @@
+#ifndef PATCH_H
+#define PATCH_H
+
 #include "CGFapplication.h"
 #include "Primitives.h"
 
@@ -13,46 +16,24 @@ private:
 	int partsV;
 	int u_stride;
 	int v_stride;
+	string compute;
 	vector< vector<float>> controlPoints;
 
 public:
-	Patch(){
-		u_stride = 3;
-		v_stride = 9;
-		order=2;
-		u0 = 0.0;
-		v0 = 0.0;
-		u1 = 1.0;
-		v1 = 1.0;
-		partsU=10;
-		partsV=10;
-		vector<float> point;
-		point.push_back(-0.5);
-		point.push_back(0);
-		point.push_back(0.5);
-		vector<float> point1;
-		point1.push_back(-0.5);
-		point1.push_back(0);
-		point1.push_back(-0.5);
-		vector<float> point2;
-		point2.push_back(0.5);
-		point2.push_back(0);
-		point2.push_back(0.5);
-		vector<float> point3;
-		point3.push_back(0.5);
-		point3.push_back(1);
-		point3.push_back(0.5);
-
-		controlPoints.push_back(point);
-		controlPoints.push_back(point1);
-		controlPoints.push_back(point2);
-		controlPoints.push_back(point3);
-		controlPoints.push_back(point);
-		controlPoints.push_back(point1);
-		controlPoints.push_back(point2);
-		controlPoints.push_back(point3);
-		controlPoints.push_back(point);
-		cout<<"passou"<<endl;
+	Patch(){};
+	Patch(int o, int pU, int pV, string comp,vector< vector<float>> cp ){
+		order=o;
+		partsU=pU;
+		partsV=pV;
+		compute=comp;
+		for(int i=0;i<cp.size();i++)
+		{
+			controlPoints.push_back(cp[i]);
+		}
+		/*for(int i=0;i<controlPoints.size();i++)
+		{
+			cout<<"x:"<<controlPoints[i][0]<<" y:"<<controlPoints[i][1]<<" z:"<<controlPoints[i][2]<<endl;
+		}*/
 	};
 
 	void draw()
@@ -67,32 +48,23 @@ public:
 			ctrl_pts[i][2] = controlPoints.at(i).at(2);
 		}
 		*/
-		GLfloat exampleControlPoints[48] = {
-			-1.5,-1.5,4.0,
-			-0.5,-1.5,2.0,
-			0.5,-1.5,-1.0,
-			1.5,-1.5,2.0,
 
-			-1.5,-0.5,1.0,
-			-0.5,-0.5,3.0,
-			0.5,-0.5,0.0,
-			1.5,-0.5,-1.0,
+		GLfloat *exampleControlPoints= new GLfloat[(order+1)*3];
 
-			-1.5,0.5,4.0,
-			-0.5,0.5,0.0,
-			0.5,0.5,3.0,
-			1.5,0.5,4.0,
+		for(int i =0;i<controlPoints.size();i++)
+		{
+			exampleControlPoints[i*3+0]=controlPoints[i][0];
+			exampleControlPoints[i*3+1]=controlPoints[i][1];
+			exampleControlPoints[i*3+2]=controlPoints[i][2];
 
-			-1.5,1.5,-2.0,
-			-0.5,1.5,-2.0,
-			0.5,1.5,0.0,
-			1.5,1.5,-1.0
+		}
 
-       };
-
-		/*u_stride = 2;
-		v_stride = 9;*/
-		order=3;
+		
+		for(int i=0;i<48;i++)
+		{
+			cout<<i<<":"<<exampleControlPoints[i]<<endl;
+		}
+		cin.get();
 
 		glMap2f(GL_MAP2_VERTEX_3, 0, 1, 3, order+1,
 			0, 1, 3*(order+1), order+1, &exampleControlPoints[0]);
@@ -113,22 +85,10 @@ public:
 	
 	glFrontFace(GL_CCW);
 	glPopMatrix();
-		/*
-		glMap2f(GL_MAP2_VERTEX_3, u0, u1, u_stride, u_order, v0, v1, v_stride, v_order, &exampleControlPoints[0]);
-		glMap2f(GL_MAP2_TEXTURE_COORD_2, u0, u1, 2, 3, v0, v1, 6, 3, &exampleControlPoints[0]);
-
-
-
-
-		glEnable(GL_MAP2_VERTEX_3);
-		glEnable(GL_MAP2_NORMAL);
-		glEnable(GL_MAP2_TEXTURE_COORD_2);
-		glMapGrid2f(partsU, u0, u1, partsV, v0, v1);
-		glEvalMesh2(GL_FILL, 0, partsU, 0, partsV);
-		glEnable(GL_CCW);
-		*/
 	};
 
 
 
 };
+
+#endif

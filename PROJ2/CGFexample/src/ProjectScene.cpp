@@ -12,7 +12,6 @@ void ProjectScene::init()
 {
 
 	vehicle=Vehicle();
-	patch=Patch();
 
 	for (unsigned int i = 0; i < 8; i++)
 		lights[i] = NULL;
@@ -147,11 +146,6 @@ void ProjectScene::display()
 	//primitives
 	drawAux(sceneGraph.getRoot());
 	//vehicle.draw();
-	glPushMatrix();
-	//glScaled(5,5,5);
-	appearances[1]->apply();
-	patch.draw();
-	glPopMatrix();
 	//lol.draw();
 	glPopMatrix();
 

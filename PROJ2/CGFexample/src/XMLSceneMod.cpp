@@ -1244,7 +1244,116 @@ bool XMLSceneMod::readGraph(TiXmlElement* dgxElement, std::vector<Appearance* > 
 						}
 					}
 
+					//////////////patch//////////////
+					else if(strcmp("patch", primitive->Value()) == 0){
+						bool patchBool=true;
+						cout<<"Patch:"<<endl;
+						int order;
+						int partsU;
+						int partsV;
+						string compute;
+
+						char* order_s = (char*) primitive->Attribute("order");
+						if (sscanf(order_s,"%i",&order) != 1)
+						{
+							cout<<"Error reading order value"<<endl;
+							patchBool=false;
+						}
+						else cout<<"		order:"<<order<<endl;
+
+						char* partsU_s = (char*) primitive->Attribute("partsU");
+						if (sscanf(partsU_s,"%i",&partsU) != 1)
+						{
+							cout<<"Error reading partsU value"<<endl;
+							patchBool=false;
+						}
+						else cout<<"		partsU:"<<partsU_s<<endl;
+
+						char* partsV_s = (char*) primitive->Attribute("partsV");
+						if (sscanf(partsV_s,"%i",&partsV) != 1)
+						{
+							cout<<"Error reading partsV value"<<endl;
+							patchBool=false;
+						}
+						else cout<<"		partsV:"<<partsV_s<<endl;
+
+						compute = string(primitive->Attribute("partsV"));
+
+						if(compute=="fill"&&compute=="line"&&compute=="point")
+						{
+							cout<<"Error reading compute value"<<endl;
+							patchBool=false;
+						}
+						else cout<<"		compute:"<<partsV_s<<endl;
+
+						
+
+						//ler os pontos
+
+						TiXmlElement *controlpoint  = primitive->FirstChildElement("controlpoint");
+
+						int counter=0;
+						vector< vector<float>> cp;
+						while(controlpoint)
+						{
+							
+							cout<<"		controlPoint: ";
+							counter++;
+							float x,y,z;
+							x=y=z=0;
+							char* x_s = (char*) controlpoint->Attribute("x");
+							if (sscanf(x_s,"%f",&y) != 1)
+							{
+								cout<<"Error reading x value"<<endl;
+									patchBool=false;
+							}
+							else cout<<"  x:"<<x;
+
+							char* y_s = (char*) controlpoint->Attribute("y");
+							if (sscanf(y_s,"%f",&y) != 1)
+							{
+								cout<<endl<<"Error reading y value"<<endl;
+									patchBool=false;
+							}
+							else cout<<"  y:"<<y;
+
+
+							char* z_s = (char*) controlpoint->Attribute("z");
+							if (sscanf(z_s,"%f",&z) != 1)
+							{
+								cout<<endl<<"Error reading z value"<<endl;
+									patchBool=false;
+							}
+							else cout<<"  z:"<<z<<endl;
+							vector<float> point;
+							point.push_back(x);
+							point.push_back(y);
+							point.push_back(z);
+							cp.push_back(point);
+							counter++;
+							controlpoint=controlpoint->NextSiblingElement();
+						}
+
+						
+						/*for(int i =0;i<cp.size();i++)
+							cout<<"x:"<<cp[i][0]<<" y:"<<cp[i][1]<<" z:"<<cp[i][2]<<endl;
+						cin.get();*/
+
+
+						if(patchBool)
+						{
+						Patch * p=new Patch(order,partsU,partsV,compute,cp);
+						}
+						else
+							cout<<"Ocorreu um erro a ler o Patch"<<endl;
+						cin.get();
+
+
+					}
+
 					else printf("		Invalid primitive detected.  Program will try to run anyway...\n");
+
+
 
 					primitive = primitive->NextSiblingElement();
 				}

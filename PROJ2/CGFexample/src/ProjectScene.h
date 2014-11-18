@@ -35,7 +35,6 @@ public:
 	vector<FlagShader*> flagShaders;
 
 	Vehicle vehicle;
-	Patch patch;
 
 	bool wireFrame;
 
