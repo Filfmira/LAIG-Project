@@ -189,7 +189,6 @@ private:
 	float startAngle;
 	float endAngle;
 	float incAngle;
-	float alpha;
 public:
 	CircularAnimation(){};
 	CircularAnimation(string idS,float span,float r,float sA,float eA)
@@ -207,7 +206,7 @@ public:
 		if(startTime==0)
 			startTime=t;
 		float tp=(t-startTime)/1000;
-		if(incAngle+startAngle<endAngle)
+		if(tp<time)
 		 incAngle=(tp*(endAngle-startAngle))/time;
 		else
 			ended=true;
@@ -243,7 +242,6 @@ public:
 	{
 		startTime=0;
 		incAngle=0;
-		alpha=0;
 	}
 };
 

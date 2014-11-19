@@ -147,8 +147,8 @@
 				<controlpoint xx="0" yy="-5" zz="0" />
 		</animation>
 		
-		 <animation id="clol" span="60" type="circular" center="0.0 0.0 0.0" radius="4.0" startang="0.0" rotang="1000.0" />
-	
+		 <animation id="clol" span="10" type="circular" center="0.0 0.0 0.0" radius="8.0" startang="0.0" rotang="360.0" />
+		<animation id="orbitaPlaneta" span="130" type="circular" center="0.0 0.0 0.0" radius="18.0" startang="0.0" rotang="1000.0" />
 		  <animation id="lol" span="15" type="linear">
 				<controlpoint xx="0" yy="0" zz="0" />
 				<controlpoint xx="2" yy="0" zz="2" />
@@ -158,10 +158,14 @@
 
 		  <animation id="circular" span="10" type="circular" center="0.0 0.0 0.0" radius="5.0" startang="0.0" rotang="90.0" />
 		  
+		    <animation id="orbitaPlaneta2" span="10" type="linear">
+				<controlpoint xx="8.0" yy="0" zz="0" />
+				<controlpoint xx="8.0" yy="5" zz="-200" />
+		  </animation>
 		  
 		  <animation id="lol2" span="10" type="linear">
-				<controlpoint xx="0" yy="0" zz="0" />
-				<controlpoint xx="1" yy="1" zz="0" />
+				<controlpoint xx="8.0" yy="0" zz="0" />
+				<controlpoint xx="50" yy="50" zz="50" />
 				<controlpoint xx="0" yy="0" zz="0" />
 		  </animation>
 		  
@@ -214,7 +218,6 @@
 				<noderef id="planet" />
                 <noderef id="ceu" />
                 <noderef id="bandeira" />
-				<noderef id="veiculo" />
             </descendants>
         </node>
 
@@ -238,19 +241,7 @@
             </descendants>
         </node> -->
 		
-		 <node id="veiculo">
-            <transforms>
-            </transforms>
-            <appearanceref id="ss" />
-			<animationref id="clol" />
-            <primitives>
-            
-			<vehicle >
-			</vehicle>
-			</primitives>
-            <descendants>
-            </descendants>
-        </node>
+	
 
 
 
@@ -262,8 +253,8 @@
                 <transform type="rotate" axis="y" angle="45" /> 
             </transforms>
             <appearanceref id="inherit" />
-		<!--	<animationref id="teste" />
-			<animationref id="lol" /> -->
+		<!--	<animationref id="teste" /> -->
+			<animationref id="lol" /> 
             <primitives>
             </primitives>
 
@@ -711,19 +702,20 @@
         <!-- ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||-->
 		
 		
-		<node id="planet" displaylist="true">
+		<node id="planet" displaylist="fals">
             <transforms>
-				<transform type="translate" to="10 6 6" />
+				<!-- <transform type="translate" to="10 6 6" /> -->
                 <transform type="rotate" axis="x" angle="-45" />
             </transforms>
             <appearanceref id="planet" />
-			
+			<animationref id="orbitaPlaneta" />
             <primitives>
             </primitives>
 
             <descendants>
                 <noderef id="planetaEsfera" />
                 <noderef id="planetaDisco" />
+				<nodered id="veiculo"/>
             </descendants>
         </node>
 		
@@ -751,7 +743,21 @@
             <descendants>
             </descendants>
         </node> 
-
+		
+		 <node id="veiculo">
+            <transforms>
+				<transform type="scale" factor="0.5 0.5 0.5" />
+            </transforms>
+            <appearanceref id="ss" />
+			<animationref id="clol" />
+			<animationref id="orbitaPlaneta2" />
+            <primitives>
+            
+			<vehicle />
+			</primitives>
+            <descendants>
+            </descendants>
+        </node>
 
         
         <!-- ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||-->
@@ -856,8 +862,8 @@
 
         <node id="rectangulo_ceu">
             <transforms>
-                <transform type="translate" to="0 0 -20" />
-                <transform type="scale" factor="40 40 1" />
+                <transform type="translate" to="0 0 -40" />
+                <transform type="scale" factor="80 80 1" />
             </transforms>
             <appearanceref id="inherit" />
             <primitives>

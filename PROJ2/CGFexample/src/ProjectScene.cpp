@@ -165,11 +165,21 @@ void ProjectScene::display()
 void ProjectScene::drawAux(Node* node){
 	//printf("node: %s\n", node->getId().c_str());
 	glPushMatrix();
+
+
+	
+
 	if (node->getDisplayList()){
 	//	printf("	Lista: %d\n",node->getDisplayListID());
+
 		glCallList(node->getDisplayListID());
 	}
 	else{
+
+		
+		glMultMatrixf(node->getMatrix());
+
+
 		if(node->getAnimation().size()>0)
 		{
 			//se ja tiver acabado a animacao e nao tivermos na ultima
@@ -183,7 +193,7 @@ void ProjectScene::drawAux(Node* node){
 			node->getAnimation()[node->getIndiceAnimacao()]->draw();
 		}
 
-			glMultMatrixf(node->getMatrix());
+			
 		
 			if (node->getAppearance() != NULL){
 				this->appearancesStack.push(node->getAppearance());			
@@ -206,14 +216,16 @@ void ProjectScene::drawAux(Node* node){
 			for (unsigned int i = 0; i < node->getDescendentes().size(); i++)
 				drawAux(node->getDescendentes()[i]);
 
-			//faz pop da matrix da animação, caso esta 
-			if(node->getAnimation().size()>0)
-				glPopMatrix();
+			
 
 
 			if (node->getAppearance() != NULL)
 				appearancesStack.pop();
 	}
+
+	//faz pop da matrix da animação, caso esta 
+	if(node->getAnimation().size()>0)
+				glPopMatrix();
 	glPopMatrix();
 
 }
