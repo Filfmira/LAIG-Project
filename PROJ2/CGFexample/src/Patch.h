@@ -30,7 +30,7 @@ public:
 		int kkk=((order+1)*(order+1))*3;
 		controlPoints= new GLfloat[kkk];
 
-		for(int i =0;i<cp.size();i++)
+		for(unsigned int i =0;i<cp.size();i++)
 		{
 			controlPoints[i*3+0]=cp[i][0];
 			controlPoints[i*3+1]=cp[i][1];

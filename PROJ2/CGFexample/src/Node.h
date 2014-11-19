@@ -32,7 +32,7 @@ public:
 
 
 	int getIndiceAnimacao(){return indiceAnimacao;};
-	void aumentaIndiceAnimacao(){indiceAnimacao++;if(indiceAnimacao>animations.size()-1)animations.size()-1;};
+	void aumentaIndiceAnimacao(){indiceAnimacao++;/*if(indiceAnimacao>(int)animations.size()-1)animations.size()-1;*/};
 	void addPrimitiva(Primitive* primitiva);
 	void setAparencia(Appearance * aparencia);
 	void setAnimation(vector<Animation *> anomation);
@@ -42,7 +42,7 @@ public:
 	void addAscendente(Node* n){ascendentes.push_back(n);}
 	vector<Node*> getDescendentes(){return descendentes;}
 	vector<Node*> getAscendentes(){return ascendentes;}
-	Node* getDescendenteIndex(int i){if (i < 0 || i > descendentes.size()) return NULL; return descendentes[i];}
+	Node* getDescendenteIndex(int i){if (i < 0 || i > (int)descendentes.size()) return NULL; return descendentes[i];}
 	string mostrarNo();
 
 	unsigned int getNumeroDePrimitivas(){return primitivas.size();};

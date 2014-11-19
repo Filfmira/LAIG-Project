@@ -147,28 +147,28 @@
 				<controlpoint xx="0" yy="-5" zz="0" />
 		</animation>
 		
-		 <animation id="clol" span="10" type="circular" center="0.0 0.0 0.0" radius="8.0" startang="0.0" rotang="360.0" />
-		<animation id="orbitaPlaneta" span="130" type="circular" center="0.0 0.0 0.0" radius="18.0" startang="0.0" rotang="1000.0" />
-		  <animation id="lol" span="15" type="linear">
-				<controlpoint xx="0" yy="0" zz="0" />
-				<controlpoint xx="2" yy="0" zz="2" />
-				<controlpoint xx="-2" yy="0" zz="-2" />
-				<controlpoint xx="-2" yy="0" zz="5" />
-		  </animation>
+		<animation id="animC" span="10" type="circular" center="0.0 0.0 0.0" radius="8.0" startang="0.0" rotang="360.0" />
+		
 
-		  <animation id="circular" span="10" type="circular" center="0.0 0.0 0.0" radius="5.0" startang="0.0" rotang="90.0" />
+		<animation id="orbitaPlaneta" span="130" type="circular" center="0.0 0.0 0.0" radius="18.0" startang="0.0" rotang="1000.0" />
+		 
+
+		<animation id="anim1" span="15" type="linear">
+			<controlpoint xx="0" yy="0" zz="0" />
+			<controlpoint xx="2" yy="0" zz="2" />
+			<controlpoint xx="-2" yy="0" zz="-2" />
+			<controlpoint xx="-2" yy="0" zz="5" />
+		</animation>
+
+
+		<animation id="circular" span="10" type="circular" center="0.0 0.0 0.0" radius="5.0" startang="0.0" 	rotang="90.0" />
+
 		  
-		    <animation id="orbitaPlaneta2" span="10" type="linear">
-				<controlpoint xx="8.0" yy="0" zz="0" />
-				<controlpoint xx="8.0" yy="5" zz="-200" />
-		  </animation>
-		  
-		  <animation id="lol2" span="10" type="linear">
-				<controlpoint xx="8.0" yy="0" zz="0" />
-				<controlpoint xx="50" yy="50" zz="50" />
-				<controlpoint xx="0" yy="0" zz="0" />
-		  </animation>
-		  
+		<animation id="orbitaPlaneta2" span="10" type="linear">
+			<controlpoint xx="8.0" yy="0" zz="0" />
+			<controlpoint xx="8.0" yy="5" zz="-200" />
+		</animation>
+		  	  
 		  
 
 	</animations>
@@ -247,14 +247,14 @@
 
 
 
-        <node id="wall-e" displaylist="true">
+        <node id="wall-e" displaylist="false">
             <transforms>
                <transform type="translate" to="-5 -5 -5" />
                 <transform type="rotate" axis="y" angle="45" /> 
             </transforms>
             <appearanceref id="inherit" />
 		<!--	<animationref id="teste" /> -->
-			<animationref id="lol" /> 
+			<animationref id="anim1" />  
             <primitives>
             </primitives>
 
@@ -412,7 +412,7 @@
         </node> -->
 
 
-        <node id="pernas">
+        <node id="pernas" displaylist="true">
             <transforms>
                 <transform type="scale" factor="1 0.8 1" />
                 <transform type="translate" to="0 1 0" />
@@ -605,7 +605,7 @@
 
 
 
-        <node id="olhos">
+        <node id="olhos" displaylist="false">
             <transforms>
                 <transform type="translate" to="0 3.5 0" /> <!-- olhar para cima -->
                 <transform type="rotate" axis="x" angle="-35" />
@@ -625,7 +625,7 @@
             <transforms>
                 <transform type="translate" to="0.5 0 0" />
             </transforms>
-            <appearanceref id="greyMetal" />
+            <appearanceref id="inherit" />
             <primitives>
             </primitives>
             <descendants>
@@ -637,7 +637,7 @@
             <transforms>
                 <transform type="translate" to="-0.5 0 0" />
             </transforms>
-            <appearanceref id="greyMetal" />
+            <appearanceref id="inherit" />
             <primitives>
             </primitives>
             <descendants>
@@ -649,7 +649,7 @@
             <transforms>
                 <transform type="translate" to="0 0 0" />
             </transforms>
-            <appearanceref id="greyMetal" />
+            <appearanceref id="inherit" />
             <primitives>
             </primitives>
 
@@ -663,7 +663,7 @@
             <transforms>
                 <transform type="translate" to="0 0 -0.75" />
             </transforms>
-            <appearanceref id="greyMetal" />
+            <appearanceref id="inherit" />
             <primitives>
                 <cylinder base="0.2" top="0.5" height="1.5" slices="20" stacks="10" />
             </primitives>
@@ -689,7 +689,7 @@
                 <transform type="translate" to="0.25 0 0" />
                 <transform type="rotate" axis="y" angle="-90" />
             </transforms>
-            <appearanceref id="greyMetal" />
+            <appearanceref id="inherit" />
             <primitives>
                 <cylinder base="0.2" top="0.2" height="0.5" slices="20" stacks="10" />
             </primitives>
@@ -702,7 +702,7 @@
         <!-- ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||-->
 		
 		
-		<node id="planet" displaylist="fals">
+		<node id="planet" displaylist="false">
             <transforms>
 				<!-- <transform type="translate" to="10 6 6" /> -->
                 <transform type="rotate" axis="x" angle="-45" />
@@ -749,7 +749,7 @@
 				<transform type="scale" factor="0.5 0.5 0.5" />
             </transforms>
             <appearanceref id="ss" />
-			<animationref id="clol" />
+			<animationref id="animC" />
 			<animationref id="orbitaPlaneta2" />
             <primitives>
             

@@ -238,8 +238,7 @@ bool XMLSceneMod::readGlobals(TiXmlElement* dgxElement){
 		
 
 			char *ambientS=NULL;
-			float red, green, blue, alpha;
-
+			
 			ambientS=(char *) lightingElement->Attribute("ambient");
 			if(ambient && readRGBcomponents(ambientS,ambient[0], ambient[1], ambient[2], ambient[3]))
 			{
@@ -1346,7 +1345,8 @@ bool XMLSceneMod::readGraph(TiXmlElement* dgxElement, std::vector<Appearance* > 
 
 						if(patchBool)
 						{
-						Patch * p=new Patch(order,partsU,partsV,compute,cp);
+							Patch * p=new Patch(order,partsU,partsV,compute,cp);
+							n->addPrimitiva(p);
 						n->addPrimitiva(p);
 						}
 						else

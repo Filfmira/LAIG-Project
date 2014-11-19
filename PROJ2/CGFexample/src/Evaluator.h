@@ -5,9 +5,6 @@
 #include "Primitives.h"
 
 
-
-
-
 class Plane: public Primitive{
 
 private:

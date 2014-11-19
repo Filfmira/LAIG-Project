@@ -48,7 +48,7 @@
     <ClCompile Include="src\Animation.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Drone.cpp">
+    <ClCompile Include="src\Vehicle.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -101,7 +101,10 @@
     <ClInclude Include="src\Animation.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\Drone.h">
+    <ClInclude Include="src\Patch.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Vehicle.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

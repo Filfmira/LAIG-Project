@@ -25,14 +25,14 @@ void Graph::addNode(string novoId, vector<Primitive*> primitivas, Appearance * a
 
 Node* Graph::searchForNode(string id)
 {
-	for(int i =0;i<this->nodes.size();i++)
+	for(unsigned int i =0;i<this->nodes.size();i++)
 		if(nodes.at(i)->getId()==id)
 			return nodes.at(i);
 	return NULL;
 }
 
 Node* Graph::searchForNode(int num){
-	if (num < 0 || num >= nodes.size())
+	if (num < 0 || num >= (int) nodes.size())
 		return NULL;
 	return nodes[num];
 }

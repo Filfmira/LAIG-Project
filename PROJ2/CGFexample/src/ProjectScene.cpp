@@ -183,7 +183,7 @@ void ProjectScene::drawAux(Node* node){
 		if(node->getAnimation().size()>0)
 		{
 			//se ja tiver acabado a animacao e nao tivermos na ultima
-			if(node->getAnimation()[node->getIndiceAnimacao()]->isEnd() && node->getIndiceAnimacao()<node->getAnimation().size()-1)
+			if(node->getAnimation()[node->getIndiceAnimacao()]->isEnd() && node->getIndiceAnimacao()< (int) node->getAnimation().size()-1)
 			{
 				node->aumentaIndiceAnimacao();
 				node->getAnimation()[node->getIndiceAnimacao()]->restart();
@@ -240,26 +240,26 @@ ProjectScene::~ProjectScene()
 Appearance* getClosestParentAppearance(Node* start, Node* dest){
 	//	return NULL; //temp
 	if (start->getDescendentes().size() == 0){
-		printf("retornou aparencia null\n");
+		//printf("retornou aparencia null\n");
 		return NULL;
 	}
 
-	for (int i = 0; i < start->getDescendentes().size();i++){
+	for (unsigned int i = 0; i < start->getDescendentes().size();i++){
 		if (dest == start->getDescendenteIndex(i)){
-			printf("encontrou aparencia\n");
+			//printf("encontrou aparencia\n");
 			return start->getAppearance();
 		}
 	}
 	Appearance* temp = NULL;
-	for (int i = 0; i < start->getDescendentes().size();i++){
+	for (unsigned int i = 0; i < start->getDescendentes().size();i++){
 		 temp = getClosestParentAppearance(start->getDescendenteIndex(i), dest);
 		 if (temp != NULL){
-			 printf("retornou aparencia recursiva\n");
+			// printf("retornou aparencia recursiva\n");
 			 return temp;
 		 }
 	}
 
-	printf("retornou aparencia null\n");
+	//printf("retornou aparencia null\n");
 	return NULL;
 
 }
@@ -268,26 +268,33 @@ Appearance* getClosestParentAppearance(Node* start, Node* dest){
 void ProjectScene::processDisplayLists(Node* n, Node* graphRoot){
 	
 	
-
+	if (n->getAppearance() != NULL)
+		n->getAppearance()->apply();
 	int numFilhos = n->getDescendentes().size();
-	for (int i = 0; i < numFilhos; i++)
+	for (int i = 0; i < numFilhos; i++){
 		this->processDisplayLists(n->getDescendenteIndex(i), graphRoot);
+	}
 
 
 	if (n->getDisplayList()){
-		printf("nome do no: %s\n", n->getId().c_str());
-		Appearance*  temp = NULL;
+		//printf("nome do no: %s\n", n->getId().c_str());
+		
+		printf("---------------------------\nfazer lista:\n");
+
+		Appearance*  temp = new Appearance();
 		if (n->getAppearance() == NULL){
-			printf("vai procurar aparencia aos ascendentes\n");
+			//printf("vai procurar aparencia aos ascendentes\n");
 			temp = getClosestParentAppearance(graphRoot, n);
 		}
 		else temp = n->getAppearance();
-		if (temp == NULL)
-			printf("Null...\n");
-		else temp->apply();
+		
+		if (temp != NULL) temp->apply();
+
 		n->setAparencia(temp);
-	//	n->setAparencia(appearances[0]);
-		printf("nome aparencia: %s\n",temp->getId());
+		printf("	nome aparencia: %s\n",temp->getId());
+
+
+
 
 		if (n->getDisplayListID() == -1){
 			int id = glGenLists(1);
@@ -296,13 +303,13 @@ void ProjectScene::processDisplayLists(Node* n, Node* graphRoot){
 			n->setDisplayList(false); //serve para forçar o drawAux a desenhar 
 									  //este nó como um nó "normal" (sem lista)
 
-			printf("---------------------------\n fazer lista:\n");
-		//	n->setAparencia(temp);
 			glNewList(n->getDisplayListID(), GL_COMPILE);
 				this->drawAux(n);
 			glEndList();
-			printf("---------------------------\n fim lista:\n");
+
 			n->setDisplayList(true); //restaura a "true" após o processamento do nó
+
+			printf("fim lista:\n---------------------------\n");
 		}
 	
 	}

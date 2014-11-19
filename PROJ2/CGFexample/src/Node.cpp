@@ -76,13 +76,13 @@ string Node::mostrarNo(){
 	s<<"\n";
 
 	s<<"Descendentes:";
-	for(int i=0;i<this->descendentes.size();i++)
+	for(unsigned int i=0;i<this->descendentes.size();i++)
 		s<<descendentes.at(i)->getId()<<" , ";
 	s<<"\nSize:"<<descendentes.size()<<endl;
 	s<<"\n";
 
 	s<<"Ascendentes:";
-	for(int i=0;i<this->ascendentes.size();i++)
+	for(unsigned int i=0;i<this->ascendentes.size();i++)
 		s<<ascendentes.at(i)->getId()<<" , ";
 	s<<"\nSize:"<<ascendentes.size()<<endl;
 	s<<"\n";
@@ -94,7 +94,7 @@ string Node::mostrarNo(){
 
 
 Primitive* Node::getPrimitiva(int i){
-	if (i < 0 || i >= primitivas.size())
+	if (i < 0 || i >= (int) primitivas.size())
 		return NULL;
 	return primitivas[i];
 }

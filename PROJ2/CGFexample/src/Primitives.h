@@ -1,4 +1,4 @@
-#ifndef PRIMITIVES_H
+	#ifndef PRIMITIVES_H
 #define PRIMITIVES_H
 
 #include "CGFobject.h"
@@ -265,7 +265,7 @@ public:
 	 float majorStep = 2.0f*pi / slices;   
 	 float minorStep = 2.0f*pi / loops;   
 
-	 for (unsigned int i=0; i<slices; ++i) {   
+	 for (int i=0; i<slices; ++i) {   
 	  float a0 = i * majorStep;   
 	  float a1 = a0 + majorStep;   
 	  float x0 = cos(a0);   
@@ -273,7 +273,7 @@ public:
 	  float x1 = cos(a1);   
 	  float y1 = sin(a1);   
 
-	  for (unsigned int j=0; j<=loops; ++j)  {   
+	  for (int j=0; j<=loops; ++j)  {   
 	   float b = j * minorStep;   
 	   float c = cos(b);   
 	   float r = innerRadius * c + outerRadius;   

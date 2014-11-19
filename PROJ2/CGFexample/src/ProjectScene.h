@@ -64,7 +64,7 @@ public:
 	void update(unsigned long t){
 		//cout<<t<<endl;
 		//cout<<animations.size()<<endl;
-		for(int k=0;k<animations.size();k++)
+		for(unsigned int k=0;k<animations.size();k++)
 					animations.at(k)->update(t);
 		//animations.at(0)->show();
 		//animations.at(0)->update(t);

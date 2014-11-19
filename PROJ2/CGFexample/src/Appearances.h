@@ -14,23 +14,15 @@ public:
 	
 	static float texlength_s;
 	static float texlength_t;
-	Appearance(){};
-	Appearance(char* id):CGFappearance()
-	{
-		this->id=id;
-		this->t = NULL;
-	}
-
-	void setTexture(Texture* t){
-		this->t=t;
-		this->CGFappearance::setTexture(t);
-
-	}
-	Texture* getTexture(){return this->t;}
-	char* getId(){return id;}
+	Appearance();
+	Appearance(char* id);
+	void setTexture(Texture* t);
+	Texture* getTexture();
+	char* getId();
 
 };
 
 
 
 #endif
+

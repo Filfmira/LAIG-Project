@@ -92,7 +92,7 @@ void TPinterface::processGUI(GLUI_Control *ctrl)
 	case(initialId+10): 
 		//printf("entrou no case %f\n", ctrl->float_val);
 		if (val > 50) {speedSpinner->set_float_val(50);break;}
-		if (val < 0) {speedSpinner->set_float_val(0);break;}
+		if (val < 0) {speedSpinner->set_float_val(0); ((ProjectScene*) scene)->updateFlagsSpeed(0);break;}
 		((ProjectScene*) scene)->updateFlagsSpeed(val);
 		break;
 	//////////CAMERAS////////
