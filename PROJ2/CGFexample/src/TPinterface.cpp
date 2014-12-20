@@ -33,6 +33,8 @@ void TPinterface::initGUI()
 	wireMode->set_id(0);
 	textMode->set_id(1);
 	visualizationRadGroup->set_int_val(1);
+	
+	
 	((ProjectScene*) scene)->wireFrame = false;
 
 
