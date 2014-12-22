@@ -18,7 +18,6 @@ Poligon::Poligon(int sides):sides(sides){
 			Point2D tempText(tx, ty);
 			this->texturePoints.push_back(tempText);
 		}	
-
 	}
 }
 
@@ -36,4 +35,8 @@ void Poligon::draw(){
 			glVertex3d(points[this->sides-1].x, points[this->sides-1].y, points[this->sides-1].z);
 		glEnd();
 	glPopMatrix();
+}
+
+const std::vector<Point3D> Poligon::getPoints(){
+	return this->points;
 }

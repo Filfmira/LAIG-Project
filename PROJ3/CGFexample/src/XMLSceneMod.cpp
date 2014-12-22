@@ -1355,16 +1355,39 @@ bool XMLSceneMod::readGraph(TiXmlElement* dgxElement, std::vector<Appearance* > 
 
 
 					}
-
+					///////////////vehicle///////////////
 					else if (strcmp("vehicle", primitive->Value()) == 0){
 						Vehicle* v = new Vehicle();
 						n->addPrimitiva(v);
 					}
+					///////////////piece///////////////
+					else if (strcmp("piece", primitive->Value()) == 0){
+						bool boolCor, invalid = false;
+						std::string tipo;
+						
+						char* tex = (char*) primitive->Attribute("textura");
+						printf("		piece: texture-%s\n", tex);			
+						if (!tex) {printf("a\n");invalid = true;}
 
+						char* cor = (char *) primitive->Attribute("cor");
+						if (strcmp(cor,"white") != 0)		boolCor=true;
+						else if(strcmp(cor,"black") != 0)	boolCor=false;
+						else {printf("	Invalid piece color!\n"); invalid = true;}
+
+						tipo = (string) primitive->Attribute("tipo");
+						if (tipo != "ataque" && tipo != "defesa" && 
+							tipo != "expansao"  && tipo != "salto" && tipo != "simples" )	
+							invalid=true;						
+
+						if(invalid)
+							printf("	Invalide Piece... Program will ignore this primitive....\n");
+						else{
+							Piece* piece = new Piece(boolCor, tipo,	(string)tex);
+							n->addPrimitiva(piece);
+						}
+					}
 					else printf("		Invalid primitive detected.  Program will try to run anyway...\n");
-
-
-
+					
 					primitive = primitive->NextSiblingElement();
 				}
 				

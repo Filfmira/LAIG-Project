@@ -13,6 +13,7 @@ public:
 	Poligon();
 	Poligon(int sides);
 	void draw();
+	const std::vector<Point3D> getPoints();
 };
 
 

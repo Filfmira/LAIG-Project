@@ -35,7 +35,7 @@ void ProjectScene::init()
 	this->processDisplayLists(this->sceneGraph.getRoot(), this->sceneGraph.getRoot());
 	
 
-	this->pieceTest = new Piece(true, "simples");
+	this->pieceTest = new Piece(true, "simples", "horse.png");
 
 		// Animation-related code
 	unsigned long updatePeriod=50;
@@ -80,7 +80,7 @@ void ProjectScene::display()
 	//primitives
 	drawAux(sceneGraph.getRoot());
 	
-	pieceTest->draw();
+	//pieceTest->draw();
 
 	/*glPopMatrix();
 	Plane p=Plane(10);
@@ -110,10 +110,7 @@ void ProjectScene::drawAux(Node* node){
 		glCallList(node->getDisplayListID());
 	}
 	else{
-
-		
 		glMultMatrixf(node->getMatrix());
-
 
 		if(node->getAnimation().size()>0)
 		{

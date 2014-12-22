@@ -13,6 +13,7 @@
 #include "Flag.h"
 #include "Vehicle.h"
 #include "Patch.h"
+#include "Piece.h"
 
 class XMLSceneMod
 {
