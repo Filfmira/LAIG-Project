@@ -1,0 +1,15 @@
+FAQ
+
+Q: Ao executar o servidor aparece a seguinte mensagem:
+! System error
+! 'SPIO_E_NET_ADDRINUSE'
+
+
+A: A última execução do servidor não foi concluída com sucesso e o endereço permanece em uso pelo sicstus prolog.
+Reiniciem o sicstus prolog.
+
+Q: Não consigo compilar a minha aplicação em C++, aparece um erro de linkagem relacionado com winsock.
+
+É necessário adicionar a biblioteca às dependências do projecto no Visual Studio.
+Para tal, vão a Project -> Properties -> Configuration Properties -> Linker -> Input 
+Adicionem "ws2_32.lib" às "Additional Dependencies".

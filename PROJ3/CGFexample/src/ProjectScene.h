@@ -2,21 +2,15 @@
 #define PROJECTSCENE_H
 
 #include "CGFscene.h"
-#include "XMLSceneMod.h"
 #include "Lights.h"
 #include <vector>
 #include "Appearances.h"
 #include "Cameras.h"
 #include "CGFapplication.h"
-#include <stack>
-#include "Globals.h"
 #include "Animation.h"
-#include "Flag.h"
-#include "Vehicle.h"
-#include "Patch.h"
-#include "Evaluator.h"
-
 #include "Piece.h"
+
+
 
 class ProjectScene : public CGFscene
 {
@@ -24,26 +18,17 @@ public:
 	void init();
 	void display();
 
-	Light* lights[8];
-
-	Graph sceneGraph;
+	CGFlight* light0;
 
 	std::vector<Texture *> textures;
 	std::vector<Appearance* > appearances;
 	std::vector<Animation* > animations;
 	std::vector<Camera> cameras;
 	Camera* activeCamera;
-	std::stack<Appearance*> appearancesStack;
-	Global globals;
-	std::vector<FlagShader*> flagShaders;
-	Vehicle vehicle;
 
 	Piece* pieceTest;
 
 	bool wireFrame;
-
-	void processGlobals();
-
 
 	void setWireFrameMode()
 	{
@@ -62,10 +47,6 @@ public:
 	~ProjectScene();
 	
 
-	void drawAux(Node* node);
-
-
-	void processDisplayLists(Node* n, Node* graphRoot);
 
 
 	void update(unsigned long t){
@@ -79,7 +60,6 @@ public:
 		//cout<<"\n|||||||||||||||||||||||||||\n";
 	}
 
-	void updateFlagsSpeed(float s);
 	
 };
 

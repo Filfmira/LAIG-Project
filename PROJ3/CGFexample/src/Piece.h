@@ -8,13 +8,13 @@
 
 class Piece: public Primitive{
 private:
-	bool cor; /*branco = true; preto = false */
-	std::string tipo; /*simples, ataques, defesa, salto, expansao */
+	//bool cor; /*branco = true; preto = false */
+	//std::string tipo; /*simples, ataques, defesa, salto, expansao */
 	Poligon hexagon;
 	Appearance* appearanceTopos;
 	Appearance* appearanceLados;
 public:
-	Piece(bool cor, std::string tipo, std::string texturaTopos);
+	Piece(std::string texturaTopos);
 	void draw();
 
 };

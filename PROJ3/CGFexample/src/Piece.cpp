@@ -1,14 +1,13 @@
 #include "Piece.h"
 
-Piece::Piece(bool cor, std::string tipo, std::string texturaTopos){
-	this->cor = cor;
-	this->tipo = tipo;
+Piece::Piece(std::string texturaTopos){
 	this->hexagon = Poligon(6);
 	this->appearanceLados = new Appearance("lados");
 	Texture* texLados = new Texture("lados", "wood.jpg", 1, 1);
 	this->appearanceLados->setTexture(texLados);
 
 	this->appearanceTopos = new Appearance("topos");
+	//printf("textura: %s\n", (char*) texturaTopos.c_str());
 	Texture* texTopos = new Texture("topos",(char*) texturaTopos.c_str(), 1, 1);
 	this->appearanceTopos->setTexture(texTopos);
 }

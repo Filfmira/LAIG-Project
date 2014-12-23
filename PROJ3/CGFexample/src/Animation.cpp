@@ -42,7 +42,7 @@ float LinearAnimation::getStartTime(){
 
 void LinearAnimation::show(){
 	cout<<"id:"<<id<<"TIME:"<<time<<"startTime:"<<startTime<<endl;
-	for(int i =0;i<pontosDeControlo.size();i++)
+	for(unsigned int i =0;i<pontosDeControlo.size();i++)
 		cout<<"x:"<<pontosDeControlo.at(i)[0]<<" y:"<<pontosDeControlo.at(i)[1]
 			<<" z:"<<pontosDeControlo.at(i)[2]<<endl;
 

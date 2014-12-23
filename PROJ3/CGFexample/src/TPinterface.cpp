@@ -1,7 +1,7 @@
 #include "TPinterface.h"
 #include <sstream>
 #include <iostream>
-
+#include "Socket.h"
 #define initialId 2
 
 TPinterface::TPinterface()
@@ -9,21 +9,33 @@ TPinterface::TPinterface()
 
 }
 
-void TPinterface::initGUI()
+void TPinterface::processKeyboard(unsigned char key, int x, int y)
 {
-	GLUI_Panel *lightsPanel= addPanel("Lights", GLUI_PANEL_EMBOSSED);
-
-	for (unsigned int i = 0; i < 8; i++){
-		if (((ProjectScene*) scene)->lights[i] != NULL){
-			lightCheckboxes.push_back(addCheckboxToPanel(lightsPanel,(char*) ((ProjectScene*) scene)->lights[i]->getLightId().c_str(), 0, initialId+i));
-			if (glIsEnabled(((ProjectScene*) scene)->lights[i]->getCGFlightIndex())){
-				lightCheckboxes[i]->set_int_val(GL_TRUE);
-			}
+	// Uncomment below if you would like to process the default keys (e.g. 's' for snapshot, 'Esc' for exiting, ...)
+	//CGFinterface::processKeyboard(key, x, y);
+	printf("char: %x\n", key & 0xff);
+	switch(key)
+	{
+		case 'a':
+		{
+			//((LightingScene *) scene)->toggleSomething();
+			break;
+		}
+		case 27:
+		{
+			quit(); //socket quit
+			printf("ESC\nExiting program...\n");
+			exit(0);
+			break;
 		}
 	}
+}
 
 
-	addColumn();
+
+void TPinterface::initGUI()
+{
+
 
 	////////////VISUALIZATION MODE ////////////////
 	GLUI_Panel *visualizationMode= addPanel("Visualization", GLUI_PANEL_EMBOSSED);
@@ -36,13 +48,6 @@ void TPinterface::initGUI()
 	((ProjectScene*) scene)->wireFrame = false;
 
 
-	
-	//////SHADER//////
-	//addColumn();
-	GLUI_Panel *speedPanel = addPanel("Shader", GLUI_PANEL_EMBOSSED);
-	speedSpinner = addSpinnerToPanel(speedPanel, "flagSpeed", 2,NULL, initialId+10);
-
-	addColumn();
 	/////CAMERAS/////////////
 	GLUI_Panel *cameras= addPanel("Cameras", GLUI_PANEL_EMBOSSED);
 	camerasRadGroup = addRadioGroupToPanel (cameras, &cameraId, initialId+9);
@@ -75,26 +80,13 @@ void TPinterface::processGUI(GLUI_Control *ctrl)
 	int temp = ctrl->user_id - initialId;
 	
 	/////////LUZES/////////
-	if (temp < 8){
-		int state = lightCheckboxes[temp]->get_int_val();
-		if (state)
-			((ProjectScene*) scene)->lights[temp]->getLight()->enable();
-		else ((ProjectScene*) scene)->lights[temp]->getLight()->disable();
-		lightCheckboxes[temp]->set_int_val(lightCheckboxes[temp]->get_int_val());
-	}
+
 	//////////////////////
 	
 	float val = ctrl->float_val;
 
 	switch (ctrl->user_id)
 	{
-	///////FLAG SPEED//////
-	case(initialId+10): 
-		//printf("entrou no case %f\n", ctrl->float_val);
-		if (val > 50) {speedSpinner->set_float_val(50);break;}
-		if (val < 0) {speedSpinner->set_float_val(0); ((ProjectScene*) scene)->updateFlagsSpeed(0);break;}
-		((ProjectScene*) scene)->updateFlagsSpeed(val);
-		break;
 	//////////CAMERAS////////
 	case(initialId+9): 
 		if (ctrl->get_int_val() == 0)

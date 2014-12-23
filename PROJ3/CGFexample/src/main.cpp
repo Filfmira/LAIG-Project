@@ -1,7 +1,6 @@
 #include <iostream>
 #include <exception>
 
-#include "XMLSceneMod.h"
 #include "TPinterface.h"
 
 

@@ -11,6 +11,7 @@ class TPinterface: public CGFinterface {
 
 		virtual void initGUI();
 		virtual void processGUI(GLUI_Control *ctrl);
+		virtual void processKeyboard(unsigned char key, int x, int y);
 
 		std::vector<GLUI_Checkbox*> lightCheckboxes;
 		std::vector<GLUI_RadioButton*> camerasRadioButtons;

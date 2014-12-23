@@ -50,7 +50,7 @@
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>glew32.lib;CGFlib.lib;tinyxml.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>glew32.lib;CGFlib.lib;tinyxml.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;ws2_32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <IgnoreSpecificDefaultLibraries>LIBCMT.lib</IgnoreSpecificDefaultLibraries>
     </Link>
   </ItemDefinitionGroup>
@@ -70,41 +70,30 @@
   <ItemGroup>
     <ClCompile Include="src\Animation.cpp" />
     <ClCompile Include="src\Appearances.cpp" />
-    <ClCompile Include="src\Evaluator.cpp" />
-    <ClCompile Include="src\Flag.cpp" />
-    <ClCompile Include="src\Graph.cpp" />
     <ClCompile Include="src\Lights.cpp" />
     <ClCompile Include="src\main.cpp" />
-    <ClCompile Include="src\Node.cpp" />
+    <ClCompile Include="src\ParseProlog.cpp" />
     <ClCompile Include="src\Piece.cpp" />
     <ClCompile Include="src\Poligon.cpp" />
     <ClCompile Include="src\ProjectScene.cpp" />
+    <ClCompile Include="src\Socket.cpp" />
     <ClCompile Include="src\TPinterface.cpp" />
-    <ClCompile Include="src\Vehicle.cpp" />
-    <ClCompile Include="src\XMLSceneMod.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Animation.h" />
     <ClInclude Include="src\Appearances.h" />
     <ClInclude Include="src\Cameras.h" />
-    <ClInclude Include="src\Evaluator.h" />
-    <ClInclude Include="src\Flag.h" />
-    <ClInclude Include="src\Globals.h" />
-    <ClInclude Include="src\Graph.h" />
     <ClInclude Include="src\Lights.h" />
-    <ClInclude Include="src\Node.h" />
-    <ClInclude Include="src\Patch.h" />
+    <ClInclude Include="src\ParseProlog.h" />
     <ClInclude Include="src\Piece.h" />
+    <ClInclude Include="src\PieceData.h" />
     <ClInclude Include="src\Point.h" />
     <ClInclude Include="src\Poligon.h" />
     <ClInclude Include="src\Primitives.h" />
     <ClInclude Include="src\ProjectScene.h" />
+    <ClInclude Include="src\Socket.h" />
     <ClInclude Include="src\Textures.h" />
-    <ClInclude Include="src\tinystr.h" />
-    <ClInclude Include="src\tinyxml.h" />
     <ClInclude Include="src\TPinterface.h" />
-    <ClInclude Include="src\Vehicle.h" />
-    <ClInclude Include="src\XMLSceneMod.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
