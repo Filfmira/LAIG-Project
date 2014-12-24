@@ -4,7 +4,7 @@
 #include <string>
 #include "Primitives.h"
 #include "Poligon.h"
-#include "Appearances.h"
+#include "Appearances.h" //inclui tb Textures.h
 
 class Piece: public Primitive{
 private:
@@ -13,10 +13,11 @@ private:
 	Poligon hexagon;
 	Appearance* appearanceTopos;
 	Appearance* appearanceLados;
+	vector<Texture*> texturesPecas; //texturas de todas as peças
 public:
-	Piece(std::string texturaTopos);
-	void draw();
-
+	Piece();
+	void draw(bool cor, string tipo);
+	Texture* chooseTexture(bool cor, string tipo);
 };
 
 

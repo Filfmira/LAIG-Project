@@ -9,8 +9,8 @@
 #include "CGFapplication.h"
 #include "Animation.h"
 #include "Piece.h"
-
-
+#include "PieceData.h"
+#include "Board.h"
 
 class ProjectScene : public CGFscene
 {
@@ -27,6 +27,8 @@ public:
 	Camera* activeCamera;
 
 	Piece* pieceTest;
+	Board* board;
+
 
 	bool wireFrame;
 

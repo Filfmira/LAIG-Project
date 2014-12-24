@@ -8,6 +8,7 @@
 float Appearance::texlength_s = 0;
 float Appearance::texlength_t = 0;
 
+float globalAmbientLight[4]= {0.8,0.8,0.8,1.0};
 
 void ProjectScene::init() 
 {
@@ -24,7 +25,8 @@ void ProjectScene::init()
 	glLightModelf(GL_LIGHT_MODEL_TWO_SIDE, GL_TRUE);
 	glLightModelf(GL_LIGHT_MODEL_LOCAL_VIEWER, GL_TRUE);
 	glLightModelf(GL_LIGHT_MODEL_TWO_SIDE, GL_FALSE);  
-	glLightModelfv(GL_LIGHT_MODEL_AMBIENT, CGFlight::background_ambient);  
+	//glLightModelfv(GL_LIGHT_MODEL_AMBIENT, CGFlight::background_ambient);  
+	glLightModelfv(GL_LIGHT_MODEL_AMBIENT, globalAmbientLight);  
 
 	glEnable(GL_LIGHTING);
 
@@ -34,7 +36,7 @@ void ProjectScene::init()
 	light0 = new CGFlight(GL_LIGHT0, light0_pos);
 	light0->enable();
 
-	this->pieceTest = new Piece("horse.png");
+	this->pieceTest = new Piece();
 
 	// Animation-related code
 	unsigned long updatePeriod=50;
@@ -51,12 +53,12 @@ void ProjectScene::init()
 	envia(s, strlen(s));
 	char ans[10000];
 	recebe(ans);
-	parseBoard((string)ans);
+	vector<vector <PieceData> > tempBoard = parseBoard((string)ans);
+	this->board = new Board(tempBoard);
 	
-	
-	quit();
-	getchar();
-	exit(0);
+	//quit();
+	//getchar();
+	//exit(0);
 
 }
 
@@ -70,8 +72,6 @@ void ProjectScene::display()
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 
-	
-
 	CGFscene::activeCamera->applyView();
 	light0->draw();
 
@@ -80,23 +80,14 @@ void ProjectScene::display()
 		setWireFrameMode();
 	else setTextureMode();
 
-
-
-
-
 	axis.draw();
 	
 	
 	//primitives
 	
-	pieceTest->draw();
+	//pieceTest->draw(false, "ataque");
+	board->draw();
 
-	/*glPopMatrix();
-	Plane p=Plane(10);
-	p.draw();
-
-	glPopMatrix();*/
-	//printf("%d\n", this->appearancesStack.size());
 
 
 	// We have been drawing in a memory area that is not visible - the back buffer, 

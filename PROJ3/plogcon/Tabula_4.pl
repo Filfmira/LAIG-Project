@@ -598,3 +598,14 @@ tabula).
 
 
 
+
+tabuleiroExemplo1(
+[[[0,-4,vazia,vazia],[1,-4,'preta','expansao'],[2,-4,'preta','simples'],[3,-4,'vazia','vazia'],[4,-4,'vazia','vazia']],
+[[-1,-3,'vazia','vazia'],[0,-3,'vazia','vazia'],[1,-3,'vazia','vazia'],[2,-3,'vazia','vazia'],[3,-3,'vazia','vazia'],[4,-3,'vazia','vazia']],
+[[-2,-2,'vazia','vazia'],[-1,-2,'vazia','vazia'],[0,-2,'vazia','vazia'],[1,-2,'vazia','vazia'],[2,-2,'vazia','vazia'],[3,-2,'vazia','vazia'],[4,-2,'vazia','vazia']],
+[[-3,-1,'vazia','vazia'],[-2,-1,'vazia','vazia'],[-1,-1,'vazia','vazia'],[0,-1,'vazia','vazia'],[1,-1,'vazia','vazia'],[2,-1,'vazia','vazia'],[3,-1,'vazia','vazia'],[4,-1,'vazia','vazia']],
+[[-4,0,'preta','simples'],[-3,0,'vazia','vazia'],[-2,0,'vazia','vazia'],[-1,0,'vazia','vazia'],[0,0,'vazia','vazia'],[1,0,'vazia','vazia'],[2,0,'vazia','vazia'],[3,0,'vazia','vazia'],[4,0,'branca','simples']],
+[[-4,1,'vazia','vazia'],[-3,1,'preta','ataque'],[-2,1,'vazia','vazia'],[-1,1,'branca','defesa'],[0,1,'vazia','vazia'],[1,1,'branca','salto'],[2,1,'vazia','vazia'],[3,1,'vazia','vazia']],
+[[-4,2,'vazia','vazia'],[-3,2,'vazia','vazia'],[-2,2,'vazia','vazia'],[-1,2,'vazia','vazia'],[0,2,'vazia','vazia'],[1,2,'vazia','vazia'],[2,2,'vazia','vazia']],
+[[-4,3,'vazia','vazia'],[-3,3,'vazia','vazia'],[-2,3,'vazia','vazia'],[-1,3,'vazia','vazia'],[0,3,'vazia','vazia'],[1,3,'vazia','vazia']],
+[[-4,4,'vazia','vazia'],[-3,4,'vazia','vazia'],[-2,4,'vazia','vazia'],[-1,4,'vazia','vazia'],[0,4,'vazia','vazia']]]).
