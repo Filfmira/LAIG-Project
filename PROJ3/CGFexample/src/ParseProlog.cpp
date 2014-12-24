@@ -8,9 +8,16 @@ using namespace std;
 vector<vector<PieceData> > parseBoard(string board_string){
 	vector<vector<PieceData> > ret;
 	cout << "Parsing Board:" << endl << endl;
+	//cout << board_string << endl << endl;
 	board_string = board_string.substr(1, board_string.size()-4); //retira [ ] 
 	
-	
+	////força a string a ter um ,[ antes da primeira linha do tabuleiro
+	// de forma a tornar o processo igual em todas as linhas
+	string temp = ",[";
+	temp.append(board_string);
+	board_string = temp;
+	////////////////////////////////////////////////////////////////
+
 	while(board_string.size() > 1){
 		board_string = board_string.substr(2); //tira ,[ no inicio da linha do tabuleiro
 
@@ -37,7 +44,6 @@ vector<vector<PieceData> > parseBoard(string board_string){
 
 PieceData parsePiece(string piece){
 	//cout << "Peca para parse: " << piece << endl;
-	cout << boolalpha; 
 	int x,y;
 	bool cor;
 	string tipo, temp;
