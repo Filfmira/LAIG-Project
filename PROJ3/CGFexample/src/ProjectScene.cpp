@@ -86,7 +86,10 @@ void ProjectScene::display()
 	//primitives
 	
 	//pieceTest->draw(false, "ataque");
-	board->draw();
+	glPushMatrix();
+		//glPushName(-1);	
+		board->draw();
+	glPopMatrix();
 
 
 
