@@ -209,7 +209,10 @@ void TPinterface::processHits (GLint hits, GLuint buffer[])
 		for (int i=0; i<nselected; i++)
 			printf("%d, ",selected[i]);
 		printf("\n");
+		((ProjectScene*) scene)->setSelectedPiece(selected[1], selected[0]);
 	}
-	else
-		printf("Nothing selected while picking \n");	
+	else{
+		printf("Nothing selected while picking \n");
+		((ProjectScene*) scene)->noneSelected(); //reset selected piece
+	}
 }

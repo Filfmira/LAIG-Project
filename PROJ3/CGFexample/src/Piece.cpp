@@ -2,9 +2,14 @@
 #include <iostream>
 Piece::Piece(){
 	this->hexagon = Poligon(6);
+
 	this->appearanceLados = new Appearance("lados");
 	Texture* texLados = new Texture("lados", "metalGrey.jpg", 1, 1);
 	this->appearanceLados->setTexture(texLados);
+
+	this->appearanceLadosSelected = new Appearance("ladosSel");
+	Texture* texLadosSel = new Texture("ladosSel", "metal.jpg", 1, 1);
+	this->appearanceLadosSelected->setTexture(texLadosSel);
 
 	Texture* simplesB = new Texture("simplesB", "texturasPecas/simples.png", 1, 1);
 	texturesPecas.push_back(simplesB);
@@ -33,7 +38,12 @@ Piece::Piece(){
 	this->appearanceTopos->setTexture(texturesPecas[0]);
 }
 
-void Piece::draw(bool cor, string tipo){
+/*
+	bool cor -> true: branca, false: preta
+	string tipo->simples, ataque, defesa, expansao, salto
+	bool selected ->true se a peça estiver selecionada pelo user
+*/
+void Piece::draw(bool cor, string tipo, bool selected){
 
 	this->appearanceTopos->setTexture(chooseTexture(cor, tipo)); //actualiza textura do topo, de acordo com a peça a desenhar
 	glPushMatrix();
@@ -55,7 +65,9 @@ void Piece::draw(bool cor, string tipo){
 
 		for (unsigned int i = 0; i < 6; i++){
 			glPushMatrix();
-				this->appearanceLados->apply();
+				if (selected)
+					this->appearanceLadosSelected->apply();
+				else this->appearanceLados->apply();
 				glRotated(60.0*i,0,1,0);
 				glBegin(GL_QUADS);
 					glTexCoord2d(1,1);

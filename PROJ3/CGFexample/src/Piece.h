@@ -13,10 +13,11 @@ private:
 	Poligon hexagon;
 	Appearance* appearanceTopos;
 	Appearance* appearanceLados;
+	Appearance* appearanceLadosSelected;
 	vector<Texture*> texturesPecas; //texturas de todas as peças
 public:
 	Piece();
-	void draw(bool cor, string tipo);
+	void draw(bool cor, string tipo, bool selected);
 	Texture* chooseTexture(bool cor, string tipo);
 };
 

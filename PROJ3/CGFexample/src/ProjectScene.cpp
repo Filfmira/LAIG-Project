@@ -56,6 +56,7 @@ void ProjectScene::init()
 	vector<vector <PieceData> > tempBoard = parseBoard((string)ans);
 	this->board = new Board(tempBoard);
 	
+	this->selectedPiece = new PieceData(100, 100, true, "simples");
 	//quit();
 	//getchar();
 	//exit(0);
@@ -84,11 +85,11 @@ void ProjectScene::display()
 	
 	
 	//primitives
-	
+	//printf("x: %d, y: %d\n", this->selectedPiece->getX(), this->selectedPiece->getY());
 	//pieceTest->draw(false, "ataque");
 	glPushMatrix();
 		//glPushName(-1);	
-		board->draw();
+		board->draw(this->selectedPiece->getX(), this->selectedPiece->getY());
 	glPopMatrix();
 
 
@@ -99,8 +100,22 @@ void ProjectScene::display()
 	glutSwapBuffers();
 }
 
+/*
+ * set selectedPiece to default (x = 100; y = 100)	
+*/
+void ProjectScene::noneSelected(){
+	this->selectedPiece->setX(100);
+	this->selectedPiece->setY(100);
+}
 
-
+void ProjectScene::setSelectedPiece(int x, int y){
+	if (x == this->selectedPiece->getX() && y == this->selectedPiece->getY())
+		this->noneSelected();
+	else{
+		this->selectedPiece->setX(x);
+		this->selectedPiece->setY(y);
+	}
+}
 
 
 ProjectScene::~ProjectScene() 

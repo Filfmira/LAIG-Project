@@ -28,7 +28,10 @@ public:
 
 	Piece* pieceTest;
 	Board* board;
+	PieceData* selectedPiece; // default (none selected) is x = 100; y = 100
 
+	void noneSelected(); //set selectedPiece to default
+	void setSelectedPiece(int x, int y);
 
 	bool wireFrame;
 

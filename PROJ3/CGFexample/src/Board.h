@@ -14,7 +14,7 @@ private:
 public:
 	Board(vector<vector<PieceData> > b);
 	bool fazerJogada(PieceData jogada);
-	void draw();
+	void draw(int selectedX, int selectedY);
 
 };
 

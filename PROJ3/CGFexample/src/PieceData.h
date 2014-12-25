@@ -10,6 +10,7 @@ private:
 	int y;
 	bool cor; //só é relevante se tipo != vazia; //true = branca, false = preta.
 	string tipo;
+	
 public: 
 	PieceData(int x, int y, bool cor, string tipo){
 		this->x = x;
@@ -18,7 +19,9 @@ public:
 		this->tipo = tipo;
 	}
 	int getX(){return x;}
+	void setX(int x){this->x = x;}
 	int getY(){return y;}
+	void setY(int y){this->y = y;}
 	bool getCor(){return cor;}
 	string getTipo(){return tipo;}
 	void print(){
