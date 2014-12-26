@@ -26,6 +26,7 @@ public:
 	string getTipo(){return tipo;}
 	void print(){
 		cout << boolalpha; 
+		
 		cout << "Peca -> x: " << x <<
 			" ; y: " << y <<
 			" ; cor: " << cor <<

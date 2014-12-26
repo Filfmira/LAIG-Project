@@ -118,6 +118,8 @@ void TPinterface::processGUI(GLUI_Control *ctrl)
 // buffer to be used to store the hits during picking
 #define BUFSIZE 256
 GLuint selectBuf[BUFSIZE];
+int xAnterior=0;
+int yAnterior=0;
 
 void TPinterface::processMouse(int button, int state, int x, int y) 
 {
@@ -126,7 +128,15 @@ void TPinterface::processMouse(int button, int state, int x, int y)
 	// do picking on mouse press (GLUT_DOWN)
 	// this could be more elaborate, e.g. only performing picking when there is a click (DOWN followed by UP) on the same place
 	if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN)
+	{
+		xAnterior=x;
+		yAnterior=y;
+	}
+	else if (button == GLUT_LEFT_BUTTON && state == GLUT_UP && xAnterior==x && yAnterior==y)
+	{
 		performPicking(x,y);
+	}
+		
 }
 
 void TPinterface::performPicking(int x, int y) 
@@ -207,9 +217,14 @@ void TPinterface::processHits (GLint hits, GLuint buffer[])
 		// possibly invoking a method on the scene class and passing "selected" and "nselected"
 		printf("Picked ID's: ");
 		for (int i=0; i<nselected; i++)
-			printf("%d, ",selected[i]);
+			printf("%d ",selected[i]);
 		printf("\n");
+		if(nselected==2)
 		((ProjectScene*) scene)->setSelectedPiece(selected[1], selected[0]);
+		else
+			((ProjectScene*) scene)->setTypePiece(selected[0]);
+	
+
 	}
 	else{
 		printf("Nothing selected while picking \n");

@@ -24,7 +24,7 @@ serverLoop(Stream) :-
 	write('Received: '), write(ClientMsg), nl,
 	parse_input(ClientMsg, MyReply),
 	format(Stream, '~q.~n', [MyReply]),
-	write('Wrote: '), write(MyReply), nl,
+	/*write('Wrote: '), write(MyReply),*/ nl,
 	flush_output(Stream),
 	(ClientMsg == quit; ClientMsg == end_of_file), !.
 
@@ -32,10 +32,15 @@ parse_input(comando(Arg1, Arg2), Answer) :-
 	comando(Arg1, Arg2, Answer).
 	
 parse_input(quit, ok-bye) :- !.
-parse_input(novo-tabuleiro, [ok,Tabuleiro]) :- /*novoTabuleiro(9, Tabuleiro),*/ tabuleiroExemplo1(Tabuleiro), !.
+parse_input(novo-tabuleiro, [ok,Tabuleiro]) :- novoTabuleiro(7, Tabuleiro), /*tabuleiroExemplo1(Tabuleiro),*/ !.
 parse_input([jogada, Jogada, Tabuleiro], [ok,TabuleiroNovo]):- 
-	colocaPeca(Jogada, Tabuleiro, TabuleiroNovo), write('deu'), nl, !. /*colocaPeca funcionou, retorna ok */
+	colocaPeca(Jogada, Tabuleiro, T),processaPecasEspeciais(T,TabuleiroNovo), write('deu'), nl, !. 
 parse_input([jogada, Jogada, Tabuleiro], [not-ok,gg]):- write('n deu'), !. /* celula estava ocupada, retorna not-ok */
+
+/*parse_input([jogada, Jogada, Tabuleiro], [ok,TabuleiroNovo]):- 
+	colocaPeca(Jogada, Tabuleiro, Tabuleiro2), write('deu'), nl,fazJogadaComputador('branca',Tabuleiro2,TabuleiroNovo), !. 
+*/
+parse_input([computador,Tabuleiro], [ok,TabuleiroNovo]) :- fazJogadaComputador('branca',Tabuleiro,T),processaPecasEspeciais(T,TabuleiroNovo), !.
 
 comando(Arg1, Arg2, Answer) :-
 	write(Arg1), nl, write(Arg2), nl,

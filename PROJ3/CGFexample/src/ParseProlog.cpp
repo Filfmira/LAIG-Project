@@ -37,7 +37,7 @@ vector<vector<PieceData> > parseBoard(string board_string){
 			board_string = board_string.substr(pos2+1);
 		}
 		if (linhaTemp.size() > 0) ret.push_back(linhaTemp);
-		cout << endl;
+		/*cout << endl;*/
 	}
 	return ret;
 }
@@ -68,7 +68,7 @@ PieceData parsePiece(string piece){
 	tipo = piece.substr(0, pos); 
 
 	PieceData tempPiece = PieceData(x,y,cor,tipo);
-	tempPiece.print();
+	/*tempPiece.print();*/
 	return tempPiece;
 
 }
@@ -97,6 +97,12 @@ string boardToString(vector<vector<PieceData> > board){
 string jogadaToString(PieceData jogada, vector<vector<PieceData> > board){
 	ostringstream ss;
 	ss << "[jogada,"<< pieceToString(jogada) << "," << boardToString(board) << "].\n";
+	return ss.str();
+}
+
+string jogadaComputadorToString(vector<vector<PieceData> > board){
+	ostringstream ss;
+	ss << "[computador," << boardToString(board) << "].\n";
 	return ss.str();
 }
 
