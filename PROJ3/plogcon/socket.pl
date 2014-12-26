@@ -3,6 +3,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 :-use_module(library(sockets)).
+:-use_module(library(lists)).
 :-ensure_loaded('Tabula_4.pl').
 
 port(60070).
@@ -31,8 +32,11 @@ parse_input(comando(Arg1, Arg2), Answer) :-
 	comando(Arg1, Arg2, Answer).
 	
 parse_input(quit, ok-bye) :- !.
-parse_input(novo-tabuleiro, Tabuleiro) :- /*novoTabuleiro(9, Tabuleiro),*/ tabuleiroExemplo1(Tabuleiro), !.
-		
+parse_input(novo-tabuleiro, [ok,Tabuleiro]) :- /*novoTabuleiro(9, Tabuleiro),*/ tabuleiroExemplo1(Tabuleiro), !.
+parse_input([jogada, Jogada, Tabuleiro], [ok,TabuleiroNovo]):- 
+	colocaPeca(Jogada, Tabuleiro, TabuleiroNovo), write('deu'), nl, !. /*colocaPeca funcionou, retorna ok */
+parse_input([jogada, Jogada, Tabuleiro], [not-ok,gg]):- write('n deu'), !. /* celula estava ocupada, retorna not-ok */
+
 comando(Arg1, Arg2, Answer) :-
 	write(Arg1), nl, write(Arg2), nl,
 	Answer = 5.

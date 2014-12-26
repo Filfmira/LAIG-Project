@@ -2,15 +2,16 @@
 #include <vector>
 #include <string>
 #include <iostream>
-
+#include <sstream>
+#include <fstream> /* teste output tabuleiro para ficheiro */
 using namespace std;
 
 vector<vector<PieceData> > parseBoard(string board_string){
 	vector<vector<PieceData> > ret;
 	cout << "Parsing Board:" << endl << endl;
 	//cout << board_string << endl << endl;
-	board_string = board_string.substr(1, board_string.size()-4); //retira [ ] 
-	
+	board_string = board_string.substr(1, board_string.size()-2); //retira [ ] 
+
 	////força a string a ter um ,[ antes da primeira linha do tabuleiro
 	// de forma a tornar o processo igual em todas as linhas
 	string temp = ",[";
@@ -72,3 +73,50 @@ PieceData parsePiece(string piece){
 
 }
 
+string boardToString(vector<vector<PieceData> > board){
+	ostringstream ss;
+	ss << "[";
+	for (unsigned int i = 0; i < board.size(); i++){
+		if (i != 0) ss << ",";
+		ss << "[";
+		for (unsigned int j = 0; j < board[i].size(); j++){
+			if (j != 0) ss << ",";
+			ss << pieceToString(board[i][j]);
+		}
+		ss << "]";
+	}
+	ss << "]";
+
+    /*std::ofstream out("output.txt");
+    out << ss.str();
+    out.close();*/
+
+	return ss.str();
+}
+
+string jogadaToString(PieceData jogada, vector<vector<PieceData> > board){
+	ostringstream ss;
+	ss << "[jogada,"<< pieceToString(jogada) << "," << boardToString(board) << "].\n";
+	return ss.str();
+}
+
+string pieceToString(PieceData piece){
+	ostringstream ss;
+	ss << "[" << piece.getX() << "," << piece.getY() << ","
+		<< (piece.getTipo() == "vazia"? "vazia" : (piece.getCor()? "branca" : "preta")) << "," << piece.getTipo() << "]";
+	return ss.str();
+}
+
+
+bool parseAnswerJogada(string answer, vector<vector<PieceData> > &newBoard){
+	int pos = answer.find(".");
+	answer = answer.substr(1, pos-2); //retira [ e .\n]
+	pos = answer.find(",");
+	string msg = answer.substr(0,pos);
+	if (msg == "ok"){
+		answer = answer.substr(pos+1);
+		newBoard = parseBoard(answer);
+		return true;
+	}
+	return false;
+}

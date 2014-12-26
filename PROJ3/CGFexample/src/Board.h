@@ -15,7 +15,10 @@ public:
 	Board(vector<vector<PieceData> > b);
 	bool fazerJogada(PieceData jogada);
 	void draw(int selectedX, int selectedY);
-
+	vector<vector<PieceData> > getBoard();
+	void setBoard(vector<vector<PieceData> > board);
+	void addPiece(PieceData newPiece);
+	PieceData getPiece(int x, int y);
 };
 
 #endif

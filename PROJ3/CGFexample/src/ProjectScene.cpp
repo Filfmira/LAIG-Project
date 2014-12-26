@@ -42,6 +42,9 @@ void ProjectScene::init()
 	unsigned long updatePeriod=50;
 	setUpdatePeriod(updatePeriod);
 
+	//inicializar a peça selecionada ao default
+	this->selectedPiece = new PieceData(100, 100, true, "simples");
+
 	//socket prolog
 	if (!socketConnect()){
 		printf("Error connecting to PROLOG...\n");
@@ -51,16 +54,31 @@ void ProjectScene::init()
 
 	char *s = "novo-tabuleiro.\n";
 	envia(s, strlen(s));
-	char ans[10000];
+	char ans[2048];
 	recebe(ans);
-	vector<vector <PieceData> > tempBoard = parseBoard((string)ans);
+	vector<vector <PieceData> > tempBoard;
+	parseAnswerJogada((string) ans,tempBoard);
 	this->board = new Board(tempBoard);
 	
-	this->selectedPiece = new PieceData(100, 100, true, "simples");
-	//quit();
-	//getchar();
-	//exit(0);
+	/*char *t = "jogada.\n";
+	envia(t, strlen(t));
+	recebe(ans);*/
 
+	
+	
+	PieceData jogada(-3, -1, false, "simples"); //está manualmente a fazer uma jogada no x = -3, y = -1;
+	string j = jogadaToString(jogada, this->board->getBoard()); //transforma a jogada num comando a enviar ao prolog
+	char jogadaEtabuleiro[2048];
+	strcpy(jogadaEtabuleiro, j.c_str());
+	envia(jogadaEtabuleiro, strlen(jogadaEtabuleiro)); //envia a jogada
+	ans[0] = '\0'; recebe(ans); // recebe resposta (ok ou not-ok)
+	
+	vector<vector<PieceData> > newBoard;
+	if (parseAnswerJogada((string)ans, newBoard)){ //se ok, faz a jogada no tabuleiro local
+		this->board->setBoard(newBoard);
+	}
+
+	
 }
 
 void ProjectScene::display() 

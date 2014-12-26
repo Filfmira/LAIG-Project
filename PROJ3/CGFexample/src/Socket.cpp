@@ -46,9 +46,11 @@ void envia(char *s, int len) {
 	int bytesSent = send(m_socket, s, len, 0);
 	if(bytesSent == SOCKET_ERROR)
 		printf("Client: send() error %ld.\n", WSAGetLastError());
+	printf("bytes sent: %d\n", bytesSent);
 }
 
 void recebe(char *ans) {
+	cout << "entrou no recebe\n";
 	int bytesRecv = SOCKET_ERROR;
 	int pos = 0;
 	while (true) {
@@ -68,6 +70,8 @@ void quit() {
 	char ans[128];
 	recebe(ans);
 }
+
+
 
 /*
 int main() {

@@ -28,7 +28,7 @@ void Board::draw(int selectedX, int selectedY){
 					//tabuleiro	
 					glPushMatrix();
 						glTranslated(offsetXpeca, -0.5, 0);
-						piece.draw(false, "tabuleiro", false);
+						piece.draw(false, "tabuleiro", selected);
 					glPopMatrix();
 			
 					//peças
@@ -36,7 +36,7 @@ void Board::draw(int selectedX, int selectedY){
 						glPushMatrix();
 							glPushName(100);
 							glTranslated(offsetXpeca, 0, 0);
-							piece.draw(board[i][j].getCor(), board[i][j].getTipo(), selected);
+							piece.draw(board[i][j].getCor(), board[i][j].getTipo(), false);
 							glPopName();
 						glPopMatrix();
 					}
@@ -47,4 +47,22 @@ void Board::draw(int selectedX, int selectedY){
 		glPopMatrix();
 	}
 	
+}
+
+vector<vector<PieceData> > Board::getBoard(){
+	return this->board;
+}
+
+void Board::setBoard(vector<vector<PieceData> > board){
+	this->board = board;
+}
+
+void Board::addPiece(PieceData newPiece){
+	
+	//TODO
+}
+
+PieceData Board::getPiece(int x, int y){
+	cout << (int)board.size()/2 << endl;
+	return board[y + (int)board.size()/2][x + (int)board.size()/2]; //N SEI SE ESTÁ BEM || MT PROVAVELMENTE NAO
 }
