@@ -100,9 +100,9 @@ string jogadaToString(PieceData jogada, vector<vector<PieceData> > board){
 	return ss.str();
 }
 
-string jogadaComputadorToString(vector<vector<PieceData> > board){
+string jogadaComputadorToString(vector<vector<PieceData> > board, bool cor){
 	ostringstream ss;
-	ss << "[computador," << boardToString(board) << "].\n";
+	ss << "[computador," << (cor? "branca," : "preta,") << boardToString(board) << "].\n";
 	return ss.str();
 }
 
@@ -114,14 +114,18 @@ string pieceToString(PieceData piece){
 }
 
 
-bool parseAnswerJogada(string answer, vector<vector<PieceData> > &newBoard){
+bool parseAnswerJogada(string answer, vector<vector<PieceData> > &newBoard, string &gameOver){
 	int pos = answer.find(".");
 	answer = answer.substr(1, pos-2); //retira [ e .\n]
 	pos = answer.find(",");
 	string msg = answer.substr(0,pos);
-	if (msg == "ok"){
+	if (msg != "not-ok"){
 		answer = answer.substr(pos+1);
 		newBoard = parseBoard(answer);
+		if (msg != "ok"){
+			cout << "FIM DO JOGO!\n" << answer << endl;
+			gameOver=msg;
+		}
 		return true;
 	}
 	return false;

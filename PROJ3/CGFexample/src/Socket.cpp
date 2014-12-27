@@ -50,7 +50,6 @@ void envia(char *s, int len) {
 }
 
 void recebe(char *ans) {
-	cout << "entrou no recebe\n";
 	int bytesRecv = SOCKET_ERROR;
 	int pos = 0;
 	while (true) {
@@ -60,7 +59,7 @@ void recebe(char *ans) {
 		pos++;
 	}
 	ans[pos] = 0;
-	/*cout << "prolog answered: " << ans << endl;*/
+	cout << "prolog answered: " << ans << endl;
 }
 
 void quit() {

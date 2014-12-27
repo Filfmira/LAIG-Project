@@ -9,7 +9,7 @@ using namespace std;
 class Board{
 private:
 	vector<vector<PieceData> > board;
-	//guardar historico de jogadas aqui tambem
+	vector<PieceData> historico; //jogadas feitas
 	Piece piece; //instanciada uma peça, que será usada para desenhar todo o tabuleiro
 public:
 	Board(vector<vector<PieceData> > b);
@@ -19,6 +19,7 @@ public:
 	void setBoard(vector<vector<PieceData> > board);
 	void addPiece(PieceData newPiece);
 	PieceData getPiece(int x, int y);
+	void addPieceHistorico(PieceData pd);
 };
 
 #endif

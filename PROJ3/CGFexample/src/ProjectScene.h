@@ -29,11 +29,18 @@ public:
 	Piece* pieceTest;
 	Board* board;
 	PieceData* selectedPiece; // default (none selected) is x = 100; y = 100
-	string type;
-
+	
+	string selectedType; //tipo de peça a jogar selecionado
+	bool computadorAjogar; //true se a proxima iteração corresponder a jogada do computador
+	string modoDeJogo; //JvJ, JvC, CvC ou none (J -> Jogador, C -> Computador, none -> modo de jogo ainda por selecionar)
+	bool corActiva; //cor actualmente a jogar
+	string gameOver; //winPreto, winBranco, draw ou NOT , ou restart (recomeçar o jogo com o modo definido)
 	void noneSelected(); //set selectedPiece to default
 	void setSelectedPiece(int x, int y);
 	void setTypePiece(int n);
+	void switchJogador();
+	void jogar();
+	void restartJogo(string modo);
 
 	bool wireFrame;
 

@@ -36,10 +36,10 @@ void TPinterface::processKeyboard(unsigned char key, int x, int y)
 void TPinterface::initGUI()
 {
 
-
+	int increment = 8;
 	////////////VISUALIZATION MODE ////////////////
 	GLUI_Panel *visualizationMode= addPanel("Visualization", GLUI_PANEL_EMBOSSED);
-	visualizationRadGroup = addRadioGroupToPanel (visualizationMode, &visualizationId, initialId+8);
+	visualizationRadGroup = addRadioGroupToPanel (visualizationMode, &visualizationId, initialId+increment); increment++;// id = init+8
 	GLUI_RadioButton * 	wireMode = addRadioButtonToGroup (visualizationRadGroup, "WireFrame");
 	GLUI_RadioButton * 	textMode = addRadioButtonToGroup (visualizationRadGroup, "Fill");
 	wireMode->set_id(0);
@@ -47,10 +47,10 @@ void TPinterface::initGUI()
 	visualizationRadGroup->set_int_val(1);
 	((ProjectScene*) scene)->wireFrame = false;
 
-
+	
 	/////CAMERAS/////////////
 	GLUI_Panel *cameras= addPanel("Cameras", GLUI_PANEL_EMBOSSED);
-	camerasRadGroup = addRadioGroupToPanel (cameras, &cameraId, initialId+9);
+	camerasRadGroup = addRadioGroupToPanel (cameras, &cameraId, initialId+increment); increment++;// id = init+9
 
 	unsigned int sizeCameras = ((ProjectScene*) scene)->cameras.size();
 	Camera* activeCamera = ((ProjectScene*) scene)->activeCamera;
@@ -69,6 +69,11 @@ void TPinterface::initGUI()
 			camerasRadGroup->set_int_val(i+1);
 	}
 	
+	addColumn();
+	GLUI_Panel *restarts = addPanel("Restarts", GLUI_PANEL_EMBOSSED);
+	addButtonToPanel (restarts, "JvJ", initialId+(increment++)); // id = init+10
+	addButtonToPanel (restarts, "JvC", initialId+(increment++)); // id = init+11
+	addButtonToPanel (restarts, "CvC", initialId+(increment++)); // id = init+12
 
 }
 
@@ -107,7 +112,16 @@ void TPinterface::processGUI(GLUI_Control *ctrl)
 		else ((ProjectScene*) scene)->wireFrame = false;
 		break;
 
+	////////////////// RESTARTS /////////////////
+	case(initialId+10): ((ProjectScene*) scene)->gameOver = "restart";
+		((ProjectScene*) scene)->modoDeJogo = "JvJ"; break;
+	case(initialId+11): ((ProjectScene*) scene)->gameOver = "restart";
+		((ProjectScene*) scene)->modoDeJogo = "JvC"; break;
+	case(initialId+12): ((ProjectScene*) scene)->gameOver = "restart";
+		((ProjectScene*) scene)->modoDeJogo = "CvC"; break;
 	};
+
+	
 }
 
 //////////////////////////////////////////////////////
@@ -220,7 +234,7 @@ void TPinterface::processHits (GLint hits, GLuint buffer[])
 			printf("%d ",selected[i]);
 		printf("\n");
 		if(nselected==2)
-		((ProjectScene*) scene)->setSelectedPiece(selected[1], selected[0]);
+			((ProjectScene*) scene)->setSelectedPiece(selected[1], selected[0]);
 		else
 			((ProjectScene*) scene)->setTypePiece(selected[0]);
 	
