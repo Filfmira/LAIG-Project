@@ -68,6 +68,7 @@ class Ortho:public CGFcamera{
 	float near, far,left,right,top,bottom;
 	string direction;
 	string type;
+	float angle;
 public:
 	Ortho(string direction,float near, float far, float left, float right, float top, float bottom)
 	{
@@ -79,6 +80,7 @@ public:
 		this->top=top;
 		this->bottom=bottom;
 		this->type = "ortho";
+		angle=0;
 	}
 
 	void updateProjectionMatrix(int width, int height){
@@ -87,12 +89,16 @@ public:
 		glOrtho(left, right, bottom, top, near, far);
 	}
 
+
+
 	void applyView(){	
+		angle=angle+0.1;
 		CGFcamera::applyView();
-		if(direction=="x")
+		glRotatef(angle,0,1,0);
+		/*if(direction=="x")
 			glRotatef(-90,0,1,0);
 		else if (direction=="y")
-			glRotatef(90,1,0,0);
+			glRotatef(90,1,0,0);*/
 	}
 
 };

@@ -169,89 +169,62 @@ void ProjectScene::setSelectedPiece(int x, int y){
 	else
 				jogadaSimples=false;
 
+
+	//depois de escolhida a peça é jogada
 	char ans[2048];
 	char jogadaEtabuleiro[2048];
 	vector<vector<PieceData> > newBoard;
-	times++;
-		if (this->selectedType != "none" && this->selectedPiece->getX() != 100){
+	if (this->selectedType != "none" && this->selectedPiece->getX() != 100){
 			
-			PieceData jogada(this->selectedPiece->getX(), this->selectedPiece->getY(), this->corActiva, this->selectedType); 
-			string j = jogadaToString(jogada, this->board->getBoard()); //transforma a jogada num comando a enviar ao prolog
-			strcpy(jogadaEtabuleiro, j.c_str());
+		PieceData jogada(this->selectedPiece->getX(), this->selectedPiece->getY(), this->corActiva, this->selectedType); 
+		string j = jogadaToString(jogada, this->board->getBoard()); //transforma a jogada num comando a enviar ao prolog
+		strcpy(jogadaEtabuleiro, j.c_str());
 	
-			envia(jogadaEtabuleiro, strlen(jogadaEtabuleiro)); //envia a jogada
-			recebe(ans); // recebe resposta (ok ou not-ok)
+		envia(jogadaEtabuleiro, strlen(jogadaEtabuleiro)); //envia a jogada
+		recebe(ans); // recebe resposta (ok ou not-ok)
 	
-			if (parseAnswerJogada((string)ans, newBoard, this->gameOver)){ //se ok, faz a jogada no tabuleiro local
+		if (parseAnswerJogada((string)ans, newBoard, this->gameOver)){ //se ok, faz a jogada no tabuleiro local
 				
-				this->board->setBoard(newBoard);
-				this->board->addPieceHistorico(jogada); //adiciona jogada ao historico
-
-				char ans[2048];
-				char comando[2048];
-				string traduzirStr=traduzirCoordenadas(this->selectedPiece->getX(),this->selectedPiece->getY());
-				strcpy(comando, traduzirStr.c_str());
-				envia(comando, strlen(comando)); //envia o comando
-				recebe(ans); // recebe resposta (ok ou not-ok)
-				vector<int> pontos=parseTraducao(ans);
-				int pX=pontos[0];
-				int o=pontos[1];
-				int xNovo;
-
-				int x1=this->selectedPiece->getX();
-				int distancia=0;
-
-				if(this->selectedPiece->getY()<=0)
-				{
-				if(pX<0)
-				{
-					distancia=abs(pX)+x1+1;
-				}
-				else if(pX==0)
-					distancia=x1+1;
+			this->board->setBoard(newBoard);
+			this->board->addPieceHistorico(jogada); //adiciona jogada ao historico
 
 
-				xNovo=distancia*2+pX+1;
-				}
+			//traduzir coordenadas
 
-				else{
-				if(x1<0)
-					distancia=abs(pX)-abs(x1);
-				else if(x==0)
-					distancia=abs(pX);
-				else
-					distancia=abs(pX)+x1;
+			char ans[2048];
+			char comando[2048];
+			string traduzirStr=traduzirCoordenadas(this->selectedPiece->getX(),this->selectedPiece->getY());
+			strcpy(comando, traduzirStr.c_str());
+			envia(comando, strlen(comando)); //envia o comando
+			recebe(ans); // recebe resposta 
+
+			//traduz a resposta
+			vector<int> pontos=parseTraducao(ans);
+			int pX=pontos[0];	//primeiro x da linha
+			int o=pontos[1];	//primeiro numero da linha
+
+			//gera a nova animacao
+			Animation *novaAnimacao=generateAnimation(pX,o,this->selectedPiece->getX(),this->selectedPiece->getY());
 				
-				xNovo=distancia*2+o;
-				}
-
-				
-				int yNovo=this->selectedPiece->getY()*2;
-
-				cout<<"xO:"<<this->selectedPiece->getX()<<" yO:"<<this->selectedPiece->getY()
-				<<" x:"<<pontos[0]<<" y:"<<pontos[1]<< "  ###:"<<xNovo<<endl;
-
-				
-				this->animationsPieces.push_back(getAnimation(0,3,-9,xNovo,0,yNovo));
+			//adiciona ao vector de animacoes
+			this->animationsPieces.push_back(novaAnimacao);
 				
 				
-			}			
+		}	
+
+		//garantir que uma jogada simples tem semre outra simples a seguir
 			
-			if(!jogadaSimples)
-			{
-				
-			this->selectedType = "none";
-			this->noneSelected();
-			this->switchJogador();
-			}
-			if(jogadaSimples)
-				cout<<"true"<<endl;
-			else
-				cout<<"false"<<endl;
-			cout<<"vezes:"<<times<<endl;
-		}		
+		if(!jogadaSimples)
+		{
+		this->selectedType = "none";
+		this->noneSelected();
+		this->switchJogador();
+		}
+	}		
 	
 }
+
+
 
 
 
@@ -338,6 +311,46 @@ Animation* ProjectScene::getAnimation(float x1,float y1,float z1,float x2,float 
 	return new LinearAnimation("linear",5,v);
 
 }
+
+Animation*  ProjectScene::generateAnimation(int pX, int o,int x, int y)
+{
+	int xNovo;
+
+				int x1=x;
+				int distancia=0;
+
+				if(y<=0)
+				{
+				if(pX<0)
+				{
+					distancia=abs(pX)+x1+1;
+				}
+				else if(pX==0)
+					distancia=x1+1;
+
+
+				xNovo=distancia*2+pX+1;
+				}
+
+				else{
+				if(x1<0)
+					distancia=abs(pX)-abs(x1);
+				else if(x==0)
+					distancia=abs(pX);
+				else
+					distancia=abs(pX)+x1;
+				
+				xNovo=distancia*2+o;
+				}
+
+				
+				int yNovo=y*2;
+
+				Animation* final=getAnimation(0,3,-9,xNovo,0,yNovo);
+	return final;
+
+}
+
 
 ProjectScene::~ProjectScene() 
 {
