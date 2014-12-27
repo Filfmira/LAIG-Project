@@ -188,23 +188,8 @@ void ProjectScene::setSelectedPiece(int x, int y){
 			this->board->setBoard(newBoard);
 			this->board->addPieceHistorico(jogada); //adiciona jogada ao historico
 
-
-			//traduzir coordenadas
-
-			char ans[2048];
-			char comando[2048];
-			string traduzirStr=traduzirCoordenadas(this->selectedPiece->getX(),this->selectedPiece->getY());
-			strcpy(comando, traduzirStr.c_str());
-			envia(comando, strlen(comando)); //envia o comando
-			recebe(ans); // recebe resposta 
-
-			//traduz a resposta
-			vector<int> pontos=parseTraducao(ans);
-			int pX=pontos[0];	//primeiro x da linha
-			int o=pontos[1];	//primeiro numero da linha
-
 			//gera a nova animacao
-			Animation *novaAnimacao=generateAnimation(pX,o,this->selectedPiece->getX(),this->selectedPiece->getY());
+			Animation *novaAnimacao=generateAnimation(this->selectedPiece->getX(),this->selectedPiece->getY());
 				
 			//adiciona ao vector de animacoes
 			this->animationsPieces.push_back(novaAnimacao);
@@ -312,41 +297,57 @@ Animation* ProjectScene::getAnimation(float x1,float y1,float z1,float x2,float 
 
 }
 
-Animation*  ProjectScene::generateAnimation(int pX, int o,int x, int y)
+
+
+Animation*  ProjectScene::generateAnimation(int x, int y)
 {
+	//vai traduzir as coordenadas do tabuleiro prolog para as coordenadas graficas do prolog
+	int tamanho=7;
+	int pX;				//primeiro valor de x na linha
+	int o;				//primeiro valor da linha
+	float temp=tamanho/2;
+	int t=floor(temp);
+
+	if(y<0 || y==0)
+	{
+		pX=-t-y;
+		o=-y;
+	}
+	else{
+		pX=-t;
+		o=y;
+	}
+
 	int xNovo;
 
-				int x1=x;
-				int distancia=0;
+	int x1=x;
+	int distancia=0;
 
-				if(y<=0)
-				{
-				if(pX<0)
-				{
-					distancia=abs(pX)+x1+1;
-				}
-				else if(pX==0)
-					distancia=x1+1;
+	if(y<=0){
+		if(pX<0)
+			distancia=abs(pX)+x1+1;
+		else if(pX==0)
+			distancia=x1+1;
 
+		xNovo=distancia*2+pX+1;
+	}
 
-				xNovo=distancia*2+pX+1;
-				}
+	else{
 
-				else{
-				if(x1<0)
-					distancia=abs(pX)-abs(x1);
-				else if(x==0)
-					distancia=abs(pX);
-				else
-					distancia=abs(pX)+x1;
+		if(x1<0)
+			distancia=abs(pX)-abs(x1);
+		else if(x==0)
+			distancia=abs(pX);
+		else
+			distancia=abs(pX)+x1;
 				
-				xNovo=distancia*2+o;
-				}
+		xNovo=distancia*2+o;
+	}
 
 				
-				int yNovo=y*2;
+	int yNovo=y*2;
 
-				Animation* final=getAnimation(0,3,-9,xNovo,0,yNovo);
+	Animation* final=getAnimation(0,3,-9,xNovo,0,yNovo);
 	return final;
 
 }

@@ -46,8 +46,6 @@ parse_input([jogada, Jogada, Tabuleiro], [not-ok,gg]):- write('n deu'), nl, !. /
 */
 parse_input([computador,Cor,Tabuleiro], [Msg,TabuleiroNovo]) :- fazJogadaComputador(Cor,Tabuleiro,T),processaPecasEspeciais(T,TabuleiroNovo), end_game(Msg, TabuleiroNovo), !.
 
-parse_input([traduzir,X,Y],[XN,YN]):-traduzirCoordenadas(X,Y,XN,YN,7).
-
 end_game(Msg, Tabuleiro):- (fimDoJogo(Tabuleiro, 0, 0, P, B),( (P>B, Msg = winPreto, nl); (B>P, Msg = winBranco, nl); (P =:= B, Msg = draw) );
 			Msg = ok).
 

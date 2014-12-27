@@ -386,26 +386,6 @@ write(' Y:'),write(Y),
 write(' Jogador: '),write(Jogador),
 write(' Tipo: '),write(Tipo),nl.
 
-traduzirCoordenadas(X1,YTemp,PrimeiroX,OndeComeca,Tamanho):-
-T is round(Tamanho//2),
-	(
-	((YTemp<0;YTemp=0),
-	PrimeiroX is -T-YTemp,						/*valor x da primeira celula na grelha*/
-	OndeComeca is -YTemp,						/*valor x da primeira celula no tabuleiro grafico*/
-	/*XN is (X1-OndeComeca)/2+PrimeiroX)	*/	/*valor x traduzido*/
-	XN is X1*(2+PrimeiroX)+OndeComeca)
-	;
-	
-	(YTemp>0,
-	PrimeiroX is -T,
-	OndeComeca is YTemp,
-	/*XN is (X1-OndeComeca)/2+PrimeiroX)*/
-	XN is X1*(2+PrimeiroX)+OndeComeca)
-	
-	
-	),YN is YTemp.
-
-
 
 
 pedirJogada(Jogador, [X, Y, Jogador, Tipo],Tamanho):-

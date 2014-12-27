@@ -18,5 +18,4 @@ std::string traduzirCoordenadas(int x, int y);
 
 bool parseAnswerJogada(std::string answer, vector<vector<PieceData> > &newBoard, string &gameOver);
 
-vector<int> parseTraducao(std::string answer);
 #endif
