@@ -2,6 +2,7 @@
 #define PIECEDATA_H
 #include <iostream>
 #include <string>
+#include "Animation.h"
 using namespace std;
 
 class PieceData{
@@ -10,6 +11,7 @@ private:
 	int y;
 	bool cor; //só é relevante se tipo != vazia; //true = branca, false = preta.
 	string tipo;
+	Animation* animation;
 	
 public: 
 	PieceData(int x, int y, bool cor, string tipo){
@@ -17,6 +19,7 @@ public:
 		this->y = y;
 		this->cor = cor;
 		this->tipo = tipo;
+		animation=NULL;
 	}
 	int getX(){return x;}
 	void setX(int x){this->x = x;}

@@ -24,6 +24,7 @@ public:
 	std::vector<Appearance* > appearances;
 	std::vector<Animation* > animations;
 	std::vector<Camera> cameras;
+	std::vector<Animation*> animationsPieces;
 	Camera* activeCamera;
 
 	Piece* pieceTest;
@@ -41,6 +42,8 @@ public:
 	void switchJogador();
 	void jogar();
 	void restartJogo(string modo);
+
+	Animation* getAnimation(float x1,float y1,float z1,float x2,float y2,float z2);
 
 	bool wireFrame;
 
@@ -72,6 +75,16 @@ public:
 		//animations.at(0)->update(t);
 		//animations.at(1)->show();
 		//cout<<"\n|||||||||||||||||||||||||||\n";
+		for(unsigned int k=0;k<animationsPieces.size();k++)
+		{
+			if(animationsPieces.at(k)->isEnd())
+				animationsPieces.erase (animationsPieces.begin()+k);
+		}
+		
+		for(unsigned int k=0;k<animationsPieces.size();k++)
+		{
+			animationsPieces.at(k)->update(t);
+		}
 	}
 
 	

@@ -36,6 +36,8 @@ Piece::Piece(){
 
 	this->appearanceTopos = new Appearance("topos");
 	this->appearanceTopos->setTexture(texturesPecas[0]);
+
+
 }
 
 /*
@@ -81,6 +83,13 @@ void Piece::draw(bool cor, string tipo, bool selected){
 				glEnd();
 			glPopMatrix();
 		}
+	glPopMatrix();
+}
+
+
+void Piece::drawAnimation(bool cor, string tipo, Animation *animation){
+	animation->draw();
+	this->draw(cor,tipo,false);
 	glPopMatrix();
 }
 

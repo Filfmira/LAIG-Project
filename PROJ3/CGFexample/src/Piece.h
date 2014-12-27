@@ -5,6 +5,7 @@
 #include "Primitives.h"
 #include "Poligon.h"
 #include "Appearances.h" //inclui tb Textures.h
+#include "Animation.h"
 
 class Piece: public Primitive{
 private:
@@ -18,6 +19,7 @@ private:
 public:
 	Piece();
 	void draw(bool cor, string tipo, bool selected);
+	void drawAnimation(bool cor, string tipo, Animation *animation);
 	Texture* chooseTexture(bool cor, string tipo);
 };
 

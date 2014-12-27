@@ -14,15 +14,17 @@ void Board::draw(int selectedX, int selectedY){
 	for (unsigned int i = 0; i < board.size(); i++){
 		int offsetX = abs(board[i][0].getY());
 		int offsetZ = board[i][0].getY()*2;
+		
 		glPushMatrix();
 			glPushName(board[i][0].getY());//push coordY
 			glTranslated(offsetX, 0, offsetZ); //ajustar linha vertical e horizontalmente
-			
+			//cout<<endl;
 			for (unsigned int j = 0; j < board[i].size(); j++){
 				//board[i][j].print();
 				selected = (selectedX == board[i][j].getX() && selectedY == board[i][j].getY());
 			
 				int offsetXpeca = 2*j;
+				//cout<<"oX:"<<offsetX<<" oZ:"<<offsetZ<<" oPX:"<<offsetXpeca<<endl;
 				glPushMatrix();
 					glPushName(board[i][j].getX()); //push coordX
 					//tabuleiro	
@@ -46,6 +48,7 @@ void Board::draw(int selectedX, int selectedY){
 			glPopName();//pop coordY
 		glPopMatrix();
 	}
+	//cin.get();
 	
 }
 

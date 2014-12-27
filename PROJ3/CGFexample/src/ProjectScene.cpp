@@ -9,9 +9,11 @@ float Appearance::texlength_s = 0;
 float Appearance::texlength_t = 0;
 
 float globalAmbientLight[4]= {0.8,0.8,0.8,1.0};
-
+bool jogadaSimples;
+int times;
 void ProjectScene::init() 
 {
+	times=0;
 	glPolygonMode(GL_FILL,GL_TRUE);
 	glShadeModel(GL_SMOOTH);
 	glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
@@ -70,12 +72,12 @@ void ProjectScene::init()
 		this->board->setBoard(newBoard);
 	}
 	*/
-	
+	jogadaSimples=false;
 }
 
 void ProjectScene::display() 
 {
-
+	//cout<<"animations:"<<this->animationsPieces.size()<<endl;
 	// Clear image and depth buffer everytime we update the scene
 	glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
 
@@ -116,6 +118,8 @@ void ProjectScene::display()
 			glPopMatrix();
 		}
 	glPopMatrix();
+	for(int i=0;i<this->animationsPieces.size();i++)
+	pieceTest->drawAnimation(true,"simples",this->animationsPieces[i]);
 
 	if (this->gameOver == "NOT") //se o jogo não tiver acabado
 		this->jogar();
@@ -139,6 +143,8 @@ void ProjectScene::noneSelected(){
 }
 
 void ProjectScene::setTypePiece(int n){
+	if(jogadaSimples)
+		return;
 	string tipos[5] = {"simples","ataque","defesa","expansao","salto"};
 	this->selectedType = tipos[n];
 	cout << this->selectedType <<endl;
@@ -157,7 +163,96 @@ void ProjectScene::setSelectedPiece(int x, int y){
 		this->selectedPiece->setX(x);
 		this->selectedPiece->setY(y);
 	}
+
+	if(this->selectedType=="simples" && !jogadaSimples)
+				jogadaSimples=true;
+	else
+				jogadaSimples=false;
+
+	char ans[2048];
+	char jogadaEtabuleiro[2048];
+	vector<vector<PieceData> > newBoard;
+	times++;
+		if (this->selectedType != "none" && this->selectedPiece->getX() != 100){
+			
+			PieceData jogada(this->selectedPiece->getX(), this->selectedPiece->getY(), this->corActiva, this->selectedType); 
+			string j = jogadaToString(jogada, this->board->getBoard()); //transforma a jogada num comando a enviar ao prolog
+			strcpy(jogadaEtabuleiro, j.c_str());
+	
+			envia(jogadaEtabuleiro, strlen(jogadaEtabuleiro)); //envia a jogada
+			recebe(ans); // recebe resposta (ok ou not-ok)
+	
+			if (parseAnswerJogada((string)ans, newBoard, this->gameOver)){ //se ok, faz a jogada no tabuleiro local
+				
+				this->board->setBoard(newBoard);
+				this->board->addPieceHistorico(jogada); //adiciona jogada ao historico
+
+				char ans[2048];
+				char comando[2048];
+				string traduzirStr=traduzirCoordenadas(this->selectedPiece->getX(),this->selectedPiece->getY());
+				strcpy(comando, traduzirStr.c_str());
+				envia(comando, strlen(comando)); //envia o comando
+				recebe(ans); // recebe resposta (ok ou not-ok)
+				vector<int> pontos=parseTraducao(ans);
+				int pX=pontos[0];
+				int o=pontos[1];
+				int xNovo;
+
+				int x1=this->selectedPiece->getX();
+				int distancia=0;
+
+				if(this->selectedPiece->getY()<=0)
+				{
+				if(pX<0)
+				{
+					distancia=abs(pX)+x1+1;
+				}
+				else if(pX==0)
+					distancia=x1+1;
+
+
+				xNovo=distancia*2+pX+1;
+				}
+
+				else{
+				if(x1<0)
+					distancia=abs(pX)-abs(x1);
+				else if(x==0)
+					distancia=abs(pX);
+				else
+					distancia=abs(pX)+x1;
+				
+				xNovo=distancia*2+o;
+				}
+
+				
+				int yNovo=this->selectedPiece->getY()*2;
+
+				cout<<"xO:"<<this->selectedPiece->getX()<<" yO:"<<this->selectedPiece->getY()
+				<<" x:"<<pontos[0]<<" y:"<<pontos[1]<< "  ###:"<<xNovo<<endl;
+
+				
+				this->animationsPieces.push_back(getAnimation(0,3,-9,xNovo,0,yNovo));
+				
+				
+			}			
+			
+			if(!jogadaSimples)
+			{
+				
+			this->selectedType = "none";
+			this->noneSelected();
+			this->switchJogador();
+			}
+			if(jogadaSimples)
+				cout<<"true"<<endl;
+			else
+				cout<<"false"<<endl;
+			cout<<"vezes:"<<times<<endl;
+		}		
+	
 }
+
 
 
 void ProjectScene::jogar(){
@@ -165,8 +260,9 @@ void ProjectScene::jogar(){
 	char jogadaEtabuleiro[2048];
 	vector<vector<PieceData> > newBoard;
 	
+	
 	if (computadorAjogar){ //jogada do computador
-
+	times++;
 		string pc=jogadaComputadorToString(this->board->getBoard(), this->corActiva);
 		strcpy(jogadaEtabuleiro, pc.c_str());
 		envia(jogadaEtabuleiro, strlen(jogadaEtabuleiro)); //envia a jogada
@@ -178,26 +274,8 @@ void ProjectScene::jogar(){
 		//é preciso arranjar maneira de saber o que é que o computador jogou
 		this->switchJogador();
 	}
-	else{ //jogada de um humano
 
-		if (this->selectedType != "none" && this->selectedPiece->getX() != 100){
-			
-			PieceData jogada(this->selectedPiece->getX(), this->selectedPiece->getY(), this->corActiva, this->selectedType); 
-			string j = jogadaToString(jogada, this->board->getBoard()); //transforma a jogada num comando a enviar ao prolog
-			strcpy(jogadaEtabuleiro, j.c_str());
-	
-			envia(jogadaEtabuleiro, strlen(jogadaEtabuleiro)); //envia a jogada
-			recebe(ans); // recebe resposta (ok ou not-ok)
-	
-			if (parseAnswerJogada((string)ans, newBoard, this->gameOver)){ //se ok, faz a jogada no tabuleiro local
-				this->board->setBoard(newBoard);
-				this->board->addPieceHistorico(jogada); //adiciona jogada ao historico
-				this->switchJogador();
-			}			
-			this->selectedType = "none";
-			this->noneSelected();
-		}	
-	}
+
 }
 
 void ProjectScene::switchJogador(){
@@ -225,9 +303,41 @@ void ProjectScene::restartJogo(string modo){
 	string temp;
 	parseAnswerJogada((string) ans,tempBoard, temp);
 	this->board = new Board(tempBoard);
+	jogadaSimples=false;
+	times=0;
 	cout << "Success restart\n";
 }
 
+Animation* ProjectScene::getAnimation(float x1,float y1,float z1,float x2,float y2,float z2){
+	vector<float>p1;
+	p1.push_back(x1);
+	p1.push_back(y1);
+	p1.push_back(z1);
+
+	vector<float>p2;
+	p2.push_back(x1);
+	p2.push_back(y1+2);
+	p2.push_back(z1);
+
+	vector<float>p3;
+	p3.push_back(x2);
+	p3.push_back(y2+2);
+	p3.push_back(z2);
+
+	vector<float>p4;
+	p4.push_back(x2);
+	p4.push_back(y2);
+	p4.push_back(z2);
+
+	vector< vector<float>> v;
+	v.push_back(p1);
+	v.push_back(p2);
+	v.push_back(p3);
+	v.push_back(p4);
+
+	return new LinearAnimation("linear",5,v);
+
+}
 
 ProjectScene::~ProjectScene() 
 {

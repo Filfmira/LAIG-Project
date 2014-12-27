@@ -106,6 +106,12 @@ string jogadaComputadorToString(vector<vector<PieceData> > board, bool cor){
 	return ss.str();
 }
 
+string traduzirCoordenadas(int x, int y){
+	ostringstream ss;
+	ss << "[traduzir,"<< x << "," << y << "].\n";
+	return ss.str();
+}
+
 string pieceToString(PieceData piece){
 	ostringstream ss;
 	ss << "[" << piece.getX() << "," << piece.getY() << ","
@@ -129,4 +135,17 @@ bool parseAnswerJogada(string answer, vector<vector<PieceData> > &newBoard, stri
 		return true;
 	}
 	return false;
+}
+
+
+vector<int> parseTraducao(string answer){
+	answer = answer.substr(1, answer.size()-4); //retira [ e .\n]
+	int pos = answer.find(",");
+	string xStr = answer.substr(0,pos);
+	string yStr = answer.substr(pos+1,answer.size());
+	std::string::size_type sz;   // alias of size_t
+	vector<int> result;
+	result.push_back(stoi (xStr,&sz));
+	result.push_back(stoi (yStr,&sz));
+	return result;
 }
