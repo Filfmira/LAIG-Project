@@ -6,11 +6,11 @@
 #include <fstream> /* teste output tabuleiro para ficheiro */
 using namespace std;
 
-vector<vector<PieceData> > parseBoard(string board_string){
+vector<vector<PieceData> > parseBoard(string board_string, vector<PieceData> &pecasAdicionadas, vector<PieceData> &pecasRemovidas){
 	vector<vector<PieceData> > ret;
 	cout << "Parsing Board:" << endl << endl;
 	//cout << board_string << endl << endl;
-	board_string = board_string.substr(1, board_string.size()-2); //retira [ ] 
+	board_string = board_string.substr(1, board_string.size()-1); //retira [ ] 
 
 	////força a string a ter um ,[ antes da primeira linha do tabuleiro
 	// de forma a tornar o processo igual em todas as linhas
@@ -18,15 +18,17 @@ vector<vector<PieceData> > parseBoard(string board_string){
 	temp.append(board_string);
 	board_string = temp;
 	////////////////////////////////////////////////////////////////
-
-	while(board_string.size() > 1){
-		board_string = board_string.substr(2); //tira ,[ no inicio da linha do tabuleiro
-
+	cout << endl << board_string << endl;
+	while(1){
+		//cout << "||||||||||||||||||||||||||\n" << board_string << endl;
+		if (board_string.substr(0,2) ==  "]]")
+			break;
+		board_string = board_string.substr(3); //tira ,[ no inicio da linha do tabuleiro
 		vector<PieceData> linhaTemp;
 		while(1){
 			int pos2 = board_string.find_first_of(']');
 			if (pos2 == 0){ //fim da linha
-				board_string = board_string.substr(1);
+				//board_string = board_string.substr(1);
 				break;
 			}
 			int pos1 = board_string.find_first_of('[');
@@ -38,7 +40,58 @@ vector<vector<PieceData> > parseBoard(string board_string){
 		}
 		if (linhaTemp.size() > 0) ret.push_back(linhaTemp);
 		/*cout << endl;*/
+
 	}
+
+
+
+	cout << "Parsing added pieces..." << endl;
+	board_string = board_string.substr(4); //retira ]],[
+
+	if (board_string.find("]") == 0){ //se a lista acaba logo
+		cout << "	None added" << endl;
+	}
+	else{
+		//vector<PieceData> pecasAdicionadas;
+		while(1){
+			int pos2 = board_string.find_first_of(']');
+			if (pos2 == 0){ //fim da linha
+				//board_string = board_string.substr(1);
+				break;
+			}
+			int pos1 = board_string.find_first_of('[');
+			string pecaTemp = board_string.substr(pos1, pos2-pos1+1); //substr(primeiroChar, numeroDeChars);
+
+			PieceData piece = parsePiece(pecaTemp);
+			piece.print();
+			pecasAdicionadas.push_back(piece);
+			board_string = board_string.substr(pos2+1);
+		}
+	}
+	cout << "Parsing removed pieces..." << endl;	
+	board_string = board_string.substr(3); //retira ]],[
+
+	if (board_string.find("]") == 0){ //se a lista acaba logo
+		cout << "	None removed" << endl;
+	}
+	else{
+		//vector<PieceData> pecasRemovidas;
+		while(1){
+			int pos2 = board_string.find_first_of(']');
+			if (pos2 == 0){ //fim da linha
+				//board_string = board_string.substr(1);
+				break;
+			}
+			int pos1 = board_string.find_first_of('[');
+			string pecaTemp = board_string.substr(pos1, pos2-pos1+1); //substr(primeiroChar, numeroDeChars);
+
+			PieceData piece = parsePiece(pecaTemp);
+			piece.print();
+			pecasRemovidas.push_back(piece);
+			board_string = board_string.substr(pos2+1);
+		}
+	}
+
 	return ret;
 }
 
@@ -120,14 +173,16 @@ string pieceToString(PieceData piece){
 }
 
 
-bool parseAnswerJogada(string answer, vector<vector<PieceData> > &newBoard, string &gameOver){
+bool parseAnswerJogada(string answer, vector<vector<PieceData> > &newBoard, string &gameOver, 
+	vector<PieceData> &pecasAdicionadas, vector<PieceData> &pecasRemovidas){
+
 	int pos = answer.find(".");
 	answer = answer.substr(1, pos-2); //retira [ e .\n]
 	pos = answer.find(",");
 	string msg = answer.substr(0,pos);
 	if (msg != "not-ok"){
 		answer = answer.substr(pos+1);
-		newBoard = parseBoard(answer);
+		newBoard = parseBoard(answer, pecasAdicionadas, pecasRemovidas);
 		if (msg != "ok"){
 			cout << "FIM DO JOGO!\n" << answer << endl;
 			gameOver=msg;

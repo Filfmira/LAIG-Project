@@ -215,50 +215,56 @@ pecaProtegidaLinha(Celula, [ _ | RestoVizinhos]):- pecaProtegidaLinha(Celula, Re
 /* Eliminar peças de cor oposta, à volta de uma determinada célula,
 	excepto se forem peças de defesa, ou peças protegidas (adjacentes a defesa)*/
 /* chamada: eliminaCelulaVolta(Celula, TabuleiroVelho, TabuleiroNovo) */
-eliminaCelulaVolta(_, [],[], _).
-eliminaCelulaVolta(Celula, [LinhaVelho | RestoVelho], [LinhaNovo | RestoNovo], TabuleiroAux):- 
-	eliminaCelulaVoltaLinha(Celula, LinhaVelho, LinhaNovo, TabuleiroAux),
-	eliminaCelulaVolta(Celula, RestoVelho, RestoNovo, TabuleiroAux).
+eliminaCelulaVolta(_, [],[], _, Removidas, Removidas).
+eliminaCelulaVolta(Celula, [LinhaVelho | RestoVelho], [LinhaNovo | RestoNovo], TabuleiroAux, AuxRemovidas, PecasRemovidas):- 
+	eliminaCelulaVoltaLinha(Celula, LinhaVelho, LinhaNovo, TabuleiroAux, [], RemovidasTemp),
+	append(RemovidasTemp, AuxRemovidas, RemovidasTotal),
+
+	eliminaCelulaVolta(Celula, RestoVelho, RestoNovo, TabuleiroAux, RemovidasTotal, PecasRemovidas).
 
 
-eliminaCelulaVoltaLinha(_, [], [], _).
-eliminaCelulaVoltaLinha(Celula, [CelulaVelho | RestoVelho], [CelulaNovo | RestoNovo], TabuleiroAux):-
-	coordVizinhos(Vizinhos), eliminaCelulaVoltaCelula(Celula, CelulaVelho, CelulaNovo, Vizinhos, TabuleiroAux),
-	eliminaCelulaVoltaLinha(Celula, RestoVelho, RestoNovo, TabuleiroAux).
+eliminaCelulaVoltaLinha(_, [], [], _, Removidas, Removidas).
+eliminaCelulaVoltaLinha(Celula, [CelulaVelho | RestoVelho], [CelulaNovo | RestoNovo], TabuleiroAux, AuxRemovidas, PecasRemovidas):-
+	coordVizinhos(Vizinhos), eliminaCelulaVoltaCelula(Celula, CelulaVelho, CelulaNovo, Vizinhos, TabuleiroAux, [], RemovidasTemp),
+	append(RemovidasTemp, AuxRemovidas, RemovidasTotal),
+	eliminaCelulaVoltaLinha(Celula, RestoVelho, RestoNovo, TabuleiroAux, RemovidasTotal, PecasRemovidas).
 
-eliminaCelulaVoltaCelula( _, CelulaVelha, CelulaNova, [], _):- colocaPecaEmCelula(CelulaVelha, CelulaNova).
-eliminaCelulaVoltaCelula([X,Y,Cor,Tipo], [X1, Y1, Cor1, Tipo1], CelulaNova, [ [DeltaX , DeltaY] | RestoVizinhos], TabuleiroAux):-
+eliminaCelulaVoltaCelula( _, CelulaVelha, CelulaNova, [], _, _, []):- colocaPecaEmCelula(CelulaVelha, CelulaNova).
+eliminaCelulaVoltaCelula([X,Y,Cor,Tipo], [X1, Y1, Cor1, Tipo1], CelulaNova, [ [DeltaX , DeltaY] | RestoVizinhos], TabuleiroAux, AuxRemovidas, PecasRemovidas):-
 	Xtemp is X+DeltaX, Ytemp is Y+DeltaY,
 	( X1 =:= Xtemp, Y1 =:= Ytemp, Cor \== Cor1, /*write(Cor),write(Cor1),nl,*/Tipo1\=='defesa', 
 		\+pecaProtegida([X1, Y1, Cor1, Tipo1], TabuleiroAux), Tipo1\=='vazia', /*write('Erase'),nl,*/
-	celulaVazia(X1, Y1, CelulaNova),!;
-	eliminaCelulaVoltaCelula([X,Y, Cor,Tipo], [X1, Y1, Cor1, Tipo1], CelulaNova, RestoVizinhos, TabuleiroAux) ).
+	celulaVazia(X1, Y1, CelulaNova), 
+		append(AuxRemovidas, [[X1, Y1, Cor1, Tipo1]], PecasRemovidas), !;
+	eliminaCelulaVoltaCelula([X,Y, Cor,Tipo], [X1, Y1, Cor1, Tipo1], CelulaNova, RestoVizinhos, TabuleiroAux, AuxRemovidas, PecasRemovidas) ).
 
 
 
 /* para ser usado com as peças de expansao */
-adicionaPecaVolta([X,Y,Cor,'expansao'], TabuleiroV,TabuleiroN):- 
-	adicionaPecaVolta([X,Y,Cor,'expansao'], TabuleiroV,TabuleiroN, TabuleiroV, 'nao', _).
+adicionaPecaVolta([X,Y,Cor,'expansao'], TabuleiroV,TabuleiroN, PecaAdicionada):- 
+	adicionaPecaVolta([X,Y,Cor,'expansao'], TabuleiroV,TabuleiroN, TabuleiroV, 'nao', _, PecaAdicionada).
 
-adicionaPecaVolta(_, [],[], _, Sucesso,Sucesso).
-adicionaPecaVolta(Celula, [LinhaVelho | RestoVelho], [LinhaNovo | RestoNovo], TabuleiroAux, Sucesso, SucessoN):- 
-	adicionaPecaVoltaLinha(Celula, LinhaVelho, LinhaNovo, TabuleiroAux, Sucesso, SucessoTemp),
-	adicionaPecaVolta(Celula, RestoVelho, RestoNovo, TabuleiroAux, SucessoTemp, SucessoN).
+adicionaPecaVolta(_, [],[], _, Sucesso,Sucesso, PecaAdicionada).
+adicionaPecaVolta(Celula, [LinhaVelho | RestoVelho], [LinhaNovo | RestoNovo], TabuleiroAux, Sucesso, SucessoN, PecaAdicionada):- 
+	adicionaPecaVoltaLinha(Celula, LinhaVelho, LinhaNovo, TabuleiroAux, Sucesso, SucessoTemp, PecaAdicionada),
+	adicionaPecaVolta(Celula, RestoVelho, RestoNovo, TabuleiroAux, SucessoTemp, SucessoN, PecaAdicionada).
 
 
-adicionaPecaVoltaLinha(_, [], [], _, Sucesso, Sucesso).
-adicionaPecaVoltaLinha(Celula, [CelulaVelho | RestoVelho], [CelulaNovo | RestoNovo], TabuleiroAux, Sucesso, SucessoN):-
-	coordVizinhos(Vizinhos), adicionaPecaVoltaCelula(Celula, CelulaVelho, CelulaNovo, Vizinhos, TabuleiroAux, Sucesso, SucessoTemp),
-	adicionaPecaVoltaLinha(Celula, RestoVelho, RestoNovo, TabuleiroAux, SucessoTemp, SucessoN).
+adicionaPecaVoltaLinha(_, [], [], _, Sucesso, Sucesso, PecaAdicionada).
+adicionaPecaVoltaLinha(Celula, [CelulaVelho | RestoVelho], [CelulaNovo | RestoNovo], TabuleiroAux, Sucesso, SucessoN, PecaAdicionada):-
+	coordVizinhos(Vizinhos), adicionaPecaVoltaCelula(Celula, CelulaVelho, CelulaNovo, Vizinhos, TabuleiroAux, Sucesso, SucessoTemp, PecaAdicionada),
+	adicionaPecaVoltaLinha(Celula, RestoVelho, RestoNovo, TabuleiroAux, SucessoTemp, SucessoN, PecaAdicionada).
 
-adicionaPecaVoltaCelula( _, CelulaVelha, CelulaNova, [], _, Sucesso, Sucesso):- colocaPecaEmCelula(CelulaVelha, CelulaNova).
-adicionaPecaVoltaCelula([X,Y,Cor,Tipo], [X1, Y1, Cor1, Tipo1], CelulaNova, [ [DeltaX , DeltaY] | RestoVizinhos], TabuleiroAux, Sucesso, SucessoN):-
+adicionaPecaVoltaCelula( _, CelulaVelha, CelulaNova, [], _, Sucesso, Sucesso, PecaAdicionada):- 
+	colocaPecaEmCelula(CelulaVelha, CelulaNova).
+
+adicionaPecaVoltaCelula([X,Y,Cor,Tipo], [X1, Y1, Cor1, Tipo1], CelulaNova, [ [DeltaX , DeltaY] | RestoVizinhos], TabuleiroAux, Sucesso, SucessoN, PecaAdicionada):-
 	(Sucesso == 'sim', SucessoN = 'sim', colocaPecaEmCelula([X1, Y1, Cor1, Tipo1], CelulaNova);
 
 	Xtemp is X+DeltaX, Ytemp is Y+DeltaY,
 	( X1 =:= Xtemp, Y1 =:= Ytemp, Tipo1=='vazia',/* write('Adiciona'),nl,*/
-	colocaPecaEmCelula(X1, Y1, Cor, 'simples', CelulaNova), SucessoN = 'sim', !;
-	adicionaPecaVoltaCelula([X,Y, Cor,Tipo], [X1, Y1, Cor1, Tipo1], CelulaNova, RestoVizinhos, TabuleiroAux, Sucesso, SucessoN) ) ).
+	colocaPecaEmCelula(X1, Y1, Cor, 'simples', CelulaNova), SucessoN = 'sim', PecaAdicionada = CelulaNova, !;
+	adicionaPecaVoltaCelula([X,Y, Cor,Tipo], [X1, Y1, Cor1, Tipo1], CelulaNova, RestoVizinhos, TabuleiroAux, Sucesso, SucessoN, PecaAdicionada) ) ).
 
 
 
@@ -328,7 +334,7 @@ jogar(Tamanho):- novoTabuleiro(Tamanho, T),
 jogar(Jogador, Tabuleiro, Tamanho):- 
 	
 	pedirJogada1(Jogador, Tamanho, Tabuleiro, TNovo1),
-	processaPecasEspeciais(TNovo1, TNovo),
+	processaPecasEspeciais(TNovo1, TNovo, PecasAdicionadas, PecasRemovidas),
 	\+fimDoJogo(TNovo),
 	
 	imprimeTabuleiro(TNovo), !, 
@@ -344,12 +350,12 @@ jogar1(Tamanho):-novoTabuleiro(Tamanho, T),colocaPeca([Temp, 0, 'preta' ,'simple
 
 jogar1(Jogador,Tabuleiro,Tamanho):-
 	pedirJogada1(Jogador, Tamanho, Tabuleiro, TNovo),
-	processaPecasEspeciais(TNovo, TNovo1),
+	processaPecasEspeciais(TNovo, TNovo1, PecasAdicionadas1, PecasRemovidas1),
 	\+fimDoJogo(TNovo1),
 	imprimeTabuleiro(TNovo1),
 	jogadorSeguinte(Jogador, JNovo),
 	fazJogadaComputador(JNovo,TNovo1,TNovo2),
-	processaPecasEspeciais(TNovo2, TNovo3),
+	processaPecasEspeciais(TNovo2, TNovo3, PecasAdicionadas2, PecasRemovidas2),
 	\+fimDoJogo(TNovo3),
 	imprimeTabuleiro(TNovo3),
 	jogar1(Jogador, TNovo3, Tamanho).
@@ -363,13 +369,13 @@ jogar2(Tamanho):-novoTabuleiro(Tamanho, T),colocaPeca([Temp, 0, 'preta' ,'simple
 
 jogar2(Jogador,Tabuleiro,Tamanho):-
 	fazJogadaComputador(Jogador,Tabuleiro,TNovo1),
-	processaPecasEspeciais(TNovo1, TNovo),
+	processaPecasEspeciais(TNovo1, TNovo, PecasAdicionadas1, PecasRemovidas1),
 	imprimeTabuleiro(TNovo), !,
 	(fimDoJogo(TNovo);
 
 	(jogadorSeguinte(Jogador, JNovo),
 	fazJogadaComputador(JNovo,TNovo,TNovo2),
-	processaPecasEspeciais(TNovo2, TNovo3),
+	processaPecasEspeciais(TNovo2, TNovo3, PecasAdicionadas2, PecasRemovidas2),
 	imprimeTabuleiro(TNovo3), !, 
 		(fimDoJogo(TNovo3);
 		jogar2(Jogador, TNovo3, Tamanho)))).
@@ -423,7 +429,8 @@ accaoPeca([_, _, _, 'expansao'],Tabuleiro,Tabuleiro).
 accaoPeca([_, _, _, 'salto'],Tabuleiro,Tabuleiro).
 
 /*se for de ataque elimina todas as ceclulas do outro jogador, menos as de defesa*/
-accaoAtaque(Peca,Tabuleiro,Tnovo):- /*write('vai eliminar?'), nl,*/ eliminaCelulaVolta(Peca,Tabuleiro,Tnovo, Tabuleiro).
+accaoAtaque(Peca,Tabuleiro,Tnovo, AuxRemovidas, PecasRemovidas):- 
+	/*write('vai eliminar?'), nl,*/ eliminaCelulaVolta(Peca,Tabuleiro,Tnovo, Tabuleiro, AuxRemovidas, PecasRemovidas).
 
 
 
@@ -449,49 +456,43 @@ fimDoJogoLinha( [], Paux, Baux, Paux, Baux).
 /*//////////////////////////////////////////////////////////////////*/
 
 /* chamada processaPecasEspeciais(TabuleiroVelho, TabuleiroNovo)*/
-processaPecasEspeciais(TabuleiroVelho, TabuleiroNovo):- processaPecasEspeciais(TabuleiroVelho, TabuleiroVelho, TabuleiroNovo).
+processaPecasEspeciais(TabuleiroVelho, TabuleiroNovo, PecasAdicionadas, PecasRemovidas):- 
+	processaPecasEspeciais(TabuleiroVelho, TabuleiroVelho, TabuleiroNovo, [],[], PecasAdicionadas, PecasRemovidas).
 
-processaPecasEspeciais([],Tabuleiro, Tabuleiro).
-processaPecasEspeciais([LinhaVelho | RestoVelho], TabuleiroAux, TabuleiroFinal):-
+processaPecasEspeciais([],Tabuleiro, Tabuleiro, PecasAdicionadas, PecasRemovidas, PecasAdicionadas, PecasRemovidas).
+processaPecasEspeciais([LinhaVelho | RestoVelho], TabuleiroAux, TabuleiroFinal, AuxAdicionadas, AuxRemovidas, PecasAdicionadas, PecasRemovidas):-
 	/*write('processaPecasEspeciais'),nl,*/
-	processaPecasEspeciaisLinha(LinhaVelho, TabuleiroAux, TabuleiroTemp),
-	processaPecasEspeciais(RestoVelho, TabuleiroTemp, TabuleiroFinal).
+	processaPecasEspeciaisLinha(LinhaVelho, TabuleiroAux, TabuleiroTemp, [], [], AdicionadasTemp, RemovidasTemp),
+
+	append(AdicionadasTemp, AuxAdicionadas, AdicionadasTotal), append(RemovidasTemp, AuxRemovidas, RemovidasTotal),
+
+	processaPecasEspeciais(RestoVelho, TabuleiroTemp, TabuleiroFinal, AdicionadasTotal, RemovidasTotal, PecasAdicionadas, PecasRemovidas).
 
 
-processaPecasEspeciaisLinha([],Tabuleiro,Tabuleiro).
-processaPecasEspeciaisLinha([CelulaVelho | RestoVelho], TabuleiroAux, TabuleiroF):-
-	((celulaVazia(CelulaVelho);pecaSimples(CelulaVelho)), processaPecasEspeciaisLinha(RestoVelho, TabuleiroAux, TabuleiroF);
-	processaPecasEspeciaisCelula(CelulaVelho, TabuleiroAux, TabuleiroTemp), processaPecasEspeciaisLinha(RestoVelho, TabuleiroTemp, TabuleiroF)).
-/*processaPecasEspeciaisLinha([CelulaVelho | RestoVelho], TabuleiroAux, TabuleiroF):-
-	processaPecasEspeciaisCelula(CelulaVelho, TabuleiroAux, TabuleiroTemp),
-	processaPecasEspeciaisLinha(RestoVelho, TabuleiroTemp, TabuleiroF).*/
+processaPecasEspeciaisLinha([],Tabuleiro,Tabuleiro, Adicionadas, Removidas, Adicionadas, Removidas).
+processaPecasEspeciaisLinha([CelulaVelho | RestoVelho], TabuleiroAux, TabuleiroF, AuxAdicionadas, AuxRemovidas, PecasAdicionadas, PecasRemovidas):-
 
-/*
-processaPecasEspeciaisLinha([[_,_,_,'vazia'] | RestoVelho], TabuleiroAux, TabuleiroF):-
-	processaPecasEspeciaisLinha(RestoVelho, TabuleiroAux, TabuleiroF).
-	processaPecasEspeciaisLinha([[_,_,_,'simples'] | RestoVelho], TabuleiroAux, TabuleiroF):-
-	processaPecasEspeciaisLinha(RestoVelho, TabuleiroAux, TabuleiroF).
+	((celulaVazia(CelulaVelho);pecaSimples(CelulaVelho)), 
+		processaPecasEspeciaisLinha(RestoVelho, TabuleiroAux, TabuleiroF, AuxAdicionadas, AuxRemovidas, PecasAdicionadas, PecasRemovidas);
 
-processaPecasEspeciaisLinha([[X,Y,Cor,'ataque'] | RestoVelho], TabuleiroAux, TabuleiroF):-
-	accaoAtaque([X,Y,Cor,'ataque'], TabuleiroAux, TabuleiroAux2),
-	processaPecasEspeciaisLinha(RestoVelho, TabuleiroAux2, TabuleiroF).
+	processaPecasEspeciaisCelula(CelulaVelho, TabuleiroAux, TabuleiroTemp, [], [], AdicionadasTemp, RemovidasTemp), 
 
-processaPecasEspeciaisLinha([[X,Y,Cor,'expansao'] | RestoVelho], TabuleiroAux, TabuleiroF):-
-	adicionaPecaVolta([X,Y,Cor,'expansao'], TabuleiroAux,TabuleiroAux2),
-	processaPecasEspeciaisLinha(RestoVelho, TabuleiroAux2, TabuleiroF).
+	append(AdicionadasTemp, AuxAdicionadas, AdicionadasTotal), append(RemovidasTemp, AuxRemovidas, RemovidasTotal),
 
-processaPecasEspeciaisLinha([[_,_,_,_] | RestoVelho], TabuleiroAux, TabuleiroF):-
-	processaPecasEspeciaisLinha(RestoVelho, TabuleiroAux, TabuleiroF).*/
+	processaPecasEspeciaisLinha(RestoVelho, TabuleiroTemp, TabuleiroF, AdicionadasTotal, RemovidasTotal, PecasAdicionadas, PecasRemovidas)).
 
-processaPecasEspeciaisCelula([_,_,_,'vazia'], Tabuleiro,Tabuleiro).
-processaPecasEspeciaisCelula([_,_,_,'simples'], Tabuleiro,Tabuleiro).
-processaPecasEspeciaisCelula([_,_,_,'defesa'], Tabuleiro,Tabuleiro).
-processaPecasEspeciaisCelula([_,_,_,'salto'], Tabuleiro,Tabuleiro).
-processaPecasEspeciaisCelula([X,Y,Cor,'ataque'], TabuleiroV,TabuleiroN):-
-	accaoAtaque([X,Y,Cor,'ataque'], TabuleiroV, TabuleiroN).
 
-processaPecasEspeciaisCelula([X,Y,Cor,'expansao'], TabuleiroV,TabuleiroN):-
-	adicionaPecaVolta([X,Y,Cor,'expansao'], TabuleiroV,TabuleiroN). 
+processaPecasEspeciaisCelula([_,_,_,'vazia'], Tabuleiro,Tabuleiro, [],[],[],[]).
+processaPecasEspeciaisCelula([_,_,_,'simples'], Tabuleiro,Tabuleiro, [],[],[],[]).
+processaPecasEspeciaisCelula([_,_,_,'defesa'], Tabuleiro,Tabuleiro, [],[],[],[]).
+processaPecasEspeciaisCelula([_,_,_,'salto'], Tabuleiro,Tabuleiro, [],[],[],[]).
+
+processaPecasEspeciaisCelula([X,Y,Cor,'ataque'], TabuleiroV,TabuleiroN, AuxAdicionadas, AuxRemovidas, PecasAdicionadas, PecasRemovidas):-
+	accaoAtaque([X,Y,Cor,'ataque'], TabuleiroV, TabuleiroN, AuxRemovidas, PecasRemovidas).
+
+processaPecasEspeciaisCelula([X,Y,Cor,'expansao'], TabuleiroV,TabuleiroN, AuxAdicionadas, AuxRemovidas, PecasAdicionadas, PecasRemovidas):-
+	adicionaPecaVolta([X,Y,Cor,'expansao'], TabuleiroV,TabuleiroN, PecaAdicionada),
+	( (is_list(PecaAdicionada), PecasAdicionadas = [PecaAdicionada] ) ; PecasAdicionadas = []).
 	
 	
 	

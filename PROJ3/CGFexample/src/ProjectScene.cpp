@@ -10,13 +10,13 @@ float Appearance::texlength_t = 0;
 
 float globalAmbientLight[4]= {0.8,0.8,0.8,1.0};
 bool jogadaSimples;
-int times;
+
 void ProjectScene::init() 
 {
 	float pos[3]={15,10,15};
 	float target[3]={5,0,0,};
 	perspective=new Perspective(1,20,45,pos,target);
-	times=0;
+
 	glPolygonMode(GL_FILL,GL_TRUE);
 	glShadeModel(GL_SMOOTH);
 	glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
@@ -214,16 +214,17 @@ void ProjectScene::jogar(){
 	char ans[2048];
 	char jogadaEtabuleiro[2048];
 	vector<vector<PieceData> > newBoard;
+	vector<PieceData> pecasAdicionadas, pecasRemovidas;
 	
 		
 	if (computadorAjogar){ //jogada do computador
-	times++;
+
 		string pc=jogadaComputadorToString(this->board->getBoard(), this->corActiva);
 		strcpy(jogadaEtabuleiro, pc.c_str());
 		envia(jogadaEtabuleiro, strlen(jogadaEtabuleiro)); //envia a jogada
 		recebe(ans); // recebe resposta (ok ou not-ok)
 		
-		if (parseAnswerJogada((string)ans, newBoard, this->gameOver)) //se ok, faz a jogada no tabuleiro local
+		if (parseAnswerJogada((string)ans, newBoard, this->gameOver, pecasAdicionadas, pecasRemovidas)) //se ok, faz a jogada no tabuleiro local
 			this->board->setBoard(newBoard);
 		//adicionar ao historico a jogada do computador
 		//é preciso arranjar maneira de saber o que é que o computador jogou
@@ -240,7 +241,7 @@ void ProjectScene::jogar(){
 			envia(jogadaEtabuleiro, strlen(jogadaEtabuleiro)); //envia a jogada
 			recebe(ans); // recebe resposta (ok ou not-ok)
 	
-			if (parseAnswerJogada((string)ans, newBoard, this->gameOver)){ //se ok, faz a jogada no tabuleiro local
+			if (parseAnswerJogada((string)ans, newBoard, this->gameOver, pecasAdicionadas, pecasRemovidas)){ //se ok, faz a jogada no tabuleiro local
 				
 				//this->board->setBoard(newBoard); 
 				
@@ -289,11 +290,10 @@ void ProjectScene::restartJogo(string modo){
 	char ans[2048];
 	recebe(ans);
 	vector<vector <PieceData> > tempBoard;
-	string temp;
-	parseAnswerJogada((string) ans,tempBoard, temp);
+	string temp;vector<PieceData> temp2;
+	parseAnswerJogada((string) ans,tempBoard, temp, temp2, temp2);
 	this->board = new Board(tempBoard);
 	jogadaSimples=false;
-	times=0;
 	cout << "Success restart\n";
 }
 
