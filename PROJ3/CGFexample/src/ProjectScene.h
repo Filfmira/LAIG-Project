@@ -22,9 +22,7 @@ public:
 
 	std::vector<Texture *> textures;
 	std::vector<Appearance* > appearances;
-	std::vector<Animation* > animations;
 	std::vector<Camera> cameras;
-	std::vector<Animation*> animationsPieces;
 	Camera* activeCamera;
 
 	Piece* pieceTest;
@@ -45,8 +43,8 @@ public:
 	void jogar();
 	void restartJogo(string modo);
 
-	Animation getAnimation(float x1,float y1,float z1,float x2,float y2,float z2);
-	Animation generateAnimation(int x, int y);
+	Animation* getAnimation(float x1,float y1,float z1,float x2,float y2,float z2);
+	Animation* generateAnimation(int x, int y);
 
 	bool wireFrame;
 
@@ -70,36 +68,18 @@ public:
 
 
 	void update(unsigned long t){
-		//cout<<t<<endl;
-		//cout<<animations.size()<<endl;
-		for(unsigned int k=0;k<animations.size();k++)
-					animations.at(k)->update(t);
-		//animations.at(0)->show();
-		//animations.at(0)->update(t);
-		//animations.at(1)->show();
-		//cout<<"\n|||||||||||||||||||||||||||\n";
-		for(unsigned int k=0;k<animationsPieces.size();k++)
-		{
-			if(animationsPieces.at(k)->isEnd())
-				animationsPieces.erase (animationsPieces.begin()+k);
-		}
-		
-		for(unsigned int k=0;k<animationsPieces.size();k++)
-		{
-			animationsPieces.at(k)->update(t);
-		}
 
 		int a=0;
 		for(unsigned int k=0;k<this->board->getBoard().size();k++)
 			for(unsigned int i=0;i<this->board->getBoard().at(k).size();i++){
 				if(this->board->getBoard()[k][i].hasAnimation())
 				{
-				this->board->getBoard()[k][i].getAnimation().update(t);
-				a++;
+					this->board->getBoard()[k][i].getAnimation()->update(t);
+					a++;
 				}
 			}
 
-		cout<<"carlho:"<<a<<endl;
+		//cout<<"carlho:"<<a<<endl;
 
 	}
 

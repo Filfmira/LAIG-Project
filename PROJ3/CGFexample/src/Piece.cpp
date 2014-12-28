@@ -87,8 +87,8 @@ void Piece::draw(bool cor, string tipo, bool selected){
 }
 
 
-void Piece::drawAnimation(bool cor, string tipo, Animation animation){
-	animation.draw();
+void Piece::drawAnimation(bool cor, string tipo, Animation* animation){
+	animation->draw();
 	this->draw(cor,tipo,false);
 	glPopMatrix();
 }

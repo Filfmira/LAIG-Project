@@ -12,7 +12,7 @@ protected:
 	bool ended;
 public:
 	Animation();
-	virtual void draw(){};
+	virtual void draw(){cout << "draw classe mae" << endl;};
 	virtual void update(float t){};
 	virtual void show(){};
 	string getId();

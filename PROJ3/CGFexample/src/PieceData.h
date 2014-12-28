@@ -11,7 +11,7 @@ private:
 	int y;
 	bool cor; //só é relevante se tipo != vazia; //true = branca, false = preta.
 	string tipo;
-	Animation animation;
+	Animation* animation;
 	bool animationBool;
 	
 public: 
@@ -29,8 +29,8 @@ public:
 	bool getCor(){return cor;}
 	string getTipo(){return tipo;}
 
-	void setAnimation(Animation anim){this->animation=animation; animationBool=true;}
-	Animation getAnimation(){return this->animation;}
+	void setAnimation(Animation* anim){this->animation=anim; animationBool=true;}
+	Animation* getAnimation(){return this->animation;}
 	bool hasAnimation(){return animationBool;}
 	void setHasAnimation(bool a){this->animationBool=a;}
 
