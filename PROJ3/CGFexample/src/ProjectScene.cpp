@@ -118,8 +118,8 @@ void ProjectScene::display()
 			glPopMatrix();
 		}
 	glPopMatrix();
-	for(int i=0;i<this->animationsPieces.size();i++)
-	pieceTest->drawAnimation(true,"simples",this->animationsPieces[i]);
+	/*for(int i=0;i<this->animationsPieces.size();i++)
+	pieceTest->drawAnimation(true,"simples",this->animationsPieces[i]);*/
 
 	if (this->gameOver == "NOT") //se o jogo não tiver acabado
 		this->jogar();
@@ -205,14 +205,17 @@ void ProjectScene::jogar(){
 			if (parseAnswerJogada((string)ans, newBoard, this->gameOver)){ //se ok, faz a jogada no tabuleiro local
 				
 				this->board->setBoard(newBoard); 
+				
+				Animation novaAnimacao=generateAnimation(this->selectedPiece->getX(),this->selectedPiece->getY());
+				jogada.setAnimation(novaAnimacao);
 				this->board->addPiece(jogada);
 				this->board->addPieceHistorico(jogada); //adiciona jogada ao historico
 
 				//gera a nova animacao
-				Animation *novaAnimacao=generateAnimation(this->selectedPiece->getX(),this->selectedPiece->getY());
+				//Animation *novaAnimacao=generateAnimation(this->selectedPiece->getX(),this->selectedPiece->getY());
 				
 				//adiciona ao vector de animacoes
-				this->animationsPieces.push_back(novaAnimacao);	
+				//this->animationsPieces.push_back(novaAnimacao);	
 
 				if (!this->jogadaSimples && jogada.getTipo() == "simples"){//se jogou simples, e não era a segunda jogada
 					this->jogadaSimples = true;
@@ -260,7 +263,7 @@ void ProjectScene::restartJogo(string modo){
 	cout << "Success restart\n";
 }
 
-Animation* ProjectScene::getAnimation(float x1,float y1,float z1,float x2,float y2,float z2){
+Animation ProjectScene::getAnimation(float x1,float y1,float z1,float x2,float y2,float z2){
 	vector<float>p1;
 	p1.push_back(x1);
 	p1.push_back(y1);
@@ -287,13 +290,13 @@ Animation* ProjectScene::getAnimation(float x1,float y1,float z1,float x2,float 
 	v.push_back(p3);
 	v.push_back(p4);
 
-	return new LinearAnimation("linear",5,v);
+	return LinearAnimation("linear",5,v);
 
 }
 
 
 
-Animation*  ProjectScene::generateAnimation(int x, int y)
+Animation  ProjectScene::generateAnimation(int x, int y)
 {
 	//vai traduzir as coordenadas do tabuleiro prolog para as coordenadas graficas do prolog
 	int tamanho=7;
@@ -341,7 +344,7 @@ Animation*  ProjectScene::generateAnimation(int x, int y)
 				
 	int yNovo=y*2;
 
-	Animation* final=getAnimation(0,3,-9,xNovo,0,yNovo);
+	Animation final=getAnimation(0,3,-9,xNovo,0,yNovo);
 	return final;
 
 }

@@ -45,8 +45,8 @@ public:
 	void jogar();
 	void restartJogo(string modo);
 
-	Animation* getAnimation(float x1,float y1,float z1,float x2,float y2,float z2);
-	Animation* generateAnimation(int x, int y);
+	Animation getAnimation(float x1,float y1,float z1,float x2,float y2,float z2);
+	Animation generateAnimation(int x, int y);
 
 	bool wireFrame;
 
@@ -88,6 +88,19 @@ public:
 		{
 			animationsPieces.at(k)->update(t);
 		}
+
+		int a=0;
+		for(unsigned int k=0;k<this->board->getBoard().size();k++)
+			for(unsigned int i=0;i<this->board->getBoard().at(k).size();i++){
+				if(this->board->getBoard()[k][i].hasAnimation())
+				{
+				this->board->getBoard()[k][i].getAnimation().update(t);
+				a++;
+				}
+			}
+
+		cout<<"carlho:"<<a<<endl;
+
 	}
 
 	

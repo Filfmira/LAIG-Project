@@ -11,7 +11,8 @@ private:
 	int y;
 	bool cor; //só é relevante se tipo != vazia; //true = branca, false = preta.
 	string tipo;
-	Animation* animation;
+	Animation animation;
+	bool animationBool;
 	
 public: 
 	PieceData(int x, int y, bool cor, string tipo){
@@ -19,7 +20,7 @@ public:
 		this->y = y;
 		this->cor = cor;
 		this->tipo = tipo;
-		animation=NULL;
+		animationBool=false;
 	}
 	int getX(){return x;}
 	void setX(int x){this->x = x;}
@@ -27,6 +28,12 @@ public:
 	void setY(int y){this->y = y;}
 	bool getCor(){return cor;}
 	string getTipo(){return tipo;}
+
+	void setAnimation(Animation anim){this->animation=animation; animationBool=true;}
+	Animation getAnimation(){return this->animation;}
+	bool hasAnimation(){return animationBool;}
+	void setHasAnimation(bool a){this->animationBool=a;}
+
 	void print(){
 		cout << boolalpha; 
 		

@@ -19,7 +19,7 @@ private:
 public:
 	Piece();
 	void draw(bool cor, string tipo, bool selected);
-	void drawAnimation(bool cor, string tipo, Animation *animation);
+	void drawAnimation(bool cor, string tipo, Animation animation);
 	Texture* chooseTexture(bool cor, string tipo);
 };
 

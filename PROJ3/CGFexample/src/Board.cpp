@@ -6,51 +6,70 @@ Board::Board(vector<vector<PieceData> > b){
 }
 
 
-void Board::draw(int selectedX, int selectedY){
 	
-	bool selected = false;
 
-	//desenhar tabuleiro + peças
-	for (unsigned int i = 0; i < board.size(); i++){
-		int offsetX = abs(board[i][0].getY());
-		int offsetZ = board[i][0].getY()*2;
-		
-		glPushMatrix();
-			glPushName(board[i][0].getY());//push coordY
-			glTranslated(offsetX, 0, offsetZ); //ajustar linha vertical e horizontalmente
-			//cout<<endl;
-			for (unsigned int j = 0; j < board[i].size(); j++){
-				//board[i][j].print();
-				selected = (selectedX == board[i][j].getX() && selectedY == board[i][j].getY());
-			
-				int offsetXpeca = 2*j;
-				//cout<<"oX:"<<offsetX<<" oZ:"<<offsetZ<<" oPX:"<<offsetXpeca<<endl;
-				glPushMatrix();
-					glPushName(board[i][j].getX()); //push coordX
-					//tabuleiro	
-					glPushMatrix();
-						glTranslated(offsetXpeca, -0.5, 0);
-						piece.draw(false, "tabuleiro", selected);
-					glPopMatrix();
-			
-					//peças
-					if (board[i][j].getTipo() != "vazia"){				
-						glPushMatrix();
-							glPushName(100);
-							glTranslated(offsetXpeca, 0, 0);
-							piece.draw(board[i][j].getCor(), board[i][j].getTipo(), false);
-							glPopName();
-						glPopMatrix();
+    void Board::draw(int selectedX, int selectedY){
+           
+            bool selected = false;
+     
+            //desenhar tabuleiro + peças
+            for (unsigned int i = 0; i < board.size(); i++){
+                    int offsetX = abs(board[i][0].getY());
+                    int offsetZ = board[i][0].getY()*2;
+                   
+                    glPushMatrix();
+                            glPushName(board[i][0].getY());//push coordY
+                            glTranslated(offsetX, 0, offsetZ); //ajustar linha vertical e horizontalmente
+                            //cout<<endl;
+                            for (unsigned int j = 0; j < board[i].size(); j++){
+                                    //board[i][j].print();
+                                    selected = (selectedX == board[i][j].getX() && selectedY == board[i][j].getY());
+                           
+                                    int offsetXpeca = 2*j;
+                                    //cout<<"oX:"<<offsetX<<" oZ:"<<offsetZ<<" oPX:"<<offsetXpeca<<endl;
+                                    glPushMatrix();
+                                            glPushName(board[i][j].getX()); //push coordX
+                                            //tabuleiro    
+                                            glPushMatrix();
+                                                    glTranslated(offsetXpeca, -0.5, 0);
+                                                    piece.draw(false, "tabuleiro", selected);
+                                            glPopMatrix();
+                           
+                                            //peças
+                                            if (board[i][j].getTipo() != "vazia"){  
+												if(!board[i][j].hasAnimation())
+												{
+                                                    glPushMatrix();
+                                                            glPushName(100);
+                                                            glTranslated(offsetXpeca, 0, 0);
+                                                            piece.draw(board[i][j].getCor(), board[i][j].getTipo(), false);
+                                                            glPopName();
+                                                    glPopMatrix();
+												}
+                                            }
+                                            glPopName();//pop coordX
+                                    glPopMatrix();
+                            }
+                            glPopName();//pop coordY
+                    glPopMatrix();
+            }
+            //cin.get();
+
+			for(int i=0;i<board.size();i++)
+				for(int j=0;j<board[i].size();j++)
+				{
+					if(board[i][j].hasAnimation())
+					{
+						cout<<"entrou"<<endl;
+						//board[i][j].getAnimation().draw();
+						piece.drawAnimation(board[i][j].getCor(),board[i][j].getTipo(),board[i][j].getAnimation());
+						//glPopMatrix();
+
 					}
-					glPopName();//pop coordX
-				glPopMatrix();
-			}
-			glPopName();//pop coordY
-		glPopMatrix();
-	}
-	//cin.get();
-	
-}
+				}
+           
+    }
+
 
 vector<vector<PieceData> > Board::getBoard(){
 	return this->board;
