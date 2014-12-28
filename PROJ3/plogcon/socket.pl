@@ -32,9 +32,9 @@ parse_input(comando(Arg1, Arg2), Answer) :-
 	comando(Arg1, Arg2, Answer).
 	
 parse_input(quit, ok-bye) :- !.
-parse_input(novo-tabuleiro, [ok,Tabuleiro, [],[]]) :- novoTabuleiro(7, Tabuleiro), /*tabuleiroExemplo1(Tabuleiro),*/ !.
+parse_input(novo-tabuleiro, [ok,Tabuleiro, [],[],[]]) :- novoTabuleiro(7, Tabuleiro), /*tabuleiroExemplo1(Tabuleiro),*/ !.
 
-parse_input([jogada, Jogada, Tabuleiro], [Msg,TabuleiroNovo,PecasAdicionadas, PecasRemovidas]):- 
+parse_input([jogada, Jogada, Tabuleiro], [Msg,TabuleiroNovo,PecasAdicionadas, PecasRemovidas, []]):- 
 	(mesmaCorNaVizinhanca(Jogada, Tabuleiro); pecaSalto(Jogada)), 
 	colocaPeca(Jogada, Tabuleiro, T),
 	processaPecasEspeciais(T,TabuleiroNovo, PecasAdicionadas, PecasRemovidas), write('deu'), nl,
@@ -44,7 +44,7 @@ parse_input([jogada, Jogada, Tabuleiro], [not-ok,gg]):- write('n deu'), nl, !. /
 /*parse_input([jogada, Jogada, Tabuleiro], [ok,TabuleiroNovo]):- 
 	colocaPeca(Jogada, Tabuleiro, Tabuleiro2), write('deu'), nl,fazJogadaComputador('branca',Tabuleiro2,TabuleiroNovo), !. 
 */
-parse_input([computador,Cor,Tabuleiro], [Msg,TabuleiroNovo,PecasAdicionadas,PecasRemovidas]) :- fazJogadaComputador(Cor,Tabuleiro,T), 
+parse_input([computador,Cor,Tabuleiro], [Msg,TabuleiroNovo,PecasAdicionadas,PecasRemovidas, JogadasFeitas]) :- fazJogadaComputador(Cor,Tabuleiro,T, JogadasFeitas), 
 	processaPecasEspeciais(T,TabuleiroNovo, PecasAdicionadas, PecasRemovidas), end_game(Msg, TabuleiroNovo), !.
 
 end_game(Msg, Tabuleiro):- (fimDoJogo(Tabuleiro, 0, 0, P, B),( (P>B, Msg = winPreto, nl); (B>P, Msg = winBranco, nl); (P =:= B, Msg = draw) );

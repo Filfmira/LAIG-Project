@@ -18,6 +18,7 @@ public:
 	vector<vector<PieceData> > getBoard();
 	void setBoard(vector<vector<PieceData> > board);
 	void addPiece(PieceData newPiece);
+	void removePiece(PieceData oldPiece);
 	PieceData getPiece(int x, int y);
 	void addPieceHistorico(PieceData pd);
 };

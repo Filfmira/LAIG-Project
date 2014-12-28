@@ -81,6 +81,19 @@ void Board::addPiece(PieceData newPiece){
 	}
 }
 
+/*
+ *	substitui peça no tabuleiro por peça vazia
+ *	(a peça substituida será a peça com as msms coordenadas de oldPiece)
+*/
+void Board::removePiece(PieceData oldPiece){
+	vector<PieceData> linha = board[oldPiece.getY() + (int)board.size()/2];
+	for (unsigned int i = 0; i < linha.size(); i++){
+		if (linha[i].getX() == oldPiece.getX()){
+			board[oldPiece.getY() + (int)board.size()/2][i] = PieceData(oldPiece.getX(),oldPiece.getY(), true, "vazia");
+		}
+	}
+}
+
 PieceData Board::getPiece(int x, int y){
 	cout << (int)board.size()/2 << endl;
 	return board[y + (int)board.size()/2][x + (int)board.size()/2]; //N SEI SE ESTÁ BEM || MT PROVAVELMENTE NAO

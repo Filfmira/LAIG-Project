@@ -6,7 +6,7 @@
 #include <fstream> /* teste output tabuleiro para ficheiro */
 using namespace std;
 
-vector<vector<PieceData> > parseBoard(string board_string, vector<PieceData> &pecasAdicionadas, vector<PieceData> &pecasRemovidas){
+vector<vector<PieceData> > parseBoard(string board_string, vector<PieceData> &pecasAdicionadas, vector<PieceData> &pecasRemovidas, vector<PieceData> &jogadasComputador){
 	vector<vector<PieceData> > ret;
 	cout << "Parsing Board:" << endl << endl;
 	//cout << board_string << endl << endl;
@@ -92,6 +92,31 @@ vector<vector<PieceData> > parseBoard(string board_string, vector<PieceData> &pe
 		}
 	}
 
+	cout << "Parsing computer moves..." << endl;
+	
+	board_string = board_string.substr(3); //retira ]],[
+
+	if (board_string.find("]") == 0){ //se a lista acaba logo
+		cout << "	None played" << endl;
+	}
+	else{
+		while(1){
+			int pos2 = board_string.find_first_of(']');
+			if (pos2 == 0){ //fim da linha
+				//board_string = board_string.substr(1);
+				break;
+			}
+			int pos1 = board_string.find_first_of('[');
+			string pecaTemp = board_string.substr(pos1, pos2-pos1+1); //substr(primeiroChar, numeroDeChars);
+
+			PieceData piece = parsePiece(pecaTemp);
+			piece.print();
+			jogadasComputador.push_back(piece);
+			board_string = board_string.substr(pos2+1);
+		}
+	}
+
+	cout << "fim: " << board_string << endl;
 	return ret;
 }
 
@@ -174,7 +199,7 @@ string pieceToString(PieceData piece){
 
 
 bool parseAnswerJogada(string answer, vector<vector<PieceData> > &newBoard, string &gameOver, 
-	vector<PieceData> &pecasAdicionadas, vector<PieceData> &pecasRemovidas){
+	vector<PieceData> &pecasAdicionadas, vector<PieceData> &pecasRemovidas, vector<PieceData> &jogadasComputador){
 
 	int pos = answer.find(".");
 	answer = answer.substr(1, pos-2); //retira [ e .\n]
@@ -182,7 +207,7 @@ bool parseAnswerJogada(string answer, vector<vector<PieceData> > &newBoard, stri
 	string msg = answer.substr(0,pos);
 	if (msg != "not-ok"){
 		answer = answer.substr(pos+1);
-		newBoard = parseBoard(answer, pecasAdicionadas, pecasRemovidas);
+		newBoard = parseBoard(answer, pecasAdicionadas, pecasRemovidas, jogadasComputador);
 		if (msg != "ok"){
 			cout << "FIM DO JOGO!\n" << answer << endl;
 			gameOver=msg;

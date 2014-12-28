@@ -354,7 +354,7 @@ jogar1(Jogador,Tabuleiro,Tamanho):-
 	\+fimDoJogo(TNovo1),
 	imprimeTabuleiro(TNovo1),
 	jogadorSeguinte(Jogador, JNovo),
-	fazJogadaComputador(JNovo,TNovo1,TNovo2),
+	fazJogadaComputador(JNovo,TNovo1,TNovo2, _),
 	processaPecasEspeciais(TNovo2, TNovo3, PecasAdicionadas2, PecasRemovidas2),
 	\+fimDoJogo(TNovo3),
 	imprimeTabuleiro(TNovo3),
@@ -368,13 +368,13 @@ jogar2(Tamanho):-novoTabuleiro(Tamanho, T),colocaPeca([Temp, 0, 'preta' ,'simple
 
 
 jogar2(Jogador,Tabuleiro,Tamanho):-
-	fazJogadaComputador(Jogador,Tabuleiro,TNovo1),
+	fazJogadaComputador(Jogador,Tabuleiro,TNovo1, _),
 	processaPecasEspeciais(TNovo1, TNovo, PecasAdicionadas1, PecasRemovidas1),
 	imprimeTabuleiro(TNovo), !,
 	(fimDoJogo(TNovo);
 
 	(jogadorSeguinte(Jogador, JNovo),
-	fazJogadaComputador(JNovo,TNovo,TNovo2),
+	fazJogadaComputador(JNovo,TNovo,TNovo2, _),
 	processaPecasEspeciais(TNovo2, TNovo3, PecasAdicionadas2, PecasRemovidas2),
 	imprimeTabuleiro(TNovo3), !, 
 		(fimDoJogo(TNovo3);
@@ -545,22 +545,28 @@ imprimeInfoCelula([X,Y,Cor,Tipo]):-write(X),write('|'),write(Y),write(' = '),wri
 
 /* daqui para baixo nao testei */
 
-fazJogadaComputador(Jogador, TabuleiroVelho, TabuleiroNovo):- 
+fazJogadaComputador(Jogador, TabuleiroVelho, TabuleiroNovo, JogadasFeitas):- 
 	encontraPosicoesLivres([],TabuleiroVelho,Livres),
 	geraListaJogadasValidas(Livres, Jogador, Jogadas, TabuleiroVelho),
 	chooseRandom(Jogadas, Jogada1),
+	
+	JogadasFeitasTemp = [Jogada1],
+
 	write('Jogador :'),write(Jogador),nl,
 	imprimeInfoCelula(Jogada1),
 	colocaPeca(Jogada1,TabuleiroVelho, TabuleiroTemp),
-	(pecaSimples(Jogada1), fazJogadaComputador2(Jogador,TabuleiroTemp,TabuleiroNovo);
-		copiaTabuleiro(TabuleiroTemp,TabuleiroNovo)).
+	(pecaSimples(Jogada1), fazJogadaComputador2(Jogador,TabuleiroTemp,TabuleiroNovo, JogadaFeita), 
+		append(JogadasFeitasTemp, [JogadaFeita], JogadasFeitas);
 
-fazJogadaComputador2(Jogador, TabuleiroVelho, TabuleiroNovo):-
+		copiaTabuleiro(TabuleiroTemp,TabuleiroNovo), JogadasFeitas = JogadasFeitasTemp).
+
+fazJogadaComputador2(Jogador, TabuleiroVelho, TabuleiroNovo, JogadaFeita):-
 	encontraPosicoesLivres([],TabuleiroVelho,Livres),
 	geraListaJogadasValidas(Livres, Jogador, Jogadas, TabuleiroVelho),
 	escolheRandomJogadaSimples(Jogadas,Jogada),
+
 	(Jogada == [], copiaTabuleiro(TabuleiroVelho, TabuleiroNovo);
-		colocaPeca(Jogada,TabuleiroVelho, TabuleiroNovo)).
+		colocaPeca(Jogada,TabuleiroVelho, TabuleiroNovo), JogadaFeita = Jogada).
 
 
 escolheRandomJogadaSimples([],[]).
