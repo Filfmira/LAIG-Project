@@ -28,7 +28,7 @@ public:
 	Piece* pieceTest;
 	Board* board;
 	PieceData* selectedPiece; // default (none selected) is x = 100; y = 100
-	
+	Perspective* perspective;
 	string selectedType; //tipo de peça a jogar selecionado
 	bool computadorAjogar; //true se a proxima iteração corresponder a jogada do computador
 	string modoDeJogo; //JvJ, JvC, CvC ou none (J -> Jogador, C -> Computador, none -> modo de jogo ainda por selecionar)
@@ -43,6 +43,7 @@ public:
 	void jogar();
 	void restartJogo(string modo);
 
+	void drawPecasLaterais();
 	Animation* getAnimation(float x1,float y1,float z1,float x2,float y2,float z2);
 	Animation* generateAnimation(int x, int y,bool color,string tipo);
 
@@ -87,7 +88,6 @@ public:
 				}
 			}
 
-		cout<<"carlho:"<<a<<endl;
 
 	}
 

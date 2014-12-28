@@ -13,6 +13,9 @@ bool jogadaSimples;
 int times;
 void ProjectScene::init() 
 {
+	float pos[3]={15,10,15};
+	float target[3]={5,0,0,};
+	perspective=new Perspective(1,20,45,pos,target);
 	times=0;
 	glPolygonMode(GL_FILL,GL_TRUE);
 	glShadeModel(GL_SMOOTH);
@@ -85,7 +88,8 @@ void ProjectScene::display()
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 
-	CGFscene::activeCamera->applyView();
+	//CGFscene::activeCamera->applyView();
+	this->perspective->applyView();
 	light0->draw();
 
 
@@ -98,12 +102,33 @@ void ProjectScene::display()
 	//primitives
 	//printf("x: %d, y: %d\n", this->selectedPiece->getX(), this->selectedPiece->getY());
 
-
+	glPushMatrix();
+	glTranslated(-5.8,0,0);
 	glPushMatrix();	
 		board->draw(this->selectedPiece->getX(), this->selectedPiece->getY());
 	glPopMatrix();
 
 
+	drawPecasLaterais();
+
+	glPopMatrix();
+
+	if (this->gameOver == "NOT") //se o jogo não tiver acabado
+		this->jogar();
+	else if (this->gameOver == "restart")
+		this->restartJogo(this->modoDeJogo);
+
+	// We have been drawing in a memory area that is not visible - the back buffer, 
+	// while the graphics card is showing the contents of another buffer - the front buffer
+	// glutSwapBuffers() will swap pointers so that the back buffer becomes the front buffer and vice-versa
+	glutSwapBuffers();
+
+
+}
+
+
+
+void ProjectScene::drawPecasLaterais(){
 	glPushMatrix();
 	if(this->corActiva)
 		glPushName(-1);		// Load a default name
@@ -142,18 +167,6 @@ void ProjectScene::display()
 			glPopMatrix();
 		}
 	glPopMatrix();
-
-
-	if (this->gameOver == "NOT") //se o jogo não tiver acabado
-		this->jogar();
-	else if (this->gameOver == "restart")
-		this->restartJogo(this->modoDeJogo);
-
-	// We have been drawing in a memory area that is not visible - the back buffer, 
-	// while the graphics card is showing the contents of another buffer - the front buffer
-	// glutSwapBuffers() will swap pointers so that the back buffer becomes the front buffer and vice-versa
-	glutSwapBuffers();
-
 
 }
 
@@ -256,6 +269,7 @@ void ProjectScene::switchJogador(){
 	this->jogadaSimples = false;
 	this->selectedType = "none";
 	this->noneSelected();
+	this->perspective->change(this->corActiva);
 }
 
 void ProjectScene::restartJogo(string modo){
