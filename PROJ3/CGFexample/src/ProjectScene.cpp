@@ -143,8 +143,11 @@ void ProjectScene::noneSelected(){
 }
 
 void ProjectScene::setTypePiece(int n){
-	if(jogadaSimples)
+	if (this->jogadaSimples){
+		this->selectedType = "simples";
 		return;
+	}
+
 	string tipos[5] = {"simples","ataque","defesa","expansao","salto"};
 	this->selectedType = tipos[n];
 	cout << this->selectedType <<endl;
@@ -162,51 +165,7 @@ void ProjectScene::setSelectedPiece(int x, int y){
 	else{
 		this->selectedPiece->setX(x);
 		this->selectedPiece->setY(y);
-	}
-
-	if(this->selectedType=="simples" && !jogadaSimples)
-				jogadaSimples=true;
-	else
-				jogadaSimples=false;
-
-
-	//depois de escolhida a peça é jogada
-	char ans[2048];
-	char jogadaEtabuleiro[2048];
-	vector<vector<PieceData> > newBoard;
-	if (this->selectedType != "none" && this->selectedPiece->getX() != 100){
-			
-		PieceData jogada(this->selectedPiece->getX(), this->selectedPiece->getY(), this->corActiva, this->selectedType); 
-		string j = jogadaToString(jogada, this->board->getBoard()); //transforma a jogada num comando a enviar ao prolog
-		strcpy(jogadaEtabuleiro, j.c_str());
-	
-		envia(jogadaEtabuleiro, strlen(jogadaEtabuleiro)); //envia a jogada
-		recebe(ans); // recebe resposta (ok ou not-ok)
-	
-		if (parseAnswerJogada((string)ans, newBoard, this->gameOver)){ //se ok, faz a jogada no tabuleiro local
-				
-			this->board->setBoard(newBoard);
-			this->board->addPieceHistorico(jogada); //adiciona jogada ao historico
-
-			//gera a nova animacao
-			Animation *novaAnimacao=generateAnimation(this->selectedPiece->getX(),this->selectedPiece->getY());
-				
-			//adiciona ao vector de animacoes
-			this->animationsPieces.push_back(novaAnimacao);
-				
-				
-		}	
-
-		//garantir que uma jogada simples tem semre outra simples a seguir
-			
-		if(!jogadaSimples)
-		{
-		this->selectedType = "none";
-		this->noneSelected();
-		this->switchJogador();
-		}
-	}		
-	
+	}	
 }
 
 
@@ -218,7 +177,7 @@ void ProjectScene::jogar(){
 	char jogadaEtabuleiro[2048];
 	vector<vector<PieceData> > newBoard;
 	
-	
+		
 	if (computadorAjogar){ //jogada do computador
 	times++;
 		string pc=jogadaComputadorToString(this->board->getBoard(), this->corActiva);
@@ -232,6 +191,36 @@ void ProjectScene::jogar(){
 		//é preciso arranjar maneira de saber o que é que o computador jogou
 		this->switchJogador();
 	}
+	else{ //humano a jogar
+
+		if (this->selectedType != "none" && this->selectedPiece->getX() != 100){
+			
+			PieceData jogada(this->selectedPiece->getX(), this->selectedPiece->getY(), this->corActiva, this->selectedType); 
+			string j = jogadaToString(jogada, this->board->getBoard()); //transforma a jogada num comando a enviar ao prolog
+			strcpy(jogadaEtabuleiro, j.c_str());
+	
+			envia(jogadaEtabuleiro, strlen(jogadaEtabuleiro)); //envia a jogada
+			recebe(ans); // recebe resposta (ok ou not-ok)
+	
+			if (parseAnswerJogada((string)ans, newBoard, this->gameOver)){ //se ok, faz a jogada no tabuleiro local
+				
+				this->board->setBoard(newBoard);
+				this->board->addPieceHistorico(jogada); //adiciona jogada ao historico
+
+				//gera a nova animacao
+				Animation *novaAnimacao=generateAnimation(this->selectedPiece->getX(),this->selectedPiece->getY());
+				
+				//adiciona ao vector de animacoes
+				this->animationsPieces.push_back(novaAnimacao);	
+
+				if (!this->jogadaSimples && jogada.getTipo() == "simples"){//se jogou simples, e não era a segunda jogada
+					this->jogadaSimples = true;
+				}
+				else this->switchJogador();
+			}			
+			this->noneSelected();
+		}
+	}
 
 
 }
@@ -240,6 +229,9 @@ void ProjectScene::switchJogador(){
 	this->corActiva = !this->corActiva;
 	if (this->modoDeJogo == "JvC")
 		this->computadorAjogar = !this->computadorAjogar;
+	this->jogadaSimples = false;
+	this->selectedType = "none";
+	this->noneSelected();
 }
 
 void ProjectScene::restartJogo(string modo){
@@ -252,6 +244,7 @@ void ProjectScene::restartJogo(string modo){
 	this->selectedType = "none";
 	this->corActiva = true;
 	this->gameOver = "NOT";
+	this->jogadaSimples = false;
 
 	char *s = "novo-tabuleiro.\n";
 	envia(s, strlen(s));

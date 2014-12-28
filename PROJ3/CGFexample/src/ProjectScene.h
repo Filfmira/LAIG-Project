@@ -36,6 +36,8 @@ public:
 	string modoDeJogo; //JvJ, JvC, CvC ou none (J -> Jogador, C -> Computador, none -> modo de jogo ainda por selecionar)
 	bool corActiva; //cor actualmente a jogar
 	string gameOver; //winPreto, winBranco, draw ou NOT , ou restart (recomeçar o jogo com o modo definido)
+	bool jogadaSimples; //se um jogador jogar uma peça simples, isto passa a true, para o jogador poder jogar uma segunda peça simples
+	
 	void noneSelected(); //set selectedPiece to default
 	void setSelectedPiece(int x, int y);
 	void setTypePiece(int n);
