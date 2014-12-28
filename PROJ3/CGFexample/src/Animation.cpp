@@ -40,6 +40,7 @@ float LinearAnimation::getStartTime(){
 }
 
 
+
 void LinearAnimation::show(){
 	cout<<"id:"<<id<<"TIME:"<<time<<"startTime:"<<startTime<<endl;
 	for(unsigned int i =0;i<pontosDeControlo.size();i++)
@@ -88,11 +89,16 @@ void LinearAnimation::update(float t)
 	int length=pontosDeControlo.size();
 	float tc=time/length;
 	indice=int(tp/tc);
+	if(tp>this->time){
+		ended=true;
+		return;
+	}
 	if(indice<length-1)
 	update(t,tp,tc);
 	//se ja tiver acabado a animacao, nao faz nada
 	else
 		ended=true;
+	
 		
 };
 

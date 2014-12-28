@@ -39,7 +39,7 @@ Board::Board(vector<vector<PieceData> > b){
                                 if (board[i][j].getTipo() != "vazia"){  
                                     glPushMatrix();
                                         glPushName(100);
-                                        if (board[i][j].hasAnimation()){
+										if (board[i][j].hasAnimation() && !board[i][j].getAnimation()->isEnd()){
 											piece.drawAnimation(board[i][j].getCor(),board[i][j].getTipo(),board[i][j].getAnimation());
 										}
 										else{

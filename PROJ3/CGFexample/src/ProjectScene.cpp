@@ -105,6 +105,7 @@ void ProjectScene::display()
 
 
 	glPushMatrix();
+	if(this->corActiva)
 		glPushName(-1);		// Load a default name
 		
 		glTranslatef(0,3,-9);
@@ -113,8 +114,31 @@ void ProjectScene::display()
 		{
 			glPushMatrix();
 			glTranslatef(i*2,0,0);
+			if(this->corActiva)
 			glLoadName(i);	//replaces the value on top of the name stack
-			pieceTest->draw(this->corActiva, tipos[i], (this->selectedType == tipos[i]));
+			if((this->selectedType == tipos[i])&& this->corActiva)
+			pieceTest->draw(true, tipos[i],true );
+			else
+			pieceTest->draw(true, tipos[i],false );
+			glPopMatrix();
+		}
+	glPopMatrix();
+	glPopName() ;
+	glPushMatrix();
+		if(!this->corActiva)
+		glPushName(-1);		// Load a default name
+		
+		glTranslatef(0,3,9);
+		for (int i=0; i< 5;i++)
+		{
+			glPushMatrix();
+			glTranslatef(i*2,0,0);
+			if(!this->corActiva)
+			glLoadName(i);	//replaces the value on top of the name stack
+			if((this->selectedType == tipos[i])&& !this->corActiva)
+			pieceTest->draw(false, tipos[i],true );
+			else
+			pieceTest->draw(false, tipos[i],false );
 			glPopMatrix();
 		}
 	glPopMatrix();
@@ -142,6 +166,8 @@ void ProjectScene::noneSelected(){
 }
 
 void ProjectScene::setTypePiece(int n){
+	if(n>4)
+		return;
 	if (this->jogadaSimples){
 		this->selectedType = "simples";
 		return;
@@ -203,9 +229,9 @@ void ProjectScene::jogar(){
 	
 			if (parseAnswerJogada((string)ans, newBoard, this->gameOver)){ //se ok, faz a jogada no tabuleiro local
 				
-				this->board->setBoard(newBoard); 
+				//this->board->setBoard(newBoard); 
 				
-				Animation* novaAnimacao = generateAnimation(this->selectedPiece->getX(),this->selectedPiece->getY());
+				Animation* novaAnimacao = generateAnimation(this->selectedPiece->getX(),this->selectedPiece->getY(),this->corActiva,this->selectedType);
 				jogada.setAnimation(novaAnimacao);
 
 				this->board->addPiece(jogada);
@@ -284,13 +310,13 @@ Animation* ProjectScene::getAnimation(float x1,float y1,float z1,float x2,float 
 	v.push_back(p3);
 	v.push_back(p4);
 
-	return new LinearAnimation("linear",5,v);
+	return new LinearAnimation("linear",3,v);
 
 }
 
 
 
-Animation*  ProjectScene::generateAnimation(int x, int y)
+Animation*  ProjectScene::generateAnimation(int x, int y,bool color,string tipo)
 {
 	//vai traduzir as coordenadas do tabuleiro prolog para as coordenadas graficas do prolog
 	int tamanho=7;
@@ -334,11 +360,31 @@ Animation*  ProjectScene::generateAnimation(int x, int y)
 				
 		xNovo=distancia*2+o;
 	}
-
-				
 	int yNovo=y*2;
 
-	Animation* final=getAnimation(0,3,-9,xNovo,0,yNovo);
+	//calcula coordenadas do inicio da animacao (de onde a peça sai)
+	string tipos[5] = {"simples","ataque","defesa","expansao","salto"};
+	int i;
+
+	for(i =0;i<5;i++){	
+		if(tipo==tipos[i])
+			break;
+	}
+	int xi,yi,zi;
+	if(color)
+	{
+		xi=i*2;
+		yi=3;
+		zi=-9;
+	}
+	else{
+		xi=i*2;
+		yi=3;
+		zi=9;
+
+	}
+
+	Animation* final=getAnimation(xi,yi,zi,xNovo,0,yNovo);
 	return final;
 
 }

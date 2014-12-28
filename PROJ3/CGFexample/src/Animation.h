@@ -31,6 +31,7 @@ class LinearAnimation:public Animation{
 	float rad2degree;
 	float xalpha,zalpha,alpha;
 	vector< vector<float>> pontosDeControlo;
+	bool isEnd();
 	int indice;
 
 public:
