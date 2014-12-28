@@ -60,9 +60,18 @@ void Board::setBoard(vector<vector<PieceData> > board){
 	this->board = board;
 }
 
+/*
+ *	substitui peça no tabuleiro por newPiece
+ *	(a peça substituida será a peça com as msms coordenadas de newPiece)
+*/
 void Board::addPiece(PieceData newPiece){
-	
-	//TODO
+	vector<PieceData> linha = board[newPiece.getY() + (int)board.size()/2];
+	for (unsigned int i = 0; i < linha.size(); i++){
+		if (linha[i].getX() == newPiece.getX()){
+			board[newPiece.getY() + (int)board.size()/2][i] = newPiece;
+			cout << "trocou peça\n";
+		}
+	}
 }
 
 PieceData Board::getPiece(int x, int y){

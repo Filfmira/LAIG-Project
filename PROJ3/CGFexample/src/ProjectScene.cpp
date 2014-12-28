@@ -204,7 +204,7 @@ void ProjectScene::jogar(){
 	
 			if (parseAnswerJogada((string)ans, newBoard, this->gameOver)){ //se ok, faz a jogada no tabuleiro local
 				
-				this->board->setBoard(newBoard);
+				this->board->addPiece(jogada);
 				this->board->addPieceHistorico(jogada); //adiciona jogada ao historico
 
 				//gera a nova animacao
