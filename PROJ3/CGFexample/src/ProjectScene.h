@@ -24,7 +24,9 @@ public:
 	std::vector<Appearance* > appearances;
 	std::vector<Camera> cameras;
 	std::vector<PieceData> pecasRemovidas;
-	vector<PieceData> jogadasComputador;
+	
+	std::vector<PieceData> pecasLixo;
+
 	Camera* activeCamera;
 
 	Piece* pieceTest;
@@ -46,7 +48,7 @@ public:
 	void restartJogo(string modo);
 
 	void drawPecasLaterais();
-	Animation* getAnimation(float x1,float y1,float z1,float x2,float y2,float z2);
+	Animation* getAnimation(float x1,float y1,float z1,float x2,float y2,float z2,float time);
 	Animation* generateAnimation(int x, int y,bool color,string tipo,bool insert);
 
 	bool wireFrame;
@@ -71,15 +73,10 @@ public:
 
 
 	void update(unsigned long t){
-		for(int i=0;i<pecasRemovidas.size();i++)
-		{
-			if(pecasRemovidas[i].getAnimation()->isEnd())
-				pecasRemovidas.erase(pecasRemovidas.begin(),pecasRemovidas.begin()+i);
-		}
 
-		for(int i=0;i<pecasRemovidas.size();i++)
+		for(int i=0;i<pecasLixo.size();i++)
 		{
-			pecasRemovidas[i].getAnimation()->update(t);
+			pecasLixo[i].getAnimation()->update(t);
 		}
 
 
