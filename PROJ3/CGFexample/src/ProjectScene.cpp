@@ -11,12 +11,15 @@ float Appearance::texlength_t = 0;
 float globalAmbientLight[4]= {0.8,0.8,0.8,1.0};
 bool jogadaSimples;
 
+float alturaPecas=0;
+float ditanciaPecas=10;
+
 void ProjectScene::init() 
 {
 	float pos[3]={15,10,15};
 	float target[3]={5,0,0,};
 	perspective=new Perspective(1,20,45,pos,target);
-
+	cubeTest=new Cube();
 	glPolygonMode(GL_FILL,GL_TRUE);
 	glShadeModel(GL_SMOOTH);
 	glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
@@ -36,7 +39,7 @@ void ProjectScene::init()
 
 	glEnable (GL_NORMALIZE);
 
-	float light0_pos[4] = {4.0, 6.0, 5.0, 1.0};
+	float light0_pos[4] = {4.0, 50.0, 5.0, 1.0};
 	light0 = new CGFlight(GL_LIGHT0, light0_pos);
 	light0->enable();
 
@@ -101,14 +104,38 @@ void ProjectScene::display()
 	
 	//primitives
 	//printf("x: %d, y: %d\n", this->selectedPiece->getX(), this->selectedPiece->getY());
+	//Cube c=Cube();
+
+
+		glPushMatrix();
+		glTranslated(-4,0,0);
+			glTranslated(0,0,-ditanciaPecas);
+				glPushMatrix();
+				glTranslated(0,0,-1);
+				drawBox();
+				glPopMatrix();
+			drawPecasLaterais(true);
+		glPopMatrix();
+
+		glPushMatrix();
+		glTranslated(-4,0,0);
+			glTranslated(0,0,ditanciaPecas);
+				glPushMatrix();
+				glTranslated(0,0,1);
+				drawBox();
+				glPopMatrix();
+			drawPecasLaterais(false);
+		glPopMatrix();
+	
 
 	glPushMatrix();
 	glTranslated(-5.8,0,0);
+	
 	glPushMatrix();	
 		board->draw(this->selectedPiece->getX(), this->selectedPiece->getY());
 	glPopMatrix();
 
-	drawPecasLaterais();
+	
 
 	for(int i=0; i<this->pecasLixo.size();i++)
 	{
@@ -130,34 +157,80 @@ void ProjectScene::display()
 
 }
 
+void ProjectScene::drawBox(){
+	
+	float largura,comprimento,altura,expessura;
+	largura=5;
+	comprimento=11;
+	altura=1;
+	expessura=0.2;
+	
 
-
-void ProjectScene::drawPecasLaterais(){
 	glPushMatrix();
-	if(this->corActiva)
-		glPushName(-1);		// Load a default name
-		
-		glTranslatef(0,3,-9);
-		string tipos[5] = {"simples","ataque","defesa","expansao","salto"};
-		for (int i=0; i< 5;i++)
-		{
-			glPushMatrix();
-			glTranslatef(i*2,0,0);
-			if(this->corActiva)
-			glLoadName(i);	//replaces the value on top of the name stack
-			if((this->selectedType == tipos[i])&& this->corActiva)
-			pieceTest->draw(true, tipos[i],true );
-			else
-			pieceTest->draw(true, tipos[i],false );
-			glPopMatrix();
-		}
+		glTranslatef(comprimento/2-1.5,alturaPecas,/*-9.5*/0);
+
+		glPushMatrix();
+		glScaled(comprimento,expessura,largura);
+		cubeTest->draw();
+		glPopMatrix();
+
+		glPushMatrix();
+		glTranslated(comprimento/2-(expessura/2),(expessura/2)+(altura/2),0);
+		glScaled(expessura,altura,largura);
+		cubeTest->draw();
+		glPopMatrix();
+
+		glPushMatrix();
+		glTranslated(-comprimento/2+(expessura/2),(expessura/2)+(altura/2),0);
+		glScaled(expessura,altura,largura);
+		cubeTest->draw();
+		glPopMatrix();
+
+		glPushMatrix();
+		glTranslated(0,(expessura/2)+(altura/2),largura/2-(expessura/2));
+		glScaled(comprimento,altura,expessura);
+		cubeTest->draw();
+		glPopMatrix();
+
+		glPushMatrix();
+		glTranslated(0,(expessura/2)+(altura/2),-largura/2+(expessura/2));
+		glScaled(comprimento,altura,expessura);
+		cubeTest->draw();
+		glPopMatrix();
+
 	glPopMatrix();
-	glPopName() ;
-	glPushMatrix();
-		if(!this->corActiva)
-		glPushName(-1);		// Load a default name
+}
+
+void ProjectScene::drawPecasLaterais(bool cor){
+	string tipos[5] = {"simples","ataque","defesa","expansao","salto"};
+	if(cor)
+	{
+		glPushMatrix();
+				glPushName(-1);		// Load a default name
 		
-		glTranslatef(0,3,9);
+				//glTranslatef(0,alturaPecas,-9);
+		
+				for (int i=0; i< 5;i++)
+				{
+					glPushMatrix();
+					glTranslatef(i*2,0,0);
+					if(this->corActiva)
+					glLoadName(i);	//replaces the value on top of the name stack
+					if((this->selectedType == tipos[i])&& this->corActiva)
+					pieceTest->draw(true, tipos[i],true );
+					else
+					pieceTest->draw(true, tipos[i],false );
+					glPopMatrix();
+				}
+		glPopMatrix();
+		glPopName() ;
+	}
+	else
+	{
+	glPushMatrix();
+	glPushName(-1);		// Load a default name
+		
+		//glTranslatef(0,alturaPecas,9);
 		for (int i=0; i< 5;i++)
 		{
 			glPushMatrix();
@@ -171,6 +244,9 @@ void ProjectScene::drawPecasLaterais(){
 			glPopMatrix();
 		}
 	glPopMatrix();
+	glPopName() ;
+	}
+	
 
 }
 
@@ -270,7 +346,7 @@ void ProjectScene::jogar(){
 						pecasRemovidas[i].getCor(),
 						pecasRemovidas[i].getTipo(),false);
 					jogada.setAnimation(novaAnimacao);
-					//pecasRemovidas.push_back(jogada);
+					pecasLixo.push_back(jogada);
 					this->board->removePiece(pecasRemovidas[i]);
 					
 					//this->board->addPieceHistorico(jogada); //adiciona jogada ao historico
@@ -381,6 +457,7 @@ void ProjectScene::restartJogo(string modo){
 	this->board = new Board(tempBoard);
 	jogadaSimples=false;
 	cout << "Success restart\n";
+	//this->perspective->change(true);
 }
 
 Animation* ProjectScene::getAnimation(float x1,float y1,float z1,float x2,float y2,float z2,float time){
@@ -474,20 +551,25 @@ Animation*  ProjectScene::generateAnimation(int x, int y,bool color,string tipo,
 	if(color)
 	{
 		xi=i*2;
-		yi=3;
-		zi=-9;
+		yi=alturaPecas;
+		zi=-ditanciaPecas;
 	}
 	else{
 		xi=i*2;
-		yi=3;
-		zi=9;
+		yi=alturaPecas;
+		zi=ditanciaPecas;
 
 	}
 	Animation* final;
 	if(insert)
 	final=getAnimation(xi,yi,zi,xNovo,0,yNovo,3);
 	else
+	{
+	if(color)
 	final=getAnimation(xNovo,0,yNovo,-10,0,-10,5);
+	else
+	final=getAnimation(xNovo,0,yNovo,-10,0,10,5);
+	}
 	return final;
 
 }

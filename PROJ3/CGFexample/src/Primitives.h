@@ -27,6 +27,7 @@ private:
 	float height;
 
 public:
+	Rectangle();
 	Rectangle(float x1, float y1, float x2, float y2){
 		this->x1 = x1;	
 		this->x2 = x2;
@@ -59,6 +60,57 @@ public:
 
 	char* getNome(){return "Rectangulo";};
 };
+
+class Cube: public Primitive{
+private:
+	Rectangle* r;
+
+public:
+	Cube(){
+		r=new Rectangle(-0.5, -0.5, 0.5, 0.5);
+		
+	}
+		
+	void draw(){
+		glPushMatrix();
+		glTranslated(0,0,0.5);
+		r->draw();
+		glPopMatrix();
+
+		glPushMatrix();
+		glRotated(90,0,1,0);
+		glTranslated(0,0,0.5);
+		r->draw();
+		glPopMatrix();
+
+		glPushMatrix();
+		glRotated(180,0,1,0);
+		glTranslated(0,0,0.5);
+		r->draw();
+		glPopMatrix();
+
+		glPushMatrix();
+		glRotated(-90,0,1,0);
+		glTranslated(0,0,0.5);
+		r->draw();
+		glPopMatrix();
+
+		glPushMatrix();
+		glRotated(90,1,0,0);
+		glTranslated(0,0,0.5);
+		r->draw();
+		glPopMatrix();
+
+		glPushMatrix();
+		glRotated(-90,1,0,0);
+		glTranslated(0,0,0.5);
+		r->draw();
+		glPopMatrix();
+	};
+
+	char* getNome(){return "Cube";}
+};
+
 
 class Triangle: public Primitive{
 

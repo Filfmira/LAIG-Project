@@ -29,6 +29,7 @@ public:
 
 	Camera* activeCamera;
 
+	Cube* cubeTest;
 	Piece* pieceTest;
 	Board* board;
 	PieceData* selectedPiece; // default (none selected) is x = 100; y = 100
@@ -48,9 +49,9 @@ public:
 	void restartJogo(string modo);
 	void undo();
 
-
-	void drawPecasLaterais();
-	Animation* getAnimation(float x1,float y1,float z1,float x2,float y2,float z2,float time);
+void drawBox();	
+Animation* getAnimation(float x1,float y1,float z1,float x2,float y2,float z2,float time);
+void drawPecasLaterais(bool cor);
 	Animation* generateAnimation(int x, int y,bool color,string tipo,bool insert);
 
 	bool wireFrame;
@@ -75,34 +76,37 @@ public:
 
 
 	void update(unsigned long t){
-
+	
 		for(int i=0;i<pecasLixo.size();i++)
 		{
+			if(pecasLixo[i].getAnimation()->isEnd())
+			pecasLixo.erase(pecasLixo.begin(),pecasLixo.begin()+i);
+			else
 			pecasLixo[i].getAnimation()->update(t);
 		}
 
-
-		for(unsigned int k=0;k<this->board->getBoard().size();k++)
-			for(unsigned int i=0;i<this->board->getBoard().at(k).size();i++){
-				if(this->board->getBoard()[k][i].hasAnimation() && this->board->getBoard()[k][i].getAnimation()->isEnd())
-				{
-					this->board->getBoard()[k][i].setHasAnimation(false);
-				}
-			}
+		
 
 		int a=0;
 		for(unsigned int k=0;k<this->board->getBoard().size();k++)
 			for(unsigned int i=0;i<this->board->getBoard().at(k).size();i++){
-				if(this->board->getBoard()[k][i].hasAnimation())
+				/*if(this->board->getBoard()[k][i].hasAnimation() && this->board->getBoard()[k][i].getAnimation()->isEnd())
+				{
+					this->board->getBoard()[k][i].setHasAnimation(false);
+				}
+				else 
+				
+				*/
+				if(this->board->getBoard()[k][i].hasAnimation() && !this->board->getBoard()[k][i].getAnimation()->isEnd())
 				{
 					this->board->getBoard()[k][i].getAnimation()->update(t);
 					a++;
 				}
 			}
-
+		//cout<<"animacoes"<<a<<endl;
 
 	}
-
+	
 	
 };
 

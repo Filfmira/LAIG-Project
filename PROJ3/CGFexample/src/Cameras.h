@@ -54,18 +54,18 @@ public:
 		float a=0;
 		while(a<3.14159265){
 			vector<float> f;
-			f.push_back(cos(a)*20);
-			f.push_back(sin(a)*20);
+			f.push_back(cos(a+1.57079633)*25);
+			f.push_back(sin(a+1.57079633)*25);
 			v.push_back(f);
-			a+=0.03;
+			a+=0.1;
 		}
 		a=3.14159265;
 		while(a>=0){
 			vector<float> f;
-			f.push_back(cos(a)*20);
-			f.push_back(sin(a)*20);
+			f.push_back(cos(a+1.57079633)*25);
+			f.push_back(sin(a+1.57079633)*25);
 			v2.push_back(f);
-			a-=0.03;
+			a-=0.1;
 		}
 		k=0;
 		player=false;
@@ -89,14 +89,14 @@ public:
 
 	void applyView() {
 		k++;
-		if(!player)
+		if(player)
 		{
 		if(k>=v.size())
 		{
 			k=v.size()-1;
 			ended=true;
 		}
-		gluLookAt(v[k][0],10,v[k][1],0,0,0,0.0,1.0,0.0);
+		gluLookAt(v[k][0],15,v[k][1],0,0,0,0.0,1.0,0.0);
 		}
 		else{
 		if(k>=v2.size())
@@ -104,7 +104,7 @@ public:
 			k=v2.size()-1;
 			ended=true;
 		}
-		gluLookAt(v2[k][0],10,v2[k][1],0,0,0,0.0,1.0,0.0);
+		gluLookAt(v2[k][0],15,v2[k][1],0,0,0,0.0,1.0,0.0);
 
 
 		}
