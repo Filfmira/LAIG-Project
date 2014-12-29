@@ -31,7 +31,13 @@ public:
 
 	void setAnimation(Animation* anim){this->animation=anim; animationBool=true;}
 	Animation* getAnimation(){return this->animation;}
-	bool hasAnimation(){return animationBool;}
+	bool hasAnimation(){
+		if(animationBool)
+		{
+			animationBool=!animation->isEnd();
+		}
+		
+		return animationBool;}
 	void setHasAnimation(bool a){this->animationBool=a;}
 
 	void print(){

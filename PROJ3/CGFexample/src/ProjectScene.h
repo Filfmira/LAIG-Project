@@ -24,7 +24,8 @@ public:
 	std::vector<Appearance* > appearances;
 	std::vector<Camera> cameras;
 	std::vector<PieceData> pecasRemovidas;
-
+	int animacoes;
+	bool jogadorActivo;
 	Appearance* appDefault;
 	
 	std::vector<PieceData> pecasLixo;
@@ -80,18 +81,20 @@ public:
 
 
 	void update(unsigned long t){
-	
+	animacoes=0;
 		for(int i=0;i<pecasLixo.size();i++)
 		{
 			if(pecasLixo[i].getAnimation()->isEnd())
 			pecasLixo.erase(pecasLixo.begin(),pecasLixo.begin()+i);
 			else
+			{
 			pecasLixo[i].getAnimation()->update(t);
+			animacoes++;
+			}
 		}
 
 		
-
-		int a=0;
+		
 		for(unsigned int k=0;k<this->board->getBoard().size();k++)
 			for(unsigned int i=0;i<this->board->getBoard().at(k).size();i++){
 				/*if(this->board->getBoard()[k][i].hasAnimation() && this->board->getBoard()[k][i].getAnimation()->isEnd())
@@ -101,13 +104,13 @@ public:
 				else 
 				
 				*/
-				if(this->board->getBoard()[k][i].hasAnimation() && !this->board->getBoard()[k][i].getAnimation()->isEnd())
+				if(this->board->getBoard()[k][i].hasAnimation()/* && !this->board->getBoard()[k][i].getAnimation()->isEnd()*/)
 				{
 					this->board->getBoard()[k][i].getAnimation()->update(t);
-					a++;
+					animacoes++;
 				}
 			}
-		//cout<<"animacoes"<<a<<endl;
+		cout<<"animacoes"<<animacoes<<endl;
 
 	}
 	

@@ -17,6 +17,7 @@ float posicaoLixo=5;
 
 void ProjectScene::init() 
 {
+	animacoes=0;
 	appDefault=new Appearance("default");
 	Texture* texture = new Texture("tabuleiro", "wood.jpg", 1, 1);
 	appDefault->setTexture(texture);
@@ -95,8 +96,9 @@ void ProjectScene::display()
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 
-	//CGFscene::activeCamera->applyView();
 	this->perspective->applyView();
+	//CGFscene::activeCamera->applyView();
+	
 	light0->draw();
 
 
@@ -316,6 +318,15 @@ void ProjectScene::setSelectedPiece(int x, int y){
 void ProjectScene::jogar(){
 	if(!this->perspective->hasEnded())
 		return;
+
+	if(this->animacoes!=0 )
+		return;
+	else if(this->animacoes==0 && jogadorActivo==false )
+	{
+		jogadorActivo=true;
+		this->switchJogador();
+		return;
+	}
 	char ans[2048];
 	char jogadaEtabuleiro[2048];
 	vector<vector<PieceData> > newBoard;
@@ -384,7 +395,8 @@ void ProjectScene::jogar(){
 			}
 		//adicionar ao historico a jogada do computador
 		//é preciso arranjar maneira de saber o que é que o computador jogou
-		this->switchJogador();
+		jogadorActivo=false;
+		//this->switchJogador();
 	}
 	else{ //humano a jogar
 
@@ -439,7 +451,11 @@ void ProjectScene::jogar(){
 				if (!this->jogadaSimples && jogada.getTipo() == "simples"){//se jogou simples, e não era a segunda jogada
 					this->jogadaSimples = true;
 				}
-				else this->switchJogador();
+				else 
+					{
+					jogadorActivo=false;	
+					//this->switchJogador();
+					}
 			}			
 			this->noneSelected();
 		}
@@ -490,6 +506,7 @@ void ProjectScene::restartJogo(string modo){
 	int si=pecasLixo.size();
 	for(int i=0;i<si;i++)
 		pecasLixo.pop_back();
+	jogadorActivo==true;
 	
 }
 
