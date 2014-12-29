@@ -234,18 +234,7 @@ void ProjectScene::jogar(){
 			//this->board->setBoard(newBoard);
 
 				
-				for(int i=0;i<jogadasComputador.size();i++)
-				{
-					PieceData jogada=jogadasComputador[i];
-					Animation* novaAnimacao = generateAnimation(jogadasComputador[i].getX(),
-						jogadasComputador[i].getY(),
-						jogadasComputador[i].getAnimation(),
-						jogadasComputador[i].getTipo(),true);
-					jogada.setAnimation(novaAnimacao);
-					this->board->addPiece(jogada);
-					this->board->addPieceHistorico(jogada); //adiciona jogada ao historico
-
-				}
+				
 
 				for(int i=0;i<pecasAdicionadas.size();i++)
 				{
@@ -255,7 +244,21 @@ void ProjectScene::jogar(){
 					Animation* novaAnimacao = generateAnimation(pecasAdicionadas[i].getX(),pecasAdicionadas[i].getY(),pecasAdicionadas[i].getCor(),pecasAdicionadas[i].getTipo(),true);
 					jogada.setAnimation(novaAnimacao);
 					this->board->addPiece(jogada);
-					this->board->addPieceHistorico(jogada); //adiciona jogada ao historico
+					//this->board->addPieceHistorico(jogada); //adiciona jogada ao historico
+				}
+
+				for(int i=0;i<jogadasComputador.size();i++)
+				{
+					PieceData jogada=jogadasComputador[i];
+					Animation* novaAnimacao = generateAnimation(jogadasComputador[i].getX(),
+						jogadasComputador[i].getY(),
+						jogadasComputador[i].getAnimation(),
+						jogadasComputador[i].getTipo(),true);
+					jogada.setAnimation(novaAnimacao);
+					this->board->addPiece(jogada);
+					//this->board->addPieceHistorico(jogada); //adiciona jogada ao historico
+					pecasAdicionadas.push_back(jogada);
+
 				}
 
 				for(int i=0;i<pecasRemovidas.size();i++)
@@ -271,9 +274,14 @@ void ProjectScene::jogar(){
 					this->board->removePiece(pecasRemovidas[i]);
 					
 					//this->board->addPieceHistorico(jogada); //adiciona jogada ao historico
+
 				}
 				
 
+				Jogada jogadaParaHistorico(pecasAdicionadas, pecasRemovidas);
+				this->board->addJogadaHistorico(jogadaParaHistorico);
+
+				cout << "Numero de jogadas: " << this->board->getHistorico().size() << endl;
 			}
 		//adicionar ao historico a jogada do computador
 		//é preciso arranjar maneira de saber o que é que o computador jogou
@@ -302,7 +310,7 @@ void ProjectScene::jogar(){
 						pecasAdicionadas[i].getTipo(),true);
 					jogada.setAnimation(novaAnimacao);
 					this->board->addPiece(jogada);
-					this->board->addPieceHistorico(jogada); //adiciona jogada ao historico
+
 				}
 
 				for(int i=0;i<pecasRemovidas.size();i++)
@@ -316,31 +324,18 @@ void ProjectScene::jogar(){
 					jogada.setAnimation(novaAnimacao);
 					pecasLixo.push_back(jogada);
 					this->board->removePiece(pecasRemovidas[i]);
-					
-					//this->board->addPieceHistorico(jogada); //adiciona jogada ao historico
 				}
 				
-				for(int i=0;i<jogadasComputador.size();i++)
-				{
-					PieceData jogada=jogadasComputador[i];
-					Animation* novaAnimacao = generateAnimation(jogadasComputador[i].getX(),
-						jogadasComputador[i].getY(),
-						jogadasComputador[i].getAnimation(),
-						jogadasComputador[i].getTipo(),true);
-					jogada.setAnimation(novaAnimacao);
-					this->board->addPiece(jogada);
-					this->board->addPieceHistorico(jogada); //adiciona jogada ao historico
-
-				}
-
 				Animation* novaAnimacao = generateAnimation(this->selectedPiece->getX(),
 					this->selectedPiece->getY(),this->corActiva,this->selectedType,true);
 				jogada.setAnimation(novaAnimacao);
 
 				this->board->addPiece(jogada);
-				this->board->addPieceHistorico(jogada); //adiciona jogada ao historico
 
-				
+				pecasAdicionadas.push_back(jogada);
+				Jogada jogadaParaHistorico(pecasAdicionadas, pecasRemovidas);
+				this->board->addJogadaHistorico(jogadaParaHistorico);
+				cout << "Numero de jogadas: " << this->board->getHistorico().size() << endl;
 
 				if (!this->jogadaSimples && jogada.getTipo() == "simples"){//se jogou simples, e não era a segunda jogada
 					this->jogadaSimples = true;
@@ -497,6 +492,34 @@ Animation*  ProjectScene::generateAnimation(int x, int y,bool color,string tipo,
 
 }
 
+
+void ProjectScene::undo(){
+	int numeroUndos = 1;
+	if (this->modoDeJogo == "JvC" && this->computadorAjogar == false){
+		if (this->jogadaSimples)
+			numeroUndos = 1;
+		else numeroUndos = 2;
+	}
+
+	for (int i = 0; i < numeroUndos; i++){
+
+		Jogada jogada = this->board->getHistorico()[this->board->getHistorico().size()-1];
+		this->board->popBackHistorico();
+
+		vector<PieceData> temp = jogada.getAdicionadas();
+		for (unsigned int j = 0; j < temp.size(); j++){
+			this->board->removePiece(temp[j]);
+		}
+
+		temp = jogada.getRemovidas();
+		for (unsigned int j = 0; j < temp.size(); j++){
+			this->board->addPiece(temp[j]);
+		}
+		
+		if (!this->jogadaSimples)
+			this->switchJogador();
+	}
+}
 
 ProjectScene::~ProjectScene() 
 {

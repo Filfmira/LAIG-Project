@@ -3,13 +3,14 @@
 #include "PieceData.h"
 #include "Piece.h"
 #include <vector>
+#include "Jogada.h"
 
 using namespace std;
 
 class Board{
 private:
 	vector<vector<PieceData> > board;
-	vector<PieceData> historico; //jogadas feitas
+	vector<Jogada> historico; //jogadas feitas
 	Piece piece; //instanciada uma peça, que será usada para desenhar todo o tabuleiro
 public:
 	Board(vector<vector<PieceData> > b);
@@ -20,7 +21,9 @@ public:
 	void addPiece(PieceData newPiece);
 	void removePiece(PieceData oldPiece);
 	PieceData getPiece(int x, int y);
-	void addPieceHistorico(PieceData pd);
+	void addJogadaHistorico(Jogada pd);
+	vector<Jogada> getHistorico();
+	void popBackHistorico();
 };
 
 #endif

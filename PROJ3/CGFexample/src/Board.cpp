@@ -99,6 +99,14 @@ PieceData Board::getPiece(int x, int y){
 	return board[y + (int)board.size()/2][x + (int)board.size()/2]; //N SEI SE ESTÁ BEM || MT PROVAVELMENTE NAO
 }
 
-void Board::addPieceHistorico(PieceData pd){
+void Board::addJogadaHistorico(Jogada pd){
 	this->historico.push_back(pd);
+}
+
+vector<Jogada> Board::getHistorico(){
+	return historico;
+}
+
+void Board::popBackHistorico(){
+	this->historico.pop_back();
 }

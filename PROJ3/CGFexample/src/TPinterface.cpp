@@ -74,6 +74,11 @@ void TPinterface::initGUI()
 	addButtonToPanel (restarts, "JvJ", initialId+(increment++)); // id = init+10
 	addButtonToPanel (restarts, "JvC", initialId+(increment++)); // id = init+11
 	addButtonToPanel (restarts, "CvC", initialId+(increment++)); // id = init+12
+	
+
+	addColumn();
+	GLUI_Panel *undoPannel = addPanel("Restarts", GLUI_PANEL_EMBOSSED);
+	addButtonToPanel (undoPannel, "UNDO", initialId+(increment++)); // id = init+13
 
 }
 
@@ -119,8 +124,12 @@ void TPinterface::processGUI(GLUI_Control *ctrl)
 		((ProjectScene*) scene)->modoDeJogo = "JvC"; break;
 	case(initialId+12): ((ProjectScene*) scene)->gameOver = "restart";
 		((ProjectScene*) scene)->modoDeJogo = "CvC"; break;
+
+	////////////////// UNDO /////////////////
+	case(initialId+13): ((ProjectScene*) scene)->undo(); break;
 	};
 
+	
 	
 }
 
