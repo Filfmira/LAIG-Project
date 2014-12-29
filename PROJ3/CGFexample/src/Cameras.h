@@ -40,6 +40,7 @@ private:
 	int k;
 	bool player;
 	bool ended;
+	float zoom;
 
 public:
 	Perspective(float near, float far, float angle, float pos[3], float target[3]){
@@ -52,18 +53,19 @@ public:
 		this->target[1]=target[1];
 		this->target[2]=target[2];
 		float a=0;
+		zoom=25;
 		while(a<3.14159265){
 			vector<float> f;
-			f.push_back(cos(a+1.57079633)*25);
-			f.push_back(sin(a+1.57079633)*25);
+			f.push_back(cos(a+1.57079633)*zoom);
+			f.push_back(sin(a+1.57079633)*zoom);
 			v.push_back(f);
 			a+=0.1;
 		}
 		a=3.14159265;
 		while(a>=0){
 			vector<float> f;
-			f.push_back(cos(a+1.57079633)*25);
-			f.push_back(sin(a+1.57079633)*25);
+			f.push_back(cos(a+1.57079633)*zoom);
+			f.push_back(sin(a+1.57079633)*zoom);
 			v2.push_back(f);
 			a-=0.1;
 		}
@@ -91,20 +93,24 @@ public:
 		k++;
 		if(player)
 		{
-		if(k>=v.size())
-		{
-			k=v.size()-1;
-			ended=true;
-		}
-		gluLookAt(v[k][0],15,v[k][1],0,0,0,0.0,1.0,0.0);
+			if(k>=v.size())
+				{
+				k=v.size();
+				ended=true;
+				gluLookAt(0,15,-zoom,0,0,0,0.0,1.0,0.0);
+				}
+			else
+				gluLookAt(v[k][0],15,v[k][1],0,0,0,0.0,1.0,0.0);
 		}
 		else{
-		if(k>=v2.size())
-		{
-			k=v2.size()-1;
-			ended=true;
-		}
-		gluLookAt(v2[k][0],15,v2[k][1],0,0,0,0.0,1.0,0.0);
+			if(k>=v2.size())
+			{
+				k=v2.size()-1;
+				ended=true;
+				gluLookAt(0,15,zoom,0,0,0,0.0,1.0,0.0);
+			}
+			else
+			gluLookAt(v2[k][0],15,v2[k][1],0,0,0,0.0,1.0,0.0);
 
 
 		}

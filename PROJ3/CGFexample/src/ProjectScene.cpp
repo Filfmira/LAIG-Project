@@ -547,22 +547,22 @@ Animation*  ProjectScene::generateAnimation(int x, int y,bool color,string tipo,
 		if(tipo==tipos[i])
 			break;
 	}
-	int xi,yi,zi;
+	float xi,yi,zi;
 	if(color)
 	{
-		xi=i*2;
+		xi=i*2+2.8;
 		yi=alturaPecas;
 		zi=-ditanciaPecas;
 	}
 	else{
-		xi=i*2;
+		xi=i*2+2.8;
 		yi=alturaPecas;
 		zi=ditanciaPecas;
 
 	}
 	Animation* final;
 	if(insert)
-	final=getAnimation(xi,yi,zi,xNovo,0,yNovo,3);
+	final=getAnimation(xi,yi,zi,xNovo,0,yNovo,2);
 	else
 	{
 	if(color)
@@ -570,6 +570,7 @@ Animation*  ProjectScene::generateAnimation(int x, int y,bool color,string tipo,
 	else
 	final=getAnimation(xNovo,0,yNovo,-10,0,10,5);
 	}
+	cout<<"xi####"<<xi<<endl;
 	return final;
 
 }

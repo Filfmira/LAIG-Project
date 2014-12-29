@@ -105,7 +105,7 @@ void LinearAnimation::update(float t)
 
 float LinearAnimation::modificaAngulo()
 {
-	float alpha1;
+	/*float alpha1;
 	if(xalpha==0)
 	{
 		if(zalpha>0)
@@ -143,8 +143,9 @@ float LinearAnimation::modificaAngulo()
 		}
 
 	}
-	return alpha1;
-
+	*/
+	return 30;
+	
 }
 
 
