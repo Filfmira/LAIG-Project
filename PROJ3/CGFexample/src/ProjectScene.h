@@ -24,6 +24,8 @@ public:
 	std::vector<Appearance* > appearances;
 	std::vector<Camera> cameras;
 	std::vector<PieceData> pecasRemovidas;
+
+	Appearance* appDefault;
 	
 	std::vector<PieceData> pecasLixo;
 
@@ -49,9 +51,11 @@ public:
 	void restartJogo(string modo);
 	void undo();
 
-void drawBox();	
-Animation* getAnimation(float x1,float y1,float z1,float x2,float y2,float z2,float time);
-void drawPecasLaterais(bool cor);
+	void drawBox(float largura,float comprimento,float altura,float expessura);	
+	Animation* getAnimation(float x1,float y1,float z1,float x2,float y2,float z2,float time);
+	void drawPecasLaterais(bool cor);
+	void drawPecasBox();
+
 	Animation* generateAnimation(int x, int y,bool color,string tipo,bool insert);
 
 	bool wireFrame;

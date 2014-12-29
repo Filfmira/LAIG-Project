@@ -13,9 +13,13 @@ bool jogadaSimples;
 
 float alturaPecas=0;
 float ditanciaPecas=10;
+float posicaoLixo=5;
 
 void ProjectScene::init() 
 {
+	appDefault=new Appearance("default");
+	Texture* texture = new Texture("tabuleiro", "wood.jpg", 1, 1);
+	appDefault->setTexture(texture);
 	float pos[3]={15,10,15};
 	float target[3]={5,0,0,};
 	perspective=new Perspective(1,20,45,pos,target);
@@ -105,36 +109,27 @@ void ProjectScene::display()
 	//primitives
 	//printf("x: %d, y: %d\n", this->selectedPiece->getX(), this->selectedPiece->getY());
 	//Cube c=Cube();
-
-
-		glPushMatrix();
-		glTranslated(-4,0,0);
-			glTranslated(0,0,-ditanciaPecas);
-				glPushMatrix();
-				glTranslated(0,0,-1);
-				drawBox();
-				glPopMatrix();
-			drawPecasLaterais(true);
-		glPopMatrix();
-
-		glPushMatrix();
-		glTranslated(-4,0,0);
-			glTranslated(0,0,ditanciaPecas);
-				glPushMatrix();
-				glTranslated(0,0,1);
-				drawBox();
-				glPopMatrix();
-			drawPecasLaterais(false);
-		glPopMatrix();
 	
+	appDefault->apply();
+	drawPecasBox();
 
 	glPushMatrix();
 	glTranslated(-5.8,0,0);
 	
+	glPushMatrix();
+	glTranslated(-posicaoLixo,0,-posicaoLixo);
+	drawBox(3,3,2,0.3);
+	glPopMatrix();
+
+	glPushMatrix();
+	glTranslated(-posicaoLixo,0,posicaoLixo);
+	drawBox(3,3,2,0.3);
+	glPopMatrix();
+
 	glPushMatrix();	
 		board->draw(this->selectedPiece->getX(), this->selectedPiece->getY());
 	glPopMatrix();
-
+	appDefault->apply();
 	
 
 	for(int i=0; i<this->pecasLixo.size();i++)
@@ -147,7 +142,10 @@ void ProjectScene::display()
 	if (this->gameOver == "NOT") //se o jogo não tiver acabado
 		this->jogar();
 	else if (this->gameOver == "restart")
+	{
 		this->restartJogo(this->modoDeJogo);
+		this->perspective->change(this->corActiva);
+	}
 
 	// We have been drawing in a memory area that is not visible - the back buffer, 
 	// while the graphics card is showing the contents of another buffer - the front buffer
@@ -157,8 +155,8 @@ void ProjectScene::display()
 
 }
 
-void ProjectScene::drawBox(){
-	
+void ProjectScene::drawPecasBox()
+{
 	float largura,comprimento,altura,expessura;
 	largura=5;
 	comprimento=11;
@@ -166,9 +164,36 @@ void ProjectScene::drawBox(){
 	expessura=0.2;
 	
 
-	glPushMatrix();
-		glTranslatef(comprimento/2-1.5,alturaPecas,/*-9.5*/0);
+		glPushMatrix();
+		glTranslated(-4,0,0);
+			glTranslated(0,0,-ditanciaPecas);
+				glPushMatrix();
+				glTranslated(0,0,-1);
+				glTranslatef(comprimento/2-1.5,alturaPecas,/*-9.5*/0);
+				drawBox(largura,comprimento,altura,expessura);
+				glPopMatrix();
+			drawPecasLaterais(true);
+		glPopMatrix();
 
+		glPushMatrix();
+		glTranslated(-4,0,0);
+			glTranslated(0,0,ditanciaPecas);
+				glPushMatrix();
+				glTranslated(0,0,1);
+				glTranslatef(comprimento/2-1.5,alturaPecas,/*-9.5*/0);
+				drawBox(largura,comprimento,altura,expessura);
+				glPopMatrix();
+			drawPecasLaterais(false);
+		glPopMatrix();
+}
+
+void ProjectScene::drawBox(float largura,float comprimento,float altura,float expessura){
+	
+	
+
+	glPushMatrix();
+		
+	appDefault->apply();
 		glPushMatrix();
 		glScaled(comprimento,expessura,largura);
 		cubeTest->draw();
@@ -250,9 +275,7 @@ void ProjectScene::drawPecasLaterais(bool cor){
 
 }
 
-/*
- * set selectedPiece to default (x = 100; y = 100)	
-*/
+
 void ProjectScene::noneSelected(){
 	this->selectedPiece->setX(100);
 	this->selectedPiece->setY(100);
@@ -425,6 +448,9 @@ void ProjectScene::jogar(){
 
 }
 
+
+
+
 void ProjectScene::switchJogador(){
 	this->corActiva = !this->corActiva;
 	if (this->modoDeJogo == "JvC")
@@ -435,6 +461,8 @@ void ProjectScene::switchJogador(){
 	this->perspective->change(this->corActiva);
 }
 
+
+
 void ProjectScene::restartJogo(string modo){
 	cout << "Restarting to: " << modo << endl;
 	this->computadorAjogar = (modo == "CvC");
@@ -444,6 +472,7 @@ void ProjectScene::restartJogo(string modo){
 	this->noneSelected();
 	this->selectedType = "none";
 	this->corActiva = true;
+	
 	this->gameOver = "NOT";
 	this->jogadaSimples = false;
 
@@ -457,8 +486,15 @@ void ProjectScene::restartJogo(string modo){
 	this->board = new Board(tempBoard);
 	jogadaSimples=false;
 	cout << "Success restart\n";
-	//this->perspective->change(true);
+
+	int si=pecasLixo.size();
+	for(int i=0;i<si;i++)
+		pecasLixo.pop_back();
+	
 }
+
+
+
 
 Animation* ProjectScene::getAnimation(float x1,float y1,float z1,float x2,float y2,float z2,float time){
 	vector<float>p1;
@@ -566,9 +602,9 @@ Animation*  ProjectScene::generateAnimation(int x, int y,bool color,string tipo,
 	else
 	{
 	if(color)
-	final=getAnimation(xNovo,0,yNovo,-10,0,-10,5);
+	final=getAnimation(xNovo,0,yNovo,-posicaoLixo,0,-posicaoLixo,5);
 	else
-	final=getAnimation(xNovo,0,yNovo,-10,0,10,5);
+	final=getAnimation(xNovo,0,yNovo,-posicaoLixo,0,posicaoLixo,5);
 	}
 	cout<<"xi####"<<xi<<endl;
 	return final;

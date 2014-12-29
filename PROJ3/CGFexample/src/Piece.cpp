@@ -4,8 +4,9 @@ Piece::Piece(){
 	this->hexagon = Poligon(6);
 
 	this->appearanceLados = new Appearance("lados");
-	Texture* texLados = new Texture("lados", "metalGrey.jpg", 1, 1);
-	this->appearanceLados->setTexture(texLados);
+	lado=new Texture("lado", "metalGrey.jpg", 1, 1);
+	ladoTabuleiro = new Texture("ladoTabuleiro", "metal.jpg", 1, 1);
+	this->appearanceLados->setTexture(lado);
 
 	this->appearanceLadosSelected = new Appearance("ladosSel");
 	Texture* texLadosSel = new Texture("ladosSel", "metal.jpg", 1, 1);
@@ -34,6 +35,7 @@ Piece::Piece(){
 	Texture* tabuleiro = new Texture("tabuleiro", "metal.jpg", 1, 1);
 	texturesPecas.push_back(tabuleiro);
 
+
 	this->appearanceTopos = new Appearance("topos");
 	this->appearanceTopos->setTexture(texturesPecas[0]);
 
@@ -45,6 +47,13 @@ Piece::Piece(){
 	string tipo->simples, ataque, defesa, expansao, salto
 	bool selected ->true se a peça estiver selecionada pelo user
 */
+void Piece::drawBooard(bool cor, string tipo, bool selected){
+	//this->appearanceLados->setTexture(ladoTabuleiro); 
+	draw(cor,tipo,selected);
+	//	this->appearanceLados->setTexture(lado); 
+}
+
+
 void Piece::draw(bool cor, string tipo, bool selected){
 
 	this->appearanceTopos->setTexture(chooseTexture(cor, tipo)); //actualiza textura do topo, de acordo com a peça a desenhar
@@ -91,6 +100,7 @@ void Piece::drawAnimation(bool cor, string tipo, Animation* animation){
 	animation->draw();
 	this->draw(cor,tipo,false);
 	glPopMatrix();
+
 }
 
 /*

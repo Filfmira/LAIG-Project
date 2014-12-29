@@ -16,9 +16,13 @@ private:
 	Appearance* appearanceLados;
 	Appearance* appearanceLadosSelected;
 	vector<Texture*> texturesPecas; //texturas de todas as peças
+
+	Texture* lado;
+	Texture* ladoTabuleiro;
 public:
 	Piece();
 	void draw(bool cor, string tipo, bool selected);
+	void drawBooard(bool cor, string tipo, bool selected);
 	void drawAnimation(bool cor, string tipo, Animation* animation);
 	Texture* chooseTexture(bool cor, string tipo);
 };
