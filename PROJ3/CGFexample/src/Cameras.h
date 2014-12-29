@@ -57,7 +57,7 @@ public:
 			f.push_back(cos(a)*20);
 			f.push_back(sin(a)*20);
 			v.push_back(f);
-			a+=0.1;
+			a+=0.03;
 		}
 		a=3.14159265;
 		while(a>=0){
@@ -65,7 +65,7 @@ public:
 			f.push_back(cos(a)*20);
 			f.push_back(sin(a)*20);
 			v2.push_back(f);
-			a-=0.1;
+			a-=0.03;
 		}
 		k=0;
 		player=false;

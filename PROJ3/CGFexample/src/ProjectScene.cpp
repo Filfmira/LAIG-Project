@@ -108,8 +108,10 @@ void ProjectScene::display()
 		board->draw(this->selectedPiece->getX(), this->selectedPiece->getY());
 	glPopMatrix();
 
-
 	drawPecasLaterais();
+
+	for(int i =0;i<this->pecasRemovidas.size();i++)
+		this->pieceTest->drawAnimation(this->pecasRemovidas[i].getCor(),this->pecasRemovidas[i].getTipo(),this->pecasRemovidas[i].getAnimation());
 
 	glPopMatrix();
 
@@ -211,6 +213,8 @@ void ProjectScene::setSelectedPiece(int x, int y){
 
 
 void ProjectScene::jogar(){
+	if(!this->perspective->hasEnded())
+		return;
 	char ans[2048];
 	char jogadaEtabuleiro[2048];
 	vector<vector<PieceData> > newBoard;
@@ -224,8 +228,51 @@ void ProjectScene::jogar(){
 		envia(jogadaEtabuleiro, strlen(jogadaEtabuleiro)); //envia a jogada
 		recebe(ans); // recebe resposta (ok ou not-ok)
 		
-		if (parseAnswerJogada((string)ans, newBoard, this->gameOver, pecasAdicionadas, pecasRemovidas)) //se ok, faz a jogada no tabuleiro local
-			this->board->setBoard(newBoard);
+		if (parseAnswerJogada((string)ans, newBoard, this->gameOver, pecasAdicionadas, pecasRemovidas,jogadasComputador))
+			{//se ok, faz a jogada no tabuleiro local
+			//this->board->setBoard(newBoard);
+
+				
+				for(int i=0;i<jogadasComputador.size();i++)
+				{
+					PieceData jogada=jogadasComputador[i];
+					Animation* novaAnimacao = generateAnimation(jogadasComputador[i].getX(),
+						jogadasComputador[i].getY(),
+						jogadasComputador[i].getAnimation(),
+						jogadasComputador[i].getTipo(),true);
+					jogada.setAnimation(novaAnimacao);
+					this->board->addPiece(jogada);
+					this->board->addPieceHistorico(jogada); //adiciona jogada ao historico
+
+				}
+
+				for(int i=0;i<pecasAdicionadas.size();i++)
+				{
+
+					PieceData jogada=pecasAdicionadas[i];
+					//generateAnimation(x,y,cor,tipo,insert)
+					Animation* novaAnimacao = generateAnimation(pecasAdicionadas[i].getX(),pecasAdicionadas[i].getY(),pecasAdicionadas[i].getCor(),pecasAdicionadas[i].getTipo(),true);
+					jogada.setAnimation(novaAnimacao);
+					this->board->addPiece(jogada);
+					this->board->addPieceHistorico(jogada); //adiciona jogada ao historico
+				}
+
+				for(int i=0;i<pecasRemovidas.size();i++)
+				{
+
+					PieceData jogada=pecasRemovidas[i];
+					Animation* novaAnimacao = generateAnimation(pecasRemovidas[i].getX(),
+						pecasRemovidas[i].getY(),
+						pecasRemovidas[i].getCor(),
+						pecasRemovidas[i].getTipo(),false);
+					jogada.setAnimation(novaAnimacao);
+					this->board->removePiece(pecasRemovidas[i]);
+					//pecasRemovidas.push_back(jogada);
+					//this->board->addPieceHistorico(jogada); //adiciona jogada ao historico
+				}
+				
+
+			}
 		//adicionar ao historico a jogada do computador
 		//é preciso arranjar maneira de saber o que é que o computador jogou
 		this->switchJogador();
@@ -241,15 +288,46 @@ void ProjectScene::jogar(){
 			envia(jogadaEtabuleiro, strlen(jogadaEtabuleiro)); //envia a jogada
 			recebe(ans); // recebe resposta (ok ou not-ok)
 	
-			if (parseAnswerJogada((string)ans, newBoard, this->gameOver, pecasAdicionadas, pecasRemovidas)){ //se ok, faz a jogada no tabuleiro local
+			if (parseAnswerJogada((string)ans, newBoard, this->gameOver, pecasAdicionadas, pecasRemovidas,jogadasComputador)){ //se ok, faz a jogada no tabuleiro local
 				
+				cout<<"******* pA"<<pecasAdicionadas.size()<<"   ***** pR"<<pecasRemovidas.size()<<"  *** jC"<<jogadasComputador.size()<<endl;
 				//this->board->setBoard(newBoard); 
+				for(int i=0;i<pecasAdicionadas.size();i++)
+				{
+
+					PieceData jogada=pecasAdicionadas[i];
+					Animation* novaAnimacao = generateAnimation(pecasAdicionadas[i].getX(),
+						pecasAdicionadas[i].getY(),
+						pecasAdicionadas[i].getCor(),
+						pecasAdicionadas[i].getTipo(),true);
+					jogada.setAnimation(novaAnimacao);
+					this->board->addPiece(jogada);
+					this->board->addPieceHistorico(jogada); //adiciona jogada ao historico
+				}
+				cout<<"****"<<pecasAdicionadas.size()<<endl;
+
+				for(int i=0;i<pecasRemovidas.size();i++)
+				{
+
+					PieceData jogada=pecasRemovidas[i];
+					Animation* novaAnimacao = generateAnimation(pecasRemovidas[i].getX(),
+						pecasRemovidas[i].getY(),
+						pecasRemovidas[i].getCor(),
+						pecasRemovidas[i].getTipo(),false);
+					jogada.setAnimation(novaAnimacao);
+					this->board->removePiece(pecasRemovidas[i]);
+					//pecasRemovidas.push_back(jogada);
+					//this->board->addPieceHistorico(jogada); //adiciona jogada ao historico
+				}
 				
-				Animation* novaAnimacao = generateAnimation(this->selectedPiece->getX(),this->selectedPiece->getY(),this->corActiva,this->selectedType);
+				Animation* novaAnimacao = generateAnimation(this->selectedPiece->getX(),
+					this->selectedPiece->getY(),this->corActiva,this->selectedType,true);
 				jogada.setAnimation(novaAnimacao);
 
 				this->board->addPiece(jogada);
 				this->board->addPieceHistorico(jogada); //adiciona jogada ao historico
+
+
 
 				if (!this->jogadaSimples && jogada.getTipo() == "simples"){//se jogou simples, e não era a segunda jogada
 					this->jogadaSimples = true;
@@ -291,7 +369,7 @@ void ProjectScene::restartJogo(string modo){
 	recebe(ans);
 	vector<vector <PieceData> > tempBoard;
 	string temp;vector<PieceData> temp2;
-	parseAnswerJogada((string) ans,tempBoard, temp, temp2, temp2);
+	parseAnswerJogada((string) ans,tempBoard, temp, temp2, temp2,jogadasComputador);
 	this->board = new Board(tempBoard);
 	jogadaSimples=false;
 	cout << "Success restart\n";
@@ -330,7 +408,7 @@ Animation* ProjectScene::getAnimation(float x1,float y1,float z1,float x2,float 
 
 
 
-Animation*  ProjectScene::generateAnimation(int x, int y,bool color,string tipo)
+Animation*  ProjectScene::generateAnimation(int x, int y,bool color,string tipo, bool insert)
 {
 	//vai traduzir as coordenadas do tabuleiro prolog para as coordenadas graficas do prolog
 	int tamanho=7;
@@ -397,8 +475,11 @@ Animation*  ProjectScene::generateAnimation(int x, int y,bool color,string tipo)
 		zi=9;
 
 	}
-
-	Animation* final=getAnimation(xi,yi,zi,xNovo,0,yNovo);
+	Animation* final;
+	if(insert)
+	final=getAnimation(xi,yi,zi,xNovo,0,yNovo);
+	else
+	final=getAnimation(xNovo,0,yNovo,-10,0,-10);
 	return final;
 
 }

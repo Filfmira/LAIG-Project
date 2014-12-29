@@ -23,6 +23,8 @@ public:
 	std::vector<Texture *> textures;
 	std::vector<Appearance* > appearances;
 	std::vector<Camera> cameras;
+	std::vector<PieceData> pecasRemovidas;
+	vector<PieceData> jogadasComputador;
 	Camera* activeCamera;
 
 	Piece* pieceTest;
@@ -45,7 +47,7 @@ public:
 
 	void drawPecasLaterais();
 	Animation* getAnimation(float x1,float y1,float z1,float x2,float y2,float z2);
-	Animation* generateAnimation(int x, int y,bool color,string tipo);
+	Animation* generateAnimation(int x, int y,bool color,string tipo,bool insert);
 
 	bool wireFrame;
 
@@ -69,6 +71,17 @@ public:
 
 
 	void update(unsigned long t){
+		for(int i=0;i<pecasRemovidas.size();i++)
+		{
+			if(pecasRemovidas[i].getAnimation()->isEnd())
+				pecasRemovidas.erase(pecasRemovidas.begin(),pecasRemovidas.begin()+i);
+		}
+
+		for(int i=0;i<pecasRemovidas.size();i++)
+		{
+			pecasRemovidas[i].getAnimation()->update(t);
+		}
+
 
 		for(unsigned int k=0;k<this->board->getBoard().size();k++)
 			for(unsigned int i=0;i<this->board->getBoard().at(k).size();i++){

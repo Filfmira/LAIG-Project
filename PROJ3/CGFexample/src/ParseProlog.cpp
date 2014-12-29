@@ -18,7 +18,7 @@ vector<vector<PieceData> > parseBoard(string board_string, vector<PieceData> &pe
 	temp.append(board_string);
 	board_string = temp;
 	////////////////////////////////////////////////////////////////
-	cout << endl << board_string << endl;
+	//cout << endl << board_string << endl;
 	while(1){
 		//cout << "||||||||||||||||||||||||||\n" << board_string << endl;
 		if (board_string.substr(0,2) ==  "]]")
@@ -116,7 +116,7 @@ vector<vector<PieceData> > parseBoard(string board_string, vector<PieceData> &pe
 		}
 	}
 
-	cout << "fim: " << board_string << endl;
+	//cout << "fim: " << board_string << endl;
 	return ret;
 }
 
