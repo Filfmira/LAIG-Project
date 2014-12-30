@@ -11,6 +11,7 @@
 #include "Piece.h"
 #include "PieceData.h"
 #include "Board.h"
+#include "MarcadorPontuacao.h"
 
 class ProjectScene : public CGFscene
 {
@@ -44,6 +45,9 @@ public:
 	bool corActiva; //cor actualmente a jogar
 	string gameOver; //winPreto, winBranco, draw ou NOT , ou restart (recomeçar o jogo com o modo definido)
 	bool jogadaSimples; //se um jogador jogar uma peça simples, isto passa a true, para o jogador poder jogar uma segunda peça simples
+	
+	MarcadorPontuacao* marcadorBranco;
+	MarcadorPontuacao* marcadorPreto;
 	
 	void noneSelected(); //set selectedPiece to default
 	void setSelectedPiece(int x, int y);

@@ -1,3 +1,4 @@
+
 #include "Poligon.h"
 
 Poligon::Poligon(){this->sides = 3;}

@@ -93,7 +93,7 @@ vector<vector<PieceData> > parseBoard(string board_string, vector<PieceData> &pe
 	}
 
 	cout << "Parsing computer moves..." << endl;
-	
+	cout << board_string << endl;
 	board_string = board_string.substr(3); //retira ]],[
 
 	if (board_string.find("]") == 0){ //se a lista acaba logo
@@ -108,7 +108,7 @@ vector<vector<PieceData> > parseBoard(string board_string, vector<PieceData> &pe
 			}
 			int pos1 = board_string.find_first_of('[');
 			string pecaTemp = board_string.substr(pos1, pos2-pos1+1); //substr(primeiroChar, numeroDeChars);
-
+			cout << "Peca temp: " << pecaTemp << endl;
 			PieceData piece = parsePiece(pecaTemp);
 			//piece.print();
 			jogadasComputador.push_back(piece);
@@ -209,7 +209,7 @@ bool parseAnswerJogada(string answer, vector<vector<PieceData> > &newBoard, stri
 		answer = answer.substr(pos+1);
 		newBoard = parseBoard(answer, pecasAdicionadas, pecasRemovidas, jogadasComputador);
 		if (msg != "ok"){
-			cout << "FIM DO JOGO!\n" << answer << endl;
+			cout << "FIM DO JOGO!  " << msg << endl/* << answer << endl*/;
 			gameOver=msg;
 		}
 		return true;

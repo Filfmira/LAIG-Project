@@ -63,6 +63,8 @@ void ProjectScene::init()
 	//inicializações
 	this->pieceTest = new Piece();
 	this->selectedPiece = new PieceData(100, 100, true, "simples");
+	this->marcadorBranco = new MarcadorPontuacao();
+	this->marcadorPreto = new MarcadorPontuacao();
 
 	//socket prolog
 	if (!socketConnect()){
@@ -112,7 +114,7 @@ void ProjectScene::display()
 		setWireFrameMode();
 	else setTextureMode();
 
-	//axis.draw();
+	axis.draw();
 	
 	//primitives
 	//printf("x: %d, y: %d\n", this->selectedPiece->getX(), this->selectedPiece->getY());
@@ -157,11 +159,22 @@ void ProjectScene::display()
 	
 
 	for(int i=0; i<this->pecasLixo.size();i++)
-	{
 		this->pieceTest->drawAnimation(this->pecasLixo[i].getCor(),this->pecasLixo[i].getTipo(),this->pecasLixo[i].getAnimation());
-
-	}
 	glPopMatrix();
+
+	//desenhar marcadores
+	glPushMatrix();
+		glTranslated((this->board->getBoard().size()+3), 0, -3);
+		glRotated(-90, 0, 1, 0);
+		this->marcadorBranco->draw();
+	glPopMatrix();
+
+	glPushMatrix();
+		glTranslated((this->board->getBoard().size()+3), 0, 1);
+		glRotated(-90, 0, 1, 0);
+		this->marcadorPreto->draw();
+	glPopMatrix();
+	//////////////////////
 
 	if (this->gameOver == "NOT") //se o jogo não tiver acabado
 		this->jogar();
@@ -170,6 +183,8 @@ void ProjectScene::display()
 		this->restartJogo(this->modoDeJogo);
 		this->perspective->change(this->corActiva);
 	}
+	else if(this->gameOver == "winBranco"){ this->marcadorBranco->incPontuacao(); this->gameOver = "END"; }
+	else if(this->gameOver == "winPreto") { this->marcadorPreto->incPontuacao(); this->gameOver = "END"; }
 
 	// We have been drawing in a memory area that is not visible - the back buffer, 
 	// while the graphics card is showing the contents of another buffer - the front buffer
@@ -653,12 +668,17 @@ Animation*  ProjectScene::generateAnimation(int x, int y,bool color,string tipo,
 
 
 void ProjectScene::undo(){
+	if (this->board->getHistorico().size() == 0)
+		return;
+
 	int numeroUndos = 1;
 	if (this->modoDeJogo == "JvC" && this->computadorAjogar == false){
 		if (this->jogadaSimples)
 			numeroUndos = 1;
 		else numeroUndos = 2;
 	}
+	if (this->board->getHistorico().size() == 1)
+		numeroUndos = 1;
 
 	for (int i = 0; i < numeroUndos; i++){
 

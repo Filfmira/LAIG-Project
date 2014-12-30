@@ -74,6 +74,7 @@
     <ClCompile Include="src\Jogada.cpp" />
     <ClCompile Include="src\Lights.cpp" />
     <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\MarcadorPontuacao.cpp" />
     <ClCompile Include="src\ParseProlog.cpp" />
     <ClCompile Include="src\Piece.cpp" />
     <ClCompile Include="src\Poligon.cpp" />
@@ -88,6 +89,7 @@
     <ClInclude Include="src\Cameras.h" />
     <ClInclude Include="src\Jogada.h" />
     <ClInclude Include="src\Lights.h" />
+    <ClInclude Include="src\MarcadorPontuacao.h" />
     <ClInclude Include="src\ParseProlog.h" />
     <ClInclude Include="src\Piece.h" />
     <ClInclude Include="src\PieceData.h" />

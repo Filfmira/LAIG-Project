@@ -556,7 +556,8 @@ fazJogadaComputador(Jogador, TabuleiroVelho, TabuleiroNovo, JogadasFeitas):-
 	imprimeInfoCelula(Jogada1),
 	colocaPeca(Jogada1,TabuleiroVelho, TabuleiroTemp),
 	(pecaSimples(Jogada1), fazJogadaComputador2(Jogador,TabuleiroTemp,TabuleiroNovo, JogadaFeita), 
-		append(JogadasFeitasTemp, [JogadaFeita], JogadasFeitas);
+		( (JogadaFeita == [], JogadasFeitas = JogadasFeitasTemp);
+		append(JogadasFeitasTemp, [JogadaFeita], JogadasFeitas));
 
 		copiaTabuleiro(TabuleiroTemp,TabuleiroNovo), JogadasFeitas = JogadasFeitasTemp).
 
@@ -564,9 +565,9 @@ fazJogadaComputador2(Jogador, TabuleiroVelho, TabuleiroNovo, JogadaFeita):-
 	encontraPosicoesLivres([],TabuleiroVelho,Livres),
 	geraListaJogadasValidas(Livres, Jogador, Jogadas, TabuleiroVelho),
 	escolheRandomJogadaSimples(Jogadas,Jogada),
-
+ 	JogadaFeita = Jogada,
 	(Jogada == [], copiaTabuleiro(TabuleiroVelho, TabuleiroNovo);
-		colocaPeca(Jogada,TabuleiroVelho, TabuleiroNovo), JogadaFeita = Jogada).
+		colocaPeca(Jogada,TabuleiroVelho, TabuleiroNovo)).
 
 
 escolheRandomJogadaSimples([],[]).
