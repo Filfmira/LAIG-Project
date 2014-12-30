@@ -32,7 +32,7 @@ Board::Board(vector<vector<PieceData> > b){
                                 //tabuleiro    
                                 glPushMatrix();
                                         glTranslated(offsetX+offsetXpeca, -0.5, offsetZ);
-                                        piece.drawBooard(false, "tabuleiro", selected);
+                                        piece.draw(false, "tabuleiro", selected);
                                 glPopMatrix();
                            
                                 //peças

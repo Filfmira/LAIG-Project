@@ -5,7 +5,7 @@ Piece::Piece(){
 
 	this->appearanceLados = new Appearance("lados");
 	lado=new Texture("lado", "metalGrey.jpg", 1, 1);
-	ladoTabuleiro = new Texture("ladoTabuleiro", "metal.jpg", 1, 1);
+	ladoTabuleiro = new Texture("ladoTabuleiro", "metalGrey2.jpg", 1, 1);
 	this->appearanceLados->setTexture(lado);
 
 	this->appearanceLadosSelected = new Appearance("ladosSel");
@@ -48,13 +48,20 @@ Piece::Piece(){
 	bool selected ->true se a peça estiver selecionada pelo user
 */
 void Piece::drawBooard(bool cor, string tipo, bool selected){
-	//this->appearanceLados->setTexture(ladoTabuleiro); 
 	draw(cor,tipo,selected);
-	//	this->appearanceLados->setTexture(lado); 
 }
 
 
 void Piece::draw(bool cor, string tipo, bool selected){
+
+
+	if(tipo=="tabuleiro")
+	{
+		this->appearanceLados->setTexture(this->ladoTabuleiro);
+
+	}
+	else
+	this->appearanceLados->setTexture(this->lado);
 
 	this->appearanceTopos->setTexture(chooseTexture(cor, tipo)); //actualiza textura do topo, de acordo com a peça a desenhar
 	glPushMatrix();
@@ -93,6 +100,7 @@ void Piece::draw(bool cor, string tipo, bool selected){
 			glPopMatrix();
 		}
 	glPopMatrix();
+
 }
 
 

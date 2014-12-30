@@ -5,8 +5,8 @@
 #include "Socket.h"
 #include "ParseProlog.h"
 
-float Appearance::texlength_s = 0;
-float Appearance::texlength_t = 0;
+float Appearance::texlength_s = 1;
+float Appearance::texlength_t = 1;
 
 float globalAmbientLight[4]= {0.8,0.8,0.8,1.0};
 bool jogadaSimples;
@@ -18,9 +18,15 @@ float posicaoLixo=5;
 void ProjectScene::init() 
 {
 	animacoes=0;
+
 	appDefault=new Appearance("default");
-	Texture* texture = new Texture("tabuleiro", "wood.jpg", 1, 1);
+	Texture* texture = new Texture("tabuleiro", "72.jpg", 1, 1);
 	appDefault->setTexture(texture);
+
+	appBoard=new Appearance("appBoard");
+	Texture* texture2 = new Texture("tabuleiro", "b.jpg", 1, 1);
+	appBoard->setTexture(texture2);
+
 	float pos[3]={15,10,15};
 	float target[3]={5,0,0,};
 	perspective=new Perspective(1,20,45,pos,target);
@@ -106,13 +112,29 @@ void ProjectScene::display()
 		setWireFrameMode();
 	else setTextureMode();
 
-	axis.draw();
+	//axis.draw();
 	
 	//primitives
 	//printf("x: %d, y: %d\n", this->selectedPiece->getX(), this->selectedPiece->getY());
 	//Cube c=Cube();
 	
-	appDefault->apply();
+	//appDefault->apply();
+	glPushMatrix();
+	appBoard->apply();
+	glTranslated(0,-0.5,0);
+	glScaled(40,0.01,40);
+	
+	this->cubeTest->draw();
+	glPopMatrix();
+
+	glPushMatrix();
+	appBoard->apply();
+	glTranslated(0,-0.5,0);
+	glScaled(8,0.5,8);
+	glRotated(30,0,1,0);
+	this->pieceTest->drawBooard(false, "tabuleiro", false);
+	glPopMatrix();
+
 	drawPecasBox();
 
 	glPushMatrix();
@@ -226,6 +248,7 @@ void ProjectScene::drawBox(float largura,float comprimento,float altura,float ex
 		glPopMatrix();
 
 	glPopMatrix();
+
 }
 
 void ProjectScene::drawPecasLaterais(bool cor){

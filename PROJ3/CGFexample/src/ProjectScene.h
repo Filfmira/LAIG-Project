@@ -27,6 +27,7 @@ public:
 	int animacoes;
 	bool jogadorActivo;
 	Appearance* appDefault;
+	Appearance* appBoard;
 	
 	std::vector<PieceData> pecasLixo;
 
