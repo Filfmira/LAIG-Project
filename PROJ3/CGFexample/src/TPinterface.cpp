@@ -77,9 +77,13 @@ void TPinterface::initGUI()
 	
 
 	addColumn();
-	GLUI_Panel *undoPannel = addPanel("Restarts", GLUI_PANEL_EMBOSSED);
-	addButtonToPanel (undoPannel, "UNDO", initialId+(increment++)); // id = init+13
-
+	GLUI_Panel *undoAndSpinnersPannel = addPanel("Undo",  GLUI_PANEL_NONE);
+	addButtonToPanel (undoAndSpinnersPannel, "UNDO", initialId+(increment++)); // id = init+13
+	animationSpinner = addSpinnerToPanel(undoAndSpinnersPannel, "animationSpeed", 2,NULL, initialId+(increment++)); // id = init+14
+	animationSpinner->set_float_val(((ProjectScene*) scene)->timeSpan);
+	clockSpinner = addSpinnerToPanel(undoAndSpinnersPannel, "clock", 2,NULL, initialId+(increment++)); // id = init+15
+	clockSpinner->set_float_val(((ProjectScene*) scene)->timeSpan);
+	clockSpinner->set_float_val(((ProjectScene*) scene)->clock->getSpan());
 }
 
 
@@ -127,10 +131,25 @@ void TPinterface::processGUI(GLUI_Control *ctrl)
 
 	////////////////// UNDO /////////////////
 	case(initialId+13): ((ProjectScene*) scene)->undo(); break;
-	};
 
+
+	///////TIME SPAN ANIMATIONS//////
+	case(initialId+14):
+		if (val > 60) {animationSpinner->set_float_val(60);}
+		if (val < 1) {animationSpinner->set_float_val(1); val = 1;}
+		((ProjectScene*) scene)->timeSpan = val;
+		if (this->clockSpinner->get_float_val() < val+5) clockSpinner->set_float_val(val+5);
+		break;
 	
+	//////CLOCK TIMER SPINNER //////
+	case(initialId+15):
+		if (val > 180) {clockSpinner->set_float_val(180);}
+		int downLimit = ((ProjectScene*) scene)->timeSpan+5;
+		if (val < downLimit) {clockSpinner->set_float_val(downLimit); val = downLimit;}
+		((ProjectScene*) scene)->clock->setSpan(val);
+		break;
 	
+	};
 }
 
 //////////////////////////////////////////////////////

@@ -47,6 +47,7 @@ public:
 	bool corActiva; //cor actualmente a jogar
 	string gameOver; //winPreto, winBranco, draw ou NOT , ou restart (recomeçar o jogo com o modo definido)
 	bool jogadaSimples; //se um jogador jogar uma peça simples, isto passa a true, para o jogador poder jogar uma segunda peça simples
+	float timeSpan;
 	
 	MarcadorPontuacao* marcadorBranco;
 	MarcadorPontuacao* marcadorPreto;

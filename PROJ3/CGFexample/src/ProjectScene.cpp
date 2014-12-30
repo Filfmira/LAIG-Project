@@ -15,7 +15,7 @@ float alturaPecas=0;
 float ditanciaPecas=10;
 float posicaoLixo=5;
 
-float timeSpan=2;
+
 
 
 void ProjectScene::init() 
@@ -71,6 +71,7 @@ void ProjectScene::init()
 	this->selectedPiece = new PieceData(100, 100, true, "simples");
 	this->marcadorBranco = new MarcadorPontuacao();
 	this->marcadorPreto = new MarcadorPontuacao();
+	this->timeSpan = 2;
 
 	//socket prolog
 	if (!socketConnect()){
@@ -698,13 +699,13 @@ Animation*  ProjectScene::generateAnimation(int x, int y,bool color,string tipo,
 	}
 	Animation* final;
 	if(insert)
-	final=getAnimation(xi,yi,zi,xNovo,0,yNovo,timeSpan);
+	final=getAnimation(xi,yi,zi,xNovo,0,yNovo,this->timeSpan);
 	else
 	{
 	if(color)
-	final=getAnimation(xNovo,0,yNovo,-posicaoLixo,0,-posicaoLixo,timeSpan);
+	final=getAnimation(xNovo,0,yNovo,-posicaoLixo,0,-posicaoLixo,this->timeSpan);
 	else
-	final=getAnimation(xNovo,0,yNovo,-posicaoLixo,0,posicaoLixo,timeSpan);
+	final=getAnimation(xNovo,0,yNovo,-posicaoLixo,0,posicaoLixo,this->timeSpan);
 	}
 	cout<<"xi####"<<xi<<endl;
 	return final;

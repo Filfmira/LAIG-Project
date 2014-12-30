@@ -62,6 +62,8 @@ public:
 
 	void setSpan(float s){this->spanTime=s;}
 
+	float getSpan(){return this->spanTime;}
+
 	void setBool(bool b){this->count=b;}
 
 	bool getBool(){return this->count;}
