@@ -112,6 +112,61 @@ public:
 };
 
 
+class Box: public Primitive{
+private:
+	Cube* cube;
+
+public:
+	Box(){
+		cube=new Cube();
+		
+	}
+		
+	void draw(){
+	};
+
+	void draw(float largura,float comprimento,float altura,float expessura)	{
+		glPushMatrix();
+		
+	
+		glPushMatrix();
+		glScaled(comprimento,expessura,largura);
+		cube->draw();
+		glPopMatrix();
+
+		glPushMatrix();
+		glTranslated(comprimento/2-(expessura/2),(expessura/2)+(altura/2),0);
+		glScaled(expessura,altura,largura);
+		cube->draw();
+		glPopMatrix();
+
+		glPushMatrix();
+		glTranslated(-comprimento/2+(expessura/2),(expessura/2)+(altura/2),0);
+		glScaled(expessura,altura,largura);
+		cube->draw();
+		glPopMatrix();
+
+		glPushMatrix();
+		glTranslated(0,(expessura/2)+(altura/2),largura/2-(expessura/2));
+		glScaled(comprimento,altura,expessura);
+		cube->draw();
+		glPopMatrix();
+
+		glPushMatrix();
+		glTranslated(0,(expessura/2)+(altura/2),-largura/2+(expessura/2));
+		glScaled(comprimento,altura,expessura);
+		cube->draw();
+		glPopMatrix();
+
+	glPopMatrix();
+
+	};
+
+
+	char* getNome(){return "Box";}
+};
+
+
 class Triangle: public Primitive{
 
 private:

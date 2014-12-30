@@ -37,6 +37,7 @@ public:
 	Cube* cubeTest;
 	Piece* pieceTest;
 	Board* board;
+	Box* box;
 	PieceData* selectedPiece; // default (none selected) is x = 100; y = 100
 	Perspective* perspective;
 	string selectedType; //tipo de peça a jogar selecionado
@@ -57,7 +58,6 @@ public:
 	void restartJogo(string modo);
 	void undo();
 
-	void drawBox(float largura,float comprimento,float altura,float expessura);	
 	Animation* getAnimation(float x1,float y1,float z1,float x2,float y2,float z2,float time);
 	void drawPecasLaterais(bool cor);
 	void drawPecasBox();

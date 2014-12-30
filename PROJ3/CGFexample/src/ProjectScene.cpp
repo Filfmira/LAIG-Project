@@ -15,6 +15,9 @@ float alturaPecas=0;
 float ditanciaPecas=10;
 float posicaoLixo=5;
 
+float timeSpan=2;
+
+
 void ProjectScene::init() 
 {
 	animacoes=0;
@@ -31,6 +34,8 @@ void ProjectScene::init()
 	float target[3]={5,0,0,};
 	perspective=new Perspective(1,20,45,pos,target);
 	cubeTest=new Cube();
+	box=new Box();
+
 	glPolygonMode(GL_FILL,GL_TRUE);
 	glShadeModel(GL_SMOOTH);
 	glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
@@ -103,7 +108,8 @@ void ProjectScene::display()
 	// Initialize Model-View matrix as identity (no transformation
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
-
+	
+	////////////////////////////////////////////////////////////////camaras
 	this->perspective->applyView();
 	//CGFscene::activeCamera->applyView();
 	
@@ -116,19 +122,16 @@ void ProjectScene::display()
 
 	axis.draw();
 	
-	//primitives
-	//printf("x: %d, y: %d\n", this->selectedPiece->getX(), this->selectedPiece->getY());
-	//Cube c=Cube();
-	
-	//appDefault->apply();
+
+	////////////////////////////////////////////////////////////////desenhar mesa
 	glPushMatrix();
 	appBoard->apply();
 	glTranslated(0,-0.5,0);
-	glScaled(40,0.01,40);
-	
+	glScaled(40,0.01,42);
 	this->cubeTest->draw();
 	glPopMatrix();
 
+	////////////////////////////////////////////////////////////////desenhar tabuleiro vase
 	glPushMatrix();
 	appBoard->apply();
 	glTranslated(0,-0.5,0);
@@ -137,44 +140,79 @@ void ProjectScene::display()
 	this->pieceTest->drawBooard(false, "tabuleiro", false);
 	glPopMatrix();
 
+	////////////////////////////////////////////////////////////////desenhar as caixas das peças que cada jogador pode jogar
 	drawPecasBox();
 
+	////////////////////////////////////////////////////////////////desenhar caixas do lixo
 	glPushMatrix();
-	glTranslated(-5.8,0,0);
+	float divisao=floor(float(this->board->getBoard().size())/2);
+	glTranslated(-(divisao*2),0,0);
+	
 	
 	glPushMatrix();
 	glTranslated(-posicaoLixo,0,-posicaoLixo);
-	drawBox(3,3,1.5,0.3);
+	appDefault->apply();
+	box->draw(3,3,1.5,0.3);
 	glPopMatrix();
 
 	glPushMatrix();
 	glTranslated(-posicaoLixo,0,posicaoLixo);
-	drawBox(3,3,1.5,0.3);
+	appDefault->apply();
+	box->draw(3,3,1.5,0.3);
 	glPopMatrix();
-
+	
+	////////////////////////////////////////////////////////////////desenhar board
 	glPushMatrix();	
 		board->draw(this->selectedPiece->getX(), this->selectedPiece->getY());
 	glPopMatrix();
 	appDefault->apply();
 	
-
+	////////////////////////////////////////////////////////////////desenhar peças que foram removidas
 	for(int i=0; i<this->pecasLixo.size();i++)
 		this->pieceTest->drawAnimation(this->pecasLixo[i].getCor(),this->pecasLixo[i].getTipo(),this->pecasLixo[i].getAnimation());
 	glPopMatrix();
 
-	//desenhar marcadores
+	////////////////////////////////////////////////////////////////desenhar caixa dos marcadores
 	glPushMatrix();
-		glTranslated((this->board->getBoard().size()+3), 0, -3);
-		glRotated(-90, 0, 1, 0);
-		this->marcadorBranco->draw();
+	glTranslated((this->board->getBoard().size()+4.025), 2, 0);
+	glScaled(2,4.25,8);
+	this->appDefault->apply();
+	this->cubeTest->draw();
 	glPopMatrix();
 
 	glPushMatrix();
-		glTranslated((this->board->getBoard().size()+3), 0, 1);
-		glRotated(-90, 0, 1, 0);
-		this->marcadorPreto->draw();
+	glTranslated(0,0.5,0);
+		glPushMatrix();
+		
+			glTranslated((this->board->getBoard().size())+4, 0.25, -2);
+			glRotated(90,0,0,1);
+			glTranslated(1.25,0,0);
+			this->appBoard->apply();
+			box->draw(2.5,3.5,1,0.25);
+		glPopMatrix();
+
+		glPushMatrix();
+			glTranslated((this->board->getBoard().size())+4, 0.25, 2);
+			glRotated(90,0,0,1);
+			glTranslated(1.25,0,0);
+			this->appBoard->apply();
+			box->draw(2.5,3.5,1,0.25);
+		glPopMatrix();
+		//desenhar marcadores
+		glPushMatrix();
+			glTranslated((this->board->getBoard().size()+3), 0, -3);
+			glRotated(-90, 0, 1, 0);
+			this->marcadorBranco->draw();
+		glPopMatrix();
+
+		glPushMatrix();
+			glTranslated((this->board->getBoard().size()+3), 0, 1);
+			glRotated(-90, 0, 1, 0);
+			this->marcadorPreto->draw();
+		glPopMatrix();
 	glPopMatrix();
-	//////////////////////
+
+	////////////////////////////////////////////////////////////////
 
 	if (this->gameOver == "NOT") //se o jogo não tiver acabado
 		this->jogar();
@@ -209,7 +247,8 @@ void ProjectScene::drawPecasBox()
 				glPushMatrix();
 				glTranslated(0,0,-1);
 				glTranslatef(comprimento/2-1.5,alturaPecas,/*-9.5*/0);
-				drawBox(largura,comprimento,altura,expessura);
+				appDefault->apply();
+				box->draw(largura,comprimento,altura,expessura);
 				glPopMatrix();
 			drawPecasLaterais(true);
 		glPopMatrix();
@@ -220,51 +259,13 @@ void ProjectScene::drawPecasBox()
 				glPushMatrix();
 				glTranslated(0,0,1);
 				glTranslatef(comprimento/2-1.5,alturaPecas,/*-9.5*/0);
-				drawBox(largura,comprimento,altura,expessura);
+				appDefault->apply();
+				box->draw(largura,comprimento,altura,expessura);
 				glPopMatrix();
 			drawPecasLaterais(false);
 		glPopMatrix();
 }
 
-void ProjectScene::drawBox(float largura,float comprimento,float altura,float expessura){
-	
-	
-
-	glPushMatrix();
-		
-	appDefault->apply();
-		glPushMatrix();
-		glScaled(comprimento,expessura,largura);
-		cubeTest->draw();
-		glPopMatrix();
-
-		glPushMatrix();
-		glTranslated(comprimento/2-(expessura/2),(expessura/2)+(altura/2),0);
-		glScaled(expessura,altura,largura);
-		cubeTest->draw();
-		glPopMatrix();
-
-		glPushMatrix();
-		glTranslated(-comprimento/2+(expessura/2),(expessura/2)+(altura/2),0);
-		glScaled(expessura,altura,largura);
-		cubeTest->draw();
-		glPopMatrix();
-
-		glPushMatrix();
-		glTranslated(0,(expessura/2)+(altura/2),largura/2-(expessura/2));
-		glScaled(comprimento,altura,expessura);
-		cubeTest->draw();
-		glPopMatrix();
-
-		glPushMatrix();
-		glTranslated(0,(expessura/2)+(altura/2),-largura/2+(expessura/2));
-		glScaled(comprimento,altura,expessura);
-		cubeTest->draw();
-		glPopMatrix();
-
-	glPopMatrix();
-
-}
 
 void ProjectScene::drawPecasLaterais(bool cor){
 	string tipos[5] = {"simples","ataque","defesa","expansao","salto"};
@@ -400,7 +401,7 @@ void ProjectScene::jogar(){
 					PieceData jogada=jogadasComputador[i];
 					Animation* novaAnimacao = generateAnimation(jogadasComputador[i].getX(),
 						jogadasComputador[i].getY(),
-						jogadasComputador[i].getAnimation(),
+						jogadasComputador[i].getCor(),
 						jogadasComputador[i].getTipo(),true);
 					jogada.setAnimation(novaAnimacao);
 					this->board->addPiece(jogada);
@@ -476,7 +477,7 @@ void ProjectScene::jogar(){
 				}
 				
 				Animation* novaAnimacao = generateAnimation(this->selectedPiece->getX(),
-					this->selectedPiece->getY(),this->corActiva,this->selectedType,true);
+					this->selectedPiece->getY(),jogada.getCor(),this->selectedType,true);
 				jogada.setAnimation(novaAnimacao);
 
 				this->board->addPiece(jogada);
@@ -641,25 +642,25 @@ Animation*  ProjectScene::generateAnimation(int x, int y,bool color,string tipo,
 	float xi,yi,zi;
 	if(color)
 	{
-		xi=i*2+2.8;
+		xi=(i*2)+2;
 		yi=alturaPecas;
 		zi=-ditanciaPecas;
 	}
 	else{
-		xi=i*2+2.8;
+		xi=i*2+2;
 		yi=alturaPecas;
 		zi=ditanciaPecas;
 
 	}
 	Animation* final;
 	if(insert)
-	final=getAnimation(xi,yi,zi,xNovo,0,yNovo,2);
+	final=getAnimation(xi,yi,zi,xNovo,0,yNovo,timeSpan);
 	else
 	{
 	if(color)
-	final=getAnimation(xNovo,0,yNovo,-posicaoLixo,0,-posicaoLixo,2);
+	final=getAnimation(xNovo,0,yNovo,-posicaoLixo,0,-posicaoLixo,timeSpan);
 	else
-	final=getAnimation(xNovo,0,yNovo,-posicaoLixo,0,posicaoLixo,2);
+	final=getAnimation(xNovo,0,yNovo,-posicaoLixo,0,posicaoLixo,timeSpan);
 	}
 	cout<<"xi####"<<xi<<endl;
 	return final;
