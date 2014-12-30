@@ -182,7 +182,7 @@ private:
 	float a,b,c,cos3,sin3;
 
 public:
-
+	Triangle(){}
 	Triangle(float x1, float y1, float z1,
 		float x2, float y2, float z2,
 		float x3, float y3, float z3){
@@ -256,6 +256,8 @@ public:
 		glPushMatrix();
 
 			//topo
+		glPushMatrix();
+		glRotated(90,0,0,1);
 			glNormal3f(0,0,1) ;
 			glBegin(GL_TRIANGLE_FAN);
 				glTexCoord2d(0.5,0.5);
@@ -268,9 +270,11 @@ public:
 					
 				}
 			glEnd();
+		glPopMatrix();
 
 			//base
 			glPushMatrix();
+				glRotated(-90,0,0,1);
 				glRotated(180,0,1,0);
 				glNormal3f(0,0,1) ;
 				glBegin(GL_TRIANGLE_FAN);
@@ -342,6 +346,7 @@ private:
 	int loops;
 
 public:
+	Torus(){}
 	Torus(float innerRadius, float outerRadius, int slices, int loops){
 		this->innerRadius = innerRadius;
 		this->outerRadius = outerRadius;

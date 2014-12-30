@@ -12,6 +12,7 @@
 #include "PieceData.h"
 #include "Board.h"
 #include "MarcadorPontuacao.h"
+#include "Clock.h"
 
 class ProjectScene : public CGFscene
 {
@@ -33,7 +34,7 @@ public:
 	std::vector<PieceData> pecasLixo;
 
 	Camera* activeCamera;
-
+	Clock* clock;
 	Cube* cubeTest;
 	Piece* pieceTest;
 	Board* board;
@@ -86,6 +87,9 @@ public:
 
 
 	void update(unsigned long t){
+		//if(!clock->getBool())
+		clock->update(t);
+
 	animacoes=0;
 		for(int i=0;i<pecasLixo.size();i++)
 		{

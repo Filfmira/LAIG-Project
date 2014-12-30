@@ -35,6 +35,7 @@ void ProjectScene::init()
 	perspective=new Perspective(1,20,45,pos,target);
 	cubeTest=new Cube();
 	box=new Box();
+	clock=new Clock();
 
 	glPolygonMode(GL_FILL,GL_TRUE);
 	glShadeModel(GL_SMOOTH);
@@ -121,6 +122,7 @@ void ProjectScene::display()
 	else setTextureMode();
 
 	axis.draw();
+
 	
 
 	////////////////////////////////////////////////////////////////desenhar mesa
@@ -131,7 +133,7 @@ void ProjectScene::display()
 	this->cubeTest->draw();
 	glPopMatrix();
 
-	////////////////////////////////////////////////////////////////desenhar tabuleiro vase
+	////////////////////////////////////////////////////////////////desenhar tabuleiro base
 	glPushMatrix();
 	appBoard->apply();
 	glTranslated(0,-0.5,0);
@@ -142,6 +144,22 @@ void ProjectScene::display()
 
 	////////////////////////////////////////////////////////////////desenhar as caixas das peças que cada jogador pode jogar
 	drawPecasBox();
+
+	////////////////////////////////////////////////////////////////desenhar o relogio
+	glPushMatrix();
+	glTranslated(8,1,ditanciaPecas-0.5);
+	glRotated(-20,0,1,0);
+	glRotated(-40,1,0,0);
+	this->clock->draw();
+	glPopMatrix();
+
+	glPushMatrix();
+	glRotated(180,0,1,0);
+	glTranslated(8,1,ditanciaPecas-0.5);
+	glRotated(-20,0,1,0);
+	glRotated(-40,1,0,0);
+	this->clock->draw();
+	glPopMatrix();
 
 	////////////////////////////////////////////////////////////////desenhar caixas do lixo
 	glPushMatrix();
@@ -172,6 +190,7 @@ void ProjectScene::display()
 		this->pieceTest->drawAnimation(this->pecasLixo[i].getCor(),this->pecasLixo[i].getTipo(),this->pecasLixo[i].getAnimation());
 	glPopMatrix();
 
+	
 	////////////////////////////////////////////////////////////////desenhar caixa dos marcadores
 	glPushMatrix();
 	glTranslated((this->board->getBoard().size()+4.025), 2, 0);
@@ -353,19 +372,44 @@ void ProjectScene::setSelectedPiece(int x, int y){
 
 
 
-
 void ProjectScene::jogar(){
 	if(!this->perspective->hasEnded())
+	{	
+		clock->setBool(false);
+		clock->reset();
 		return;
+	}
+	if(this->clock->overSpan())
+	{
+		jogadorActivo=true;
+		this->switchJogador();
+		clock->reset();
+		clock->setBool(false);
+	}
 
-	if(this->animacoes!=0 )
+	if(this->animacoes!=0 && !jogadaSimples)
+	{
+		//clock->setBool(false);
+		//clock->reset();
 		return;
+	}
+
 	else if(this->animacoes==0 && jogadorActivo==false )
 	{
 		jogadorActivo=true;
 		this->switchJogador();
+		clock->setBool(true);
 		return;
 	}
+	
+	if(this->animacoes==0 && jogadorActivo && clock->getBool())
+	{
+		cout<<"///////////////////////////////////////////////////\n";
+		clock->setBool(false);
+		clock->reset();
+	}
+
+
 	char ans[2048];
 	char jogadaEtabuleiro[2048];
 	vector<vector<PieceData> > newBoard;
