@@ -120,12 +120,12 @@ void ProjectScene::display()
 	
 	glPushMatrix();
 	glTranslated(-posicaoLixo,0,-posicaoLixo);
-	drawBox(3,3,2,0.3);
+	drawBox(3,3,1.5,0.3);
 	glPopMatrix();
 
 	glPushMatrix();
 	glTranslated(-posicaoLixo,0,posicaoLixo);
-	drawBox(3,3,2,0.3);
+	drawBox(3,3,1.5,0.3);
 	glPopMatrix();
 
 	glPushMatrix();	
@@ -521,12 +521,12 @@ Animation* ProjectScene::getAnimation(float x1,float y1,float z1,float x2,float 
 
 	vector<float>p2;
 	p2.push_back(x1);
-	p2.push_back(y1+2);
+	p2.push_back(y1+2.5);
 	p2.push_back(z1);
 
 	vector<float>p3;
 	p3.push_back(x2);
-	p3.push_back(y2+2);
+	p3.push_back(y2+2.5);
 	p3.push_back(z2);
 
 	vector<float>p4;
@@ -619,9 +619,9 @@ Animation*  ProjectScene::generateAnimation(int x, int y,bool color,string tipo,
 	else
 	{
 	if(color)
-	final=getAnimation(xNovo,0,yNovo,-posicaoLixo,0,-posicaoLixo,5);
+	final=getAnimation(xNovo,0,yNovo,-posicaoLixo,0,-posicaoLixo,2);
 	else
-	final=getAnimation(xNovo,0,yNovo,-posicaoLixo,0,posicaoLixo,5);
+	final=getAnimation(xNovo,0,yNovo,-posicaoLixo,0,posicaoLixo,2);
 	}
 	cout<<"xi####"<<xi<<endl;
 	return final;

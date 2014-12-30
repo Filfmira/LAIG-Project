@@ -61,6 +61,10 @@ public:
 			v.push_back(f);
 			a+=0.1;
 		}
+		vector<float> final;
+			final.push_back(0);
+			final.push_back(-zoom);
+			v.push_back(final);
 		a=3.14159265;
 		while(a>=0){
 			vector<float> f;
@@ -69,6 +73,10 @@ public:
 			v2.push_back(f);
 			a-=0.1;
 		}
+		vector<float> final2;
+			final2.push_back(0);
+			final2.push_back(zoom);
+			v2.push_back(final2);
 		k=0;
 		player=false;
 		ended=true;

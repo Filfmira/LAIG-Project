@@ -63,7 +63,7 @@ vector<vector<PieceData> > parseBoard(string board_string, vector<PieceData> &pe
 			string pecaTemp = board_string.substr(pos1, pos2-pos1+1); //substr(primeiroChar, numeroDeChars);
 
 			PieceData piece = parsePiece(pecaTemp);
-			piece.print();
+			//piece.print();
 			pecasAdicionadas.push_back(piece);
 			board_string = board_string.substr(pos2+1);
 		}
@@ -86,7 +86,7 @@ vector<vector<PieceData> > parseBoard(string board_string, vector<PieceData> &pe
 			string pecaTemp = board_string.substr(pos1, pos2-pos1+1); //substr(primeiroChar, numeroDeChars);
 
 			PieceData piece = parsePiece(pecaTemp);
-			piece.print();
+			//piece.print();
 			pecasRemovidas.push_back(piece);
 			board_string = board_string.substr(pos2+1);
 		}
@@ -110,7 +110,7 @@ vector<vector<PieceData> > parseBoard(string board_string, vector<PieceData> &pe
 			string pecaTemp = board_string.substr(pos1, pos2-pos1+1); //substr(primeiroChar, numeroDeChars);
 
 			PieceData piece = parsePiece(pecaTemp);
-			piece.print();
+			//piece.print();
 			jogadasComputador.push_back(piece);
 			board_string = board_string.substr(pos2+1);
 		}

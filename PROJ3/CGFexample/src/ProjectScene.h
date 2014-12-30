@@ -110,7 +110,7 @@ public:
 					animacoes++;
 				}
 			}
-		cout<<"animacoes"<<animacoes<<endl;
+		//cout<<"animacoes"<<animacoes<<endl;
 
 	}
 	
