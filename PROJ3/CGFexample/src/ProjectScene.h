@@ -30,9 +30,10 @@ public:
 	bool jogadorActivo;
 	Appearance* appDefault;
 	Appearance* appBoard;
+	Appearance* background;
 	
 	std::vector<PieceData> pecasLixo;
-
+	Cylinder* cylinder;
 	Camera* activeCamera;
 	Clock* clock;
 	Cube* cubeTest;

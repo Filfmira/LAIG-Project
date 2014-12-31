@@ -54,7 +54,7 @@ public:
 		this->target[2]=target[2];
 		float a=0;
 		zoom=25;
-		while(a<3.14159265){
+		while(a<=3.14159265){
 			vector<float> f;
 			f.push_back(cos(a+1.57079633));
 			f.push_back(sin(a+1.57079633));

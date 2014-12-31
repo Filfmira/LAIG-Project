@@ -23,12 +23,16 @@ void ProjectScene::init()
 	animacoes=0;
 
 	appDefault=new Appearance("default");
-	Texture* texture = new Texture("tabuleiro", "72.jpg", 1, 1);
+	Texture* texture = new Texture("d", "madeira/default.jpg", 1, 1);
 	appDefault->setTexture(texture);
 
 	appBoard=new Appearance("appBoard");
-	Texture* texture2 = new Texture("tabuleiro", "b.jpg", 1, 1);
+	Texture* texture2 = new Texture("a", "madeira/mesa.jpg", 1, 1);
 	appBoard->setTexture(texture2);
+
+	background=new Appearance("background");
+	Texture* texture3 = new Texture("b", "madeira/background.jpg", 1, 1);
+	background->setTexture(texture3);
 
 	float pos[3]={15,10,15};
 	float target[3]={5,0,0,};
@@ -36,6 +40,7 @@ void ProjectScene::init()
 	cubeTest=new Cube();
 	box=new Box();
 	clock=new Clock();
+	cylinder=new Cylinder(1,1,1,50,30);
 
 	glPolygonMode(GL_FILL,GL_TRUE);
 	glShadeModel(GL_SMOOTH);
@@ -124,13 +129,21 @@ void ProjectScene::display()
 
 	axis.draw();
 
-	
+
+	////////////////////////////////////////////////////////////////desenhar fundo
+	glPushMatrix();
+	glScaled(90,90,90);
+	glCullFace(GL_FRONT);
+	this->background->apply();
+	this->cubeTest->draw();
+	glPopMatrix();
+		glCullFace(GL_BACK);
 
 	////////////////////////////////////////////////////////////////desenhar mesa
 	glPushMatrix();
 	appBoard->apply();
 	glTranslated(0,-0.5,0);
-	glScaled(40,0.01,42);
+	glScaled(60,0.01,60);
 	this->cubeTest->draw();
 	glPopMatrix();
 

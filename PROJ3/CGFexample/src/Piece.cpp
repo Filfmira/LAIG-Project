@@ -4,12 +4,12 @@ Piece::Piece(){
 	this->hexagon = Poligon(6);
 
 	this->appearanceLados = new Appearance("lados");
-	lado=new Texture("lado", "metalGrey.jpg", 1, 1);
-	ladoTabuleiro = new Texture("ladoTabuleiro", "metalGrey2.jpg", 1, 1);
+	lado=new Texture("lado", "madeira/lado.jpg", 1, 1);
+	ladoTabuleiro = new Texture("ladoTabuleiro", "madeira/selected.jpg", 1, 1);
 	this->appearanceLados->setTexture(lado);
 
 	this->appearanceLadosSelected = new Appearance("ladosSel");
-	Texture* texLadosSel = new Texture("ladosSel", "metal.jpg", 1, 1);
+	Texture* texLadosSel = new Texture("ladosSel", "madeira/selected.jpg", 1, 1);
 	this->appearanceLadosSelected->setTexture(texLadosSel);
 
 	Texture* simplesB = new Texture("simplesB", "texturasPecas/simples.png", 1, 1);
@@ -32,7 +32,7 @@ Piece::Piece(){
 	texturesPecas.push_back(expansaoP);
 	Texture* saltoP = new Texture("saltoP", "texturasPecas/saltoP.png", 1, 1);
 	texturesPecas.push_back(saltoP);
-	Texture* tabuleiro = new Texture("tabuleiro", "metal.jpg", 1, 1);
+	Texture* tabuleiro = new Texture("tabuleiro", "madeira/tabuleiroDefault.jpg", 1, 1);
 	texturesPecas.push_back(tabuleiro);
 
 
