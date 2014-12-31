@@ -289,51 +289,19 @@ void ProjectScene::drawPecasBox()
 
 void ProjectScene::drawPecasLaterais(bool cor){
 	string tipos[5] = {"simples","ataque","defesa","expansao","salto"};
-	if(cor)
+	
+	for (int i=0; i< 5;i++)
 	{
 		glPushMatrix();
-				glPushName(-1);		// Load a default name
-		
-				//glTranslatef(0,alturaPecas,-9);
-		
-				for (int i=0; i< 5;i++)
-				{
-					glPushMatrix();
-					glTranslatef(i*2,0,0);
-					if(this->corActiva)
-					glLoadName(i);	//replaces the value on top of the name stack
-					if((this->selectedType == tipos[i])&& this->corActiva)
-					pieceTest->draw(true, tipos[i],true );
-					else
-					pieceTest->draw(true, tipos[i],false );
-					glPopMatrix();
-				}
-		glPopMatrix();
-		glPopName() ;
-	}
-	else
-	{
-	glPushMatrix();
-	glPushName(-1);		// Load a default name
-		
-		//glTranslatef(0,alturaPecas,9);
-		for (int i=0; i< 5;i++)
-		{
-			glPushMatrix();
 			glTranslatef(i*2,0,0);
-			if(!this->corActiva)
-			glLoadName(i);	//replaces the value on top of the name stack
-			if((this->selectedType == tipos[i])&& !this->corActiva)
-			pieceTest->draw(false, tipos[i],true );
-			else
-			pieceTest->draw(false, tipos[i],false );
-			glPopMatrix();
-		}
-	glPopMatrix();
-	glPopName() ;
+			if(cor == this->corActiva)
+				glPushName(i);
+			bool selected = (this->selectedType == tipos[i] && cor == this->corActiva);
+			pieceTest->draw(cor, tipos[i], selected);
+			if(cor == this->corActiva)
+				glPopName();
+		glPopMatrix();
 	}
-	
-
 }
 
 
