@@ -56,8 +56,8 @@ public:
 		zoom=25;
 		while(a<3.14159265){
 			vector<float> f;
-			f.push_back(cos(a+1.57079633)*zoom);
-			f.push_back(sin(a+1.57079633)*zoom);
+			f.push_back(cos(a+1.57079633));
+			f.push_back(sin(a+1.57079633));
 			v.push_back(f);
 			a+=0.1;
 		}
@@ -68,8 +68,8 @@ public:
 		a=3.14159265;
 		while(a>=0){
 			vector<float> f;
-			f.push_back(cos(a+1.57079633)*zoom);
-			f.push_back(sin(a+1.57079633)*zoom);
+			f.push_back(cos(a+1.57079633));
+			f.push_back(sin(a+1.57079633));
 			v2.push_back(f);
 			a-=0.1;
 		}
@@ -117,7 +117,7 @@ public:
 				gluLookAt(0,15,-zoom,0,0,0,0.0,1.0,0.0);
 				}
 			else
-				gluLookAt(v[k][0],15,v[k][1],0,0,0,0.0,1.0,0.0);
+				gluLookAt(v[k][0]*zoom,15,v[k][1]*zoom,0,0,0,0.0,1.0,0.0);
 		}
 		else{
 			if(k>=v2.size())
@@ -127,7 +127,7 @@ public:
 				gluLookAt(0,15,zoom,0,0,0,0.0,1.0,0.0);
 			}
 			else
-			gluLookAt(v2[k][0],15,v2[k][1],0,0,0,0.0,1.0,0.0);
+			gluLookAt(v2[k][0]*zoom,15,v2[k][1]*zoom,0,0,0,0.0,1.0,0.0);
 
 
 		}
