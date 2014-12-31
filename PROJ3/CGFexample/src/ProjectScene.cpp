@@ -30,9 +30,33 @@ void ProjectScene::init()
 	Texture* texture2 = new Texture("a", "madeira/mesa.jpg", 1, 1);
 	appBoard->setTexture(texture2);
 
+
 	background=new Appearance("background");
 	Texture* texture3 = new Texture("b", "madeira/background.jpg", 1, 1);
 	background->setTexture(texture3);
+
+	appValues=new Appearance("appValues");
+	appDefaultValues=new Appearance("appValues");
+
+	float spec[4]={0.9,0.9,0.9,1};
+	float difuse[4]={0.9,0.9,0.9,1};
+	appValues->setSpecular(spec);
+	appValues->setDiffuse(difuse);
+	appValues->setShininess(50.f);
+
+	Texture* tSimples = new Texture("b", "texto/simples.png", 1, 1);
+	Texture* tAtaque = new Texture("b", "texto/ataque.png", 1, 1);
+	Texture* tDefesa = new Texture("b", "texto/defesa.png", 1, 1);
+	Texture* tExpansao = new Texture("b", "texto/expansao.png", 1, 1);
+	Texture* tSalto = new Texture("b", "texto/salto.png", 1, 1);
+	
+	texturesLabeling.push_back(tSimples);
+	texturesLabeling.push_back(tAtaque);
+	texturesLabeling.push_back(tDefesa);
+	texturesLabeling.push_back(tExpansao);
+	texturesLabeling.push_back(tSalto);
+
+
 
 	float pos[3]={15,10,15};
 	float target[3]={5,0,0,};
@@ -316,6 +340,20 @@ void ProjectScene::drawPecasLaterais(bool cor){
 				glPushName(i);
 			bool selected = (this->selectedType == tipos[i] && cor == this->corActiva);
 			pieceTest->draw(cor, tipos[i], selected);
+			//tabelas com laebling
+			glPushMatrix();
+			if(cor)
+			{
+			glTranslated(0,0.5,-2);
+			glRotated(180,0,1,0);
+			}
+			else
+			glTranslated(0,0.5,2);
+			glScaled(2,0.01,0.6);
+			this->texturesLabeling[i]->apply();
+			this->cubeTest->draw();
+			glPopMatrix();
+
 			if(cor == this->corActiva)
 				glPopName();
 		glPopMatrix();

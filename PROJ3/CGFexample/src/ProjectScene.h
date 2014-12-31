@@ -23,6 +23,7 @@ public:
 	CGFlight* light0;
 
 	std::vector<Texture *> textures;
+	std::vector<Texture *> texturesLabeling;
 	std::vector<Appearance* > appearances;
 	std::vector<Camera> cameras;
 	std::vector<PieceData> pecasRemovidas;
@@ -31,6 +32,9 @@ public:
 	Appearance* appDefault;
 	Appearance* appBoard;
 	Appearance* background;
+
+	Appearance* appValues;
+	Appearance* appDefaultValues;
 	
 	std::vector<PieceData> pecasLixo;
 	Cylinder* cylinder;

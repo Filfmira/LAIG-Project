@@ -112,11 +112,12 @@ public:
 		{
 			if(k>=v.size())
 				{
-				k=v.size();
+				k=v.size()-1;
 				ended=true;
-				gluLookAt(0,15,-zoom,0,0,0,0.0,1.0,0.0);
+				/*gluLookAt(0,15,-zoom,0,0,0,0.0,1.0,0.0);*/
 				}
-			else
+			/*
+			else*/
 				gluLookAt(v[k][0]*zoom,15,v[k][1]*zoom,0,0,0,0.0,1.0,0.0);
 		}
 		else{
@@ -124,9 +125,9 @@ public:
 			{
 				k=v2.size()-1;
 				ended=true;
-				gluLookAt(0,15,zoom,0,0,0,0.0,1.0,0.0);
+				/*gluLookAt(0,15,zoom,0,0,0,0.0,1.0,0.0);*/
 			}
-			else
+			/*else*/
 			gluLookAt(v2[k][0]*zoom,15,v2[k][1]*zoom,0,0,0,0.0,1.0,0.0);
 
 
