@@ -19,6 +19,7 @@ class TPinterface: public CGFinterface {
 		GLUI_RadioGroup * visualizationRadGroup;
 		GLUI_Spinner* animationSpinner;
 		GLUI_Spinner* clockSpinner;
+		GLUI_Spinner* zoomSpinner;
 		int visualizationId;
 		int cameraId;
 

@@ -82,8 +82,9 @@ void TPinterface::initGUI()
 	animationSpinner = addSpinnerToPanel(undoAndSpinnersPannel, "animationSpeed", 2,NULL, initialId+(increment++)); // id = init+14
 	animationSpinner->set_float_val(((ProjectScene*) scene)->timeSpan);
 	clockSpinner = addSpinnerToPanel(undoAndSpinnersPannel, "clock", 2,NULL, initialId+(increment++)); // id = init+15
-	clockSpinner->set_float_val(((ProjectScene*) scene)->timeSpan);
 	clockSpinner->set_float_val(((ProjectScene*) scene)->clock->getSpan());
+	zoomSpinner = addSpinnerToPanel(undoAndSpinnersPannel, "zoom", 2,NULL, initialId+(increment++)); // id = init+16
+	zoomSpinner->set_float_val(((ProjectScene*) scene)->perspective->getZoom());
 }
 
 
@@ -92,7 +93,7 @@ void TPinterface::processGUI(GLUI_Control *ctrl)
 	printf ("GUI control id: %d\n  ",ctrl->user_id);
 	
 	int temp = ctrl->user_id - initialId;
-	
+	int downLimit = 1;
 	/////////LUZES/////////
 
 	//////////////////////
@@ -135,20 +136,28 @@ void TPinterface::processGUI(GLUI_Control *ctrl)
 
 	///////TIME SPAN ANIMATIONS//////
 	case(initialId+14):
-		if (val > 60) {animationSpinner->set_float_val(60);}
-		if (val < 1) {animationSpinner->set_float_val(1); val = 1;}
+		if (val > 60) {animationSpinner->set_float_val(60); val = 60;}
+		else if (val < 1) {animationSpinner->set_float_val(1); val = 1;}
 		((ProjectScene*) scene)->timeSpan = val;
 		if (this->clockSpinner->get_float_val() < val+5) clockSpinner->set_float_val(val+5);
 		break;
-	
+
 	//////CLOCK TIMER SPINNER //////
 	case(initialId+15):
-		if (val > 180) {clockSpinner->set_float_val(180);}
-		int downLimit = ((ProjectScene*) scene)->timeSpan+5;
-		if (val < downLimit) {clockSpinner->set_float_val(downLimit); val = downLimit;}
+		downLimit = ((ProjectScene*) scene)->timeSpan+5;
+		if (val > 180) {clockSpinner->set_float_val(180); val = 180;}
+		else if (val < downLimit) {clockSpinner->set_float_val(downLimit); val = downLimit;}
 		((ProjectScene*) scene)->clock->setSpan(val);
 		break;
-	
+
+	//////ZOOM SPINNER //////
+	case(initialId+16):
+		if (val > 50) {zoomSpinner->set_float_val(50); val = 50;}
+		else if (val < 15) {zoomSpinner->set_float_val(15); val = 15;}
+		this->zoomSpinner->set_float_val(val);
+		((ProjectScene*) scene)->perspective->setZoom(val);
+		break;
+			
 	};
 }
 
