@@ -29,9 +29,13 @@ public:
 	std::vector<PieceData> pecasRemovidas;
 	int animacoes;
 	bool jogadorActivo;
-	Appearance* appDefault;
-	Appearance* appBoard;
-	Appearance* background;
+	
+	int aparenciaActiva;
+	vector<Appearance*> appDefault;
+	vector<Appearance*> appBoard;
+	vector<Appearance*> background;
+
+
 
 	Appearance* appValues;
 	Appearance* appDefaultValues;
@@ -64,7 +68,7 @@ public:
 	void jogar();
 	void restartJogo(string modo);
 	void undo();
-
+	void changeTextures(int i);
 	Animation* getAnimation(float x1,float y1,float z1,float x2,float y2,float z2,float time);
 	void drawPecasLaterais(bool cor);
 	void drawPecasBox();

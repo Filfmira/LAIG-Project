@@ -4,6 +4,7 @@
 #include <iostream>
 #include "Socket.h"
 #include "ParseProlog.h"
+#include <sstream>
 
 float Appearance::texlength_s = 1;
 float Appearance::texlength_t = 1;
@@ -22,18 +23,7 @@ void ProjectScene::init()
 {
 	animacoes=0;
 
-	appDefault=new Appearance("default");
-	Texture* texture = new Texture("d", "madeira/default.jpg", 1, 1);
-	appDefault->setTexture(texture);
 
-	appBoard=new Appearance("appBoard");
-	Texture* texture2 = new Texture("a", "madeira/mesa.jpg", 1, 1);
-	appBoard->setTexture(texture2);
-
-
-	background=new Appearance("background");
-	Texture* texture3 = new Texture("b", "madeira/background.jpg", 1, 1);
-	background->setTexture(texture3);
 
 	appValues=new Appearance("appValues");
 	appDefaultValues=new Appearance("appValues");
@@ -110,23 +100,32 @@ void ProjectScene::init()
 	}
 
 
+	this->aparenciaActiva = 0;
 
-	this->restartJogo("CvC");
+	this->appBoard.push_back(new Appearance("appBoard0"));
+	this->appBoard.push_back(new Appearance("appBoard0"));
+	this->appDefault.push_back(new Appearance("default0"));
+	this->appDefault.push_back(new Appearance("default1"));
+	this->background.push_back(new Appearance("background0"));
+	this->background.push_back(new Appearance("background1"));
 
-	
-/*	
-	PieceData jogada(-3, -1, false, "simples"); //está manualmente a fazer uma jogada no x = -3, y = -1;
-	string j = jogadaToString(jogada, this->board->getBoard()); //transforma a jogada num comando a enviar ao prolog
-	char jogadaEtabuleiro[2048];
-	strcpy(jogadaEtabuleiro, j.c_str());
-	envia(jogadaEtabuleiro, strlen(jogadaEtabuleiro)); //envia a jogada
-	ans[0] = '\0'; recebe(ans); // recebe resposta (ok ou not-ok)
-	
-	vector<vector<PieceData> > newBoard;
-	if (parseAnswerJogada((string)ans, newBoard)){ //se ok, faz a jogada no tabuleiro local
-		this->board->setBoard(newBoard);
-	}
-	*/
+	this->appDefault[0]->setTexture(new Texture("d", "madeira0/default.jpg", 1, 1));
+	this->appDefault[1]->setTexture(new Texture("d", "madeira1/default.jpg", 1, 1));
+
+	this->appBoard[0]->setTexture(new Texture("a", "madeira0/mesa.jpg", 1, 1));
+	this->appBoard[1]->setTexture(new Texture("a", "madeira1/mesa.jpg", 1, 1));
+
+	this->background[0]->setTexture(new Texture("b", "madeira0/background.jpg", 1, 1));
+	this->background[1]->setTexture(new Texture("b", "madeira1/background.jpg", 1, 1));
+
+
+
+	//////////////////////////////////
+
+
+
+	this->restartJogo("CvC");	
+
 	jogadaSimples=false;
 }
 
@@ -158,14 +157,14 @@ void ProjectScene::display()
 	glPushMatrix();
 	glScaled(90,90,90);
 	glCullFace(GL_FRONT);
-	this->background->apply();
+	this->background[this->aparenciaActiva]->apply();
 	this->cubeTest->draw();
 	glPopMatrix();
 		glCullFace(GL_BACK);
 
 	////////////////////////////////////////////////////////////////desenhar mesa
 	glPushMatrix();
-	appBoard->apply();
+	appBoard[this->aparenciaActiva]->apply();
 	glTranslated(0,-0.5,0);
 	glScaled(60,0.01,60);
 	this->cubeTest->draw();
@@ -173,7 +172,7 @@ void ProjectScene::display()
 
 	////////////////////////////////////////////////////////////////desenhar tabuleiro base
 	glPushMatrix();
-	appBoard->apply();
+	appBoard[this->aparenciaActiva]->apply();
 	glTranslated(0,-0.5,0);
 	glScaled(8,0.5,8);
 	glRotated(30,0,1,0);
@@ -212,13 +211,13 @@ void ProjectScene::display()
 	////////////////////////////////////////////////////////////////desenhar caixas do lixo
 	glPushMatrix();
 	glTranslated(-posicaoLixo,0,-posicaoLixo);
-	appDefault->apply();
+	appDefault[this->aparenciaActiva]->apply();
 	box->draw(3,3,1.5,0.3);
 	glPopMatrix();
 
 	glPushMatrix();
 	glTranslated(-posicaoLixo,0,posicaoLixo);
-	appDefault->apply();
+	appDefault[this->aparenciaActiva]->apply();
 	box->draw(3,3,1.5,0.3);
 	glPopMatrix();
 	
@@ -226,7 +225,7 @@ void ProjectScene::display()
 	glPushMatrix();	
 		board->draw(this->selectedPiece->getX(), this->selectedPiece->getY());
 	glPopMatrix();
-	appDefault->apply();
+	appDefault[this->aparenciaActiva]->apply();
 	
 	////////////////////////////////////////////////////////////////desenhar peças que foram removidas
 	for(int i=0; i<this->pecasLixo.size();i++)
@@ -238,7 +237,7 @@ void ProjectScene::display()
 	glPushMatrix();
 	glTranslated((this->board->getBoard().size()+4.025), 2, 0);
 	glScaled(2,4.25,8);
-	this->appDefault->apply();
+	this->appDefault[this->aparenciaActiva]->apply();
 	this->cubeTest->draw();
 	glPopMatrix();
 
@@ -249,7 +248,7 @@ void ProjectScene::display()
 			glTranslated((this->board->getBoard().size())+4, 0.25, -2);
 			glRotated(90,0,0,1);
 			glTranslated(1.25,0,0);
-			this->appBoard->apply();
+			this->appBoard[this->aparenciaActiva]->apply();
 			box->draw(2.5,3.5,1,0.25);
 		glPopMatrix();
 
@@ -257,7 +256,7 @@ void ProjectScene::display()
 			glTranslated((this->board->getBoard().size())+4, 0.25, 2);
 			glRotated(90,0,0,1);
 			glTranslated(1.25,0,0);
-			this->appBoard->apply();
+			this->appBoard[this->aparenciaActiva]->apply();
 			box->draw(2.5,3.5,1,0.25);
 		glPopMatrix();
 		//desenhar marcadores
@@ -294,39 +293,6 @@ void ProjectScene::display()
 
 }
 
-void ProjectScene::drawPecasBox()
-{
-	float largura,comprimento,altura,expessura;
-	largura=5;
-	comprimento=11;
-	altura=1;
-	expessura=0.2;
-	
-
-		glPushMatrix();
-		glTranslated(-4,0,0);
-			glTranslated(0,0,-ditanciaPecas);
-				glPushMatrix();
-				glTranslated(0,0,-1);
-				glTranslatef(comprimento/2-1.5,alturaPecas,/*-9.5*/0);
-				appDefault->apply();
-				box->draw(largura,comprimento,altura,expessura);
-				glPopMatrix();
-			drawPecasLaterais(true);
-		glPopMatrix();
-
-		glPushMatrix();
-		glTranslated(-4,0,0);
-			glTranslated(0,0,ditanciaPecas);
-				glPushMatrix();
-				glTranslated(0,0,1);
-				glTranslatef(comprimento/2-1.5,alturaPecas,/*-9.5*/0);
-				appDefault->apply();
-				box->draw(largura,comprimento,altura,expessura);
-				glPopMatrix();
-			drawPecasLaterais(false);
-		glPopMatrix();
-}
 
 
 void ProjectScene::drawPecasLaterais(bool cor){
@@ -377,6 +343,40 @@ void ProjectScene::setTypePiece(int n){
 	string tipos[5] = {"simples","ataque","defesa","expansao","salto"};
 	this->selectedType = tipos[n];
 	cout << this->selectedType <<endl;
+}
+
+void ProjectScene::drawPecasBox()
+{
+ float largura,comprimento,altura,expessura;
+ largura=5;
+ comprimento=11;
+ altura=1;
+ expessura=0.2;
+ 
+
+  glPushMatrix();
+  glTranslated(-4,0,0);
+   glTranslated(0,0,-ditanciaPecas);
+    glPushMatrix();
+    glTranslated(0,0,-1);
+    glTranslatef(comprimento/2-1.5,alturaPecas,/*-9.5*/0);
+    appDefault[this->aparenciaActiva]->apply();
+    box->draw(largura,comprimento,altura,expessura);
+    glPopMatrix();
+   drawPecasLaterais(true);
+  glPopMatrix();
+
+  glPushMatrix();
+  glTranslated(-4,0,0);
+   glTranslated(0,0,ditanciaPecas);
+    glPushMatrix();
+    glTranslated(0,0,1);
+    glTranslatef(comprimento/2-1.5,alturaPecas,/*-9.5*/0);
+    appDefault[this->aparenciaActiva]->apply();
+    box->draw(largura,comprimento,altura,expessura);
+    glPopMatrix();
+   drawPecasLaterais(false);
+  glPopMatrix();
 }
 
 void ProjectScene::setSelectedPiece(int x, int y){
@@ -614,7 +614,6 @@ void ProjectScene::restartJogo(string modo){
 	int si=pecasLixo.size();
 	for(int i=0;i<si;i++)
 		pecasLixo.pop_back();
-	jogadorActivo==true;
 	
 }
 
@@ -750,6 +749,15 @@ void ProjectScene::undo(){
 			this->switchJogador();
 	}
 }
+
+
+
+void ProjectScene::changeTextures(int i){
+	this->aparenciaActiva = i;
+	this->board->changeTextures(i);
+	this->pieceTest->changeTextures(i);
+}
+
 
 ProjectScene::~ProjectScene() 
 {

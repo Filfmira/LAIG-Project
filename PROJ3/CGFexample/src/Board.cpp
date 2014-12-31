@@ -14,13 +14,11 @@ Board::Board(vector<vector<PieceData> > b){
      
             //desenhar tabuleiro + peças
             for (unsigned int i = 0; i < board.size(); i++){
-                    int offsetX = abs(board[i][0].getY());
-                    int offsetZ = board[i][0].getY()*2;
+                    int offsetX = abs(board[i][0].getY());//ajustar linha horizontalmente
+                    int offsetZ = board[i][0].getY()*2;//ajustar linha verticalmente
                    
                     glPushMatrix();
                         glPushName(board[i][0].getY());//push coordY
-                        // glTranslated(offsetX, 0, offsetZ); //ajustar linha vertical e horizontalmente
-                        //cout<<endl;
                         for (unsigned int j = 0; j < board[i].size(); j++){
                             //board[i][j].print();
                             selected = (selectedX == board[i][j].getX() && selectedY == board[i][j].getY());
@@ -109,4 +107,9 @@ vector<Jogada> Board::getHistorico(){
 
 void Board::popBackHistorico(){
 	this->historico.pop_back();
+}
+
+
+void Board::changeTextures(int i){
+	this->piece.changeTextures(i);
 }

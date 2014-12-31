@@ -13,18 +13,21 @@ private:
 	//std::string tipo; /*simples, ataques, defesa, salto, expansao */
 	Poligon hexagon;
 	Appearance* appearanceTopos;
-	Appearance* appearanceLados;
-	Appearance* appearanceLadosSelected;
+	vector<Appearance*> appearanceLados;
+	vector<Appearance*> appearanceLadosSelected;
 	vector<Texture*> texturesPecas; //texturas de todas as peças
 
-	Texture* lado;
-	Texture* ladoTabuleiro;
+	vector<Texture*> lado;
+	vector<Texture*> ladoTabuleiro;
+
+	int aparenciaActiva;
 public:
 	Piece();
 	void draw(bool cor, string tipo, bool selected);
 	void drawBooard(bool cor, string tipo, bool selected);
 	void drawAnimation(bool cor, string tipo, Animation* animation);
 	Texture* chooseTexture(bool cor, string tipo);
+	void changeTextures(int i);
 };
 
 

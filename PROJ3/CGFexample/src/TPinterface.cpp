@@ -69,6 +69,8 @@ void TPinterface::initGUI()
 			camerasRadGroup->set_int_val(i+1);
 	}
 	
+
+	////////RESTARTS//////
 	addColumn();
 	GLUI_Panel *restarts = addPanel("Restarts", GLUI_PANEL_EMBOSSED);
 	addButtonToPanel (restarts, "JvJ", initialId+(increment++)); // id = init+10
@@ -76,6 +78,7 @@ void TPinterface::initGUI()
 	addButtonToPanel (restarts, "CvC", initialId+(increment++)); // id = init+12
 	
 
+	/////UNDO AND SPINNERS/////
 	addColumn();
 	GLUI_Panel *undoAndSpinnersPannel = addPanel("Undo",  GLUI_PANEL_NONE);
 	addButtonToPanel (undoAndSpinnersPannel, "UNDO", initialId+(increment++)); // id = init+13
@@ -85,6 +88,16 @@ void TPinterface::initGUI()
 	clockSpinner->set_float_val(((ProjectScene*) scene)->clock->getSpan());
 	zoomSpinner = addSpinnerToPanel(undoAndSpinnersPannel, "zoom", 2,NULL, initialId+(increment++)); // id = init+16
 	zoomSpinner->set_float_val(((ProjectScene*) scene)->perspective->getZoom());
+
+
+
+	////////////TEXTURAS/////////////
+	addColumn();
+	GLUI_Panel *appearancesPanel= addPanel("Appearances", GLUI_PANEL_EMBOSSED);
+	GLUI_RadioGroup * appearancesRadGroup = addRadioGroupToPanel (appearancesPanel, &appearanceId, initialId+(increment++));// id = init+17
+	addRadioButtonToGroup(appearancesRadGroup, "0")->set_id(0);
+	addRadioButtonToGroup(appearancesRadGroup, "1")->set_id(1);
+	appearancesRadGroup->set_int_val(0);
 }
 
 
@@ -157,6 +170,13 @@ void TPinterface::processGUI(GLUI_Control *ctrl)
 		this->zoomSpinner->set_float_val(val);
 		((ProjectScene*) scene)->perspective->setZoom(val);
 		break;
+
+	/////TEXTURES //////
+	case(initialId+17):
+		printf("|||| id: %d\n", ctrl->get_int_val());
+		((ProjectScene*) scene)->changeTextures(ctrl->get_int_val());
+		break;
+
 			
 	};
 }

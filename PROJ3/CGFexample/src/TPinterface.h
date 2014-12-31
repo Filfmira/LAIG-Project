@@ -22,6 +22,7 @@ class TPinterface: public CGFinterface {
 		GLUI_Spinner* zoomSpinner;
 		int visualizationId;
 		int cameraId;
+		int appearanceId;
 
 		virtual void processMouse(int button, int state, int x, int y);	
 		void performPicking(int x, int y);

@@ -24,6 +24,7 @@ public:
 	void addJogadaHistorico(Jogada pd);
 	vector<Jogada> getHistorico();
 	void popBackHistorico();
+	void changeTextures(int i);
 };
 
 #endif

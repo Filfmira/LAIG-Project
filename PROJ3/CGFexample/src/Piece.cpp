@@ -1,16 +1,27 @@
 #include "Piece.h"
 #include <iostream>
+#include <sstream>
 Piece::Piece(){
+	this->aparenciaActiva = 0;
+	
 	this->hexagon = Poligon(6);
 
-	this->appearanceLados = new Appearance("lados");
-	lado=new Texture("lado", "madeira/lado.jpg", 1, 1);
-	ladoTabuleiro = new Texture("ladoTabuleiro", "madeira/selected.jpg", 1, 1);
-	this->appearanceLados->setTexture(lado);
+	this->appearanceLados.push_back(new Appearance("lados0"));
+	this->appearanceLados.push_back(new Appearance("lados1"));
+	this->appearanceLadosSelected.push_back(new Appearance("ladosSel0"));
+	this->appearanceLadosSelected.push_back(new Appearance("ladosSel1"));
 
-	this->appearanceLadosSelected = new Appearance("ladosSel");
-	Texture* texLadosSel = new Texture("ladosSel", "madeira/selected.jpg", 1, 1);
-	this->appearanceLadosSelected->setTexture(texLadosSel);
+
+	this->appearanceLados[0]->setTexture(new Texture("lado", "madeira0/lado.jpg", 1, 1));
+	this->appearanceLados[1]->setTexture(new Texture("lado", "madeira1/lado.jpg", 1, 1));
+	this->appearanceLadosSelected[0]->setTexture(new Texture("ladosSel", "madeira0/selected.jpg", 1, 1));
+	this->appearanceLadosSelected[1]->setTexture(new Texture("ladosSel", "madeira1/selected.jpg", 1, 1));
+	
+	this->ladoTabuleiro.push_back( new Texture("ladosSel", "madeira0/selected.jpg", 1, 1)) ;
+	this->ladoTabuleiro.push_back( new Texture("ladosSel", "madeira1/selected.jpg", 1, 1));
+	this->lado.push_back( new Texture("ladosSel", "madeira0/lado.jpg", 1, 1));
+	this->lado.push_back( new Texture("ladosSel", "madeira1/lado.jpg", 1, 1));
+
 
 	Texture* simplesB = new Texture("simplesB", "texturasPecas/simples.png", 1, 1);
 	texturesPecas.push_back(simplesB);
@@ -32,12 +43,13 @@ Piece::Piece(){
 	texturesPecas.push_back(expansaoP);
 	Texture* saltoP = new Texture("saltoP", "texturasPecas/saltoP.png", 1, 1);
 	texturesPecas.push_back(saltoP);
-	Texture* tabuleiro = new Texture("tabuleiro", "madeira/tabuleiroDefault.jpg", 1, 1);
-	texturesPecas.push_back(tabuleiro);
-
+	Texture* tabuleiro0 = new Texture("tabuleiro0", "madeira0/tabuleiroDefault.jpg", 1, 1);
+	texturesPecas.push_back(tabuleiro0);
+	Texture* tabuleiro1 = new Texture("tabuleiro1", "madeira1/tabuleiroDefault.jpg", 1, 1);
+	texturesPecas.push_back(tabuleiro1);
 
 	this->appearanceTopos = new Appearance("topos");
-	this->appearanceTopos->setTexture(texturesPecas[0]);
+	this->appearanceTopos->setTexture(texturesPecas[10]);
 
 
 }
@@ -53,15 +65,10 @@ void Piece::drawBooard(bool cor, string tipo, bool selected){
 
 
 void Piece::draw(bool cor, string tipo, bool selected){
-
-
-	if(tipo=="tabuleiro")
-	{
+/*
+	if(tipo == "tabuleiro")
 		this->appearanceLados->setTexture(this->ladoTabuleiro);
-
-	}
-	else
-	this->appearanceLados->setTexture(this->lado);
+	else this->appearanceLados->setTexture(this->lado);*/
 
 	this->appearanceTopos->setTexture(chooseTexture(cor, tipo)); //actualiza textura do topo, de acordo com a peça a desenhar
 	glPushMatrix();
@@ -84,8 +91,8 @@ void Piece::draw(bool cor, string tipo, bool selected){
 		for (unsigned int i = 0; i < 6; i++){
 			glPushMatrix();
 				if (selected)
-					this->appearanceLadosSelected->apply();
-				else this->appearanceLados->apply();
+					this->appearanceLadosSelected[this->aparenciaActiva]->apply();
+				else this->appearanceLados[this->aparenciaActiva]->apply();
 				glRotated(60.0*i,0,1,0);
 				glBegin(GL_QUADS);
 					glTexCoord2d(1,1);
@@ -127,10 +134,15 @@ Texture* Piece::chooseTexture(bool cor, string tipo){
 		indexTexture = 3;
 	else if (tipo == "salto")
 		indexTexture = 4;
-	else return texturesPecas[10]; //default return (textura do tabuleiro)
+	else return texturesPecas[10+this->aparenciaActiva]; //default return (textura do tabuleiro)
 
 	if (!cor)
 		indexTexture += 5;
 
 	return texturesPecas[indexTexture];
+}
+
+
+void Piece::changeTextures(int i){
+	this->aparenciaActiva = i;	
 }
