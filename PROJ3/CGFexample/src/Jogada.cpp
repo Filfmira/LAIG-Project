@@ -19,3 +19,10 @@ vector<PieceData> Jogada::getAdicionadas(){
 vector<PieceData> Jogada::getRemovidas(){
 	return this->pecasRemovidas;
 }
+
+void Jogada::restartAnimacoes(){
+	for (unsigned int i = 0; i < pecasAdicionadas.size(); i++)
+		pecasAdicionadas[i].restartAnimacao();
+	for (unsigned int i = 0; i < pecasRemovidas.size(); i++)
+		pecasRemovidas[i].restartAnimacao();
+}

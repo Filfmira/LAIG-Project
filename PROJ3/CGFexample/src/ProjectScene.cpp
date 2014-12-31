@@ -125,7 +125,8 @@ void ProjectScene::init()
 
 
 	this->restartJogo("CvC");	
-
+	this->filmeEmCurso = false;
+	this->jogadaFilmeActual = 0;
 	jogadaSimples=false;
 }
 
@@ -274,16 +275,21 @@ void ProjectScene::display()
 	glPopMatrix();
 
 	////////////////////////////////////////////////////////////////
-
-	if (this->gameOver == "NOT") //se o jogo não tiver acabado
-		this->jogar();
-	else if (this->gameOver == "restart")
-	{
-		this->restartJogo(this->modoDeJogo);
-		this->perspective->change(this->corActiva);
+	if (this->filmeEmCurso){
+		this->playJogadaFilme();
 	}
-	else if(this->gameOver == "winBranco"){ this->marcadorBranco->incPontuacao(); this->gameOver = "END"; }
-	else if(this->gameOver == "winPreto") { this->marcadorPreto->incPontuacao(); this->gameOver = "END"; }
+	else{
+		if (this->gameOver == "NOT") //se o jogo não tiver acabado
+			this->jogar();
+		else if (this->gameOver == "restart")
+		{
+			this->restartJogo(this->modoDeJogo);
+			this->perspective->change(this->corActiva);
+		}
+		else if(this->gameOver == "winBranco"){ this->marcadorBranco->incPontuacao(); this->gameOver = "END"; }
+		else if(this->gameOver == "winPreto") { this->marcadorPreto->incPontuacao(); this->gameOver = "END"; }
+
+	}
 
 	// We have been drawing in a memory area that is not visible - the back buffer, 
 	// while the graphics card is showing the contents of another buffer - the front buffer
@@ -414,8 +420,6 @@ void ProjectScene::jogar(){
 
 	if(this->animacoes!=0 && !jogadaSimples)
 	{
-		//clock->setBool(false);
-		//clock->reset();
 		return;
 	}
 
@@ -448,15 +452,9 @@ void ProjectScene::jogar(){
 		recebe(ans); // recebe resposta (ok ou not-ok)
 		
 		if (parseAnswerJogada((string)ans, newBoard, this->gameOver, pecasAdicionadas, pecasRemovidas,jogadasComputador))
-			{//se ok, faz a jogada no tabuleiro local
-			//this->board->setBoard(newBoard);
-
-				
-				
-
+		{
 				for(int i=0;i<pecasAdicionadas.size();i++)
 				{
-
 					PieceData jogada=pecasAdicionadas[i];
 					//generateAnimation(x,y,cor,tipo,insert)
 					Animation* novaAnimacao = generateAnimation(pecasAdicionadas[i].getX(),pecasAdicionadas[i].getY(),pecasAdicionadas[i].getCor(),pecasAdicionadas[i].getTipo(),true);
@@ -756,6 +754,57 @@ void ProjectScene::changeTextures(int i){
 	this->aparenciaActiva = i;
 	this->board->changeTextures(i);
 	this->pieceTest->changeTextures(i);
+}
+
+
+void ProjectScene::playJogadaFilme(){
+	if(this->animacoes!=0)
+		return;
+
+	vector<Jogada> hist = this->board->getHistorico();
+
+	if (this->jogadaFilmeActual == hist.size()){ //fim do filme
+		this->jogadaFilmeActual = 0;
+		this->filmeEmCurso = false;
+		return;
+	}
+
+	cout << "Replay jogada nr " << this->jogadaFilmeActual << endl;
+	vector<PieceData> tempAdicionadas = hist[this->jogadaFilmeActual].getAdicionadas();
+	vector<PieceData> tempRemovidas = hist[this->jogadaFilmeActual].getRemovidas();
+	
+	for(int i=0;i<tempAdicionadas.size();i++)
+	{
+		this->board->addPiece(tempAdicionadas[i]);
+	}
+
+	for(int i=0;i<tempRemovidas.size();i++)
+	{
+		this->board->removePiece(tempRemovidas[i]);
+		//pecasLixo.push_back(tempRemovidas[i]);
+	}
+
+	this->jogadaFilmeActual++;
+
+}
+
+
+void ProjectScene::initFilme(){
+	char *s = "novo-tabuleiro.\n";
+	envia(s, strlen(s));
+	char ans[2048];
+	recebe(ans);
+	vector<vector <PieceData> > tempBoard;
+	string temp;
+	vector<PieceData> temp2,temp3;
+	parseAnswerJogada((string) ans,tempBoard, temp, temp2, temp2,temp3);
+	this->board->setBoard(tempBoard);
+	this->board->restartAnimacoes();
+	this->filmeEmCurso = true;
+
+	int si=pecasLixo.size();
+	for(int i=0;i<si;i++)
+		pecasLixo.pop_back();
 }
 
 

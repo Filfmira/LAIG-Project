@@ -26,7 +26,7 @@ public:
 	std::vector<Texture *> texturesLabeling;
 	std::vector<Appearance* > appearances;
 	std::vector<Camera> cameras;
-	std::vector<PieceData> pecasRemovidas;
+
 	int animacoes;
 	bool jogadorActivo;
 	
@@ -68,10 +68,17 @@ public:
 	void jogar();
 	void restartJogo(string modo);
 	void undo();
-	void changeTextures(int i);
 	Animation* getAnimation(float x1,float y1,float z1,float x2,float y2,float z2,float time);
 	void drawPecasLaterais(bool cor);
 	void drawPecasBox();
+	void changeTextures(int i);
+
+	//////FILME //////
+	bool filmeEmCurso;
+	int jogadaFilmeActual;
+	void playJogadaFilme();
+	void initFilme();
+	//////////////////
 
 	Animation* generateAnimation(int x, int y,bool color,string tipo,bool insert);
 
@@ -112,25 +119,14 @@ public:
 			}
 		}
 
-		
-		
 		for(unsigned int k=0;k<this->board->getBoard().size();k++)
 			for(unsigned int i=0;i<this->board->getBoard().at(k).size();i++){
-				/*if(this->board->getBoard()[k][i].hasAnimation() && this->board->getBoard()[k][i].getAnimation()->isEnd())
-				{
-					this->board->getBoard()[k][i].setHasAnimation(false);
-				}
-				else 
-				
-				*/
-				if(this->board->getBoard()[k][i].hasAnimation()/* && !this->board->getBoard()[k][i].getAnimation()->isEnd()*/)
+				if(this->board->getBoard()[k][i].hasAnimation())
 				{
 					this->board->getBoard()[k][i].getAnimation()->update(t);
 					animacoes++;
 				}
 			}
-		//cout<<"animacoes"<<animacoes<<endl;
-
 	}
 	
 	

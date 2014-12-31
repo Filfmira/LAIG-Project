@@ -113,3 +113,9 @@ void Board::popBackHistorico(){
 void Board::changeTextures(int i){
 	this->piece.changeTextures(i);
 }
+
+
+void Board::restartAnimacoes(){
+	for (unsigned int i = 0; i < historico.size(); i++)
+		historico[i].restartAnimacoes();
+}

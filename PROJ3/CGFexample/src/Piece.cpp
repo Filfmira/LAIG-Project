@@ -112,9 +112,11 @@ void Piece::draw(bool cor, string tipo, bool selected){
 
 
 void Piece::drawAnimation(bool cor, string tipo, Animation* animation){
-	animation->draw();
+	if (animation != NULL)
+		animation->draw();
 	this->draw(cor,tipo,false);
-	glPopMatrix();
+	if (animation != NULL)
+		glPopMatrix();
 
 }
 

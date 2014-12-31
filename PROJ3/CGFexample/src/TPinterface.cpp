@@ -98,6 +98,8 @@ void TPinterface::initGUI()
 	addRadioButtonToGroup(appearancesRadGroup, "0")->set_id(0);
 	addRadioButtonToGroup(appearancesRadGroup, "1")->set_id(1);
 	appearancesRadGroup->set_int_val(0);
+
+	addButtonToPanel (appearancesPanel, "FILME", initialId+(increment++)); // id = init+18
 }
 
 
@@ -177,6 +179,8 @@ void TPinterface::processGUI(GLUI_Control *ctrl)
 		((ProjectScene*) scene)->changeTextures(ctrl->get_int_val());
 		break;
 
+	////FILME////
+	case(initialId+18): ((ProjectScene*) scene)->initFilme(); break;
 			
 	};
 }

@@ -15,6 +15,8 @@ public:
 	int getId();
 	vector<PieceData> getAdicionadas();
 	vector<PieceData> getRemovidas();
+
+	void restartAnimacoes();
 };
 
 #endif

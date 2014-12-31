@@ -21,6 +21,7 @@ public:
 		this->cor = cor;
 		this->tipo = tipo;
 		animationBool=false;
+		animation = NULL;
 	}
 	int getX(){return x;}
 	void setX(int x){this->x = x;}
@@ -47,6 +48,13 @@ public:
 			" ; y: " << y <<
 			" ; cor: " << cor <<
 			" ; tipo: " << tipo << endl;
+	}
+
+	void restartAnimacao(){ 
+		if (animation != NULL){
+			this->animation->restart();
+			this->animationBool = true;
+		}
 	}
 };
 

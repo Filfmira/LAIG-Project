@@ -25,6 +25,8 @@ public:
 	vector<Jogada> getHistorico();
 	void popBackHistorico();
 	void changeTextures(int i);
+
+	void restartAnimacoes(); //para ser utilizado antes de começar o filme
 };
 
 #endif
