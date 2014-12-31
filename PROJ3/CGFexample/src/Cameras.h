@@ -96,6 +96,15 @@ public:
 
 	}
 
+	void setZoom(float z)
+	{
+		zoom=z;
+	}
+
+	float getZoom()
+	{
+		return zoom;
+	}
 
 	void applyView() {
 		k++;
