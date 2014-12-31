@@ -143,8 +143,7 @@ void ProjectScene::display()
 	this->pieceTest->drawBooard(false, "tabuleiro", false);
 	glPopMatrix();
 
-	////////////////////////////////////////////////////////////////desenhar as caixas das peças que cada jogador pode jogar
-	drawPecasBox();
+
 
 	////////////////////////////////////////////////////////////////desenhar o relogio
 	glPushMatrix();
@@ -162,12 +161,18 @@ void ProjectScene::display()
 	this->clock->draw();
 	glPopMatrix();
 
-	////////////////////////////////////////////////////////////////desenhar caixas do lixo
+	
 	glPushMatrix();
 	float divisao=floor(float(this->board->getBoard().size())/2);
 	glTranslated(-(divisao*2),0,0);
+	////////////////////////////////////////////////////////////////desenhar as caixas das peças que cada jogador pode jogar
+	glPushMatrix();
+	float d=floor(float(this->board->getBoard().size())/2);
+	glTranslated((d*2),0,0);
+	drawPecasBox();
+	glPopMatrix();
 	
-	
+	////////////////////////////////////////////////////////////////desenhar caixas do lixo
 	glPushMatrix();
 	glTranslated(-posicaoLixo,0,-posicaoLixo);
 	appDefault->apply();
@@ -600,8 +605,9 @@ Animation* ProjectScene::getAnimation(float x1,float y1,float z1,float x2,float 
 
 Animation*  ProjectScene::generateAnimation(int x, int y,bool color,string tipo, bool insert)
 {
-	//vai traduzir as coordenadas do tabuleiro prolog para as coordenadas graficas do prolog
-	int tamanho=7;
+//vai traduzir as coordenadas do tabuleiro prolog para as coordenadas graficas do prolog
+	int tamanho=this->board->getBoard().size();
+	int xNovo,yNovo;
 	int pX;				//primeiro valor de x na linha
 	int o;				//primeiro valor da linha
 	float temp=tamanho/2;
@@ -617,33 +623,11 @@ Animation*  ProjectScene::generateAnimation(int x, int y,bool color,string tipo,
 		o=y;
 	}
 
-	int xNovo;
+	xNovo=2*(x-pX)+o;
+	yNovo=y*2;
 
-	int x1=x;
-	int distancia=0;
 
-	if(y<=0){
-		if(pX<0)
-			distancia=abs(pX)+x1+1;
-		else if(pX==0)
-			distancia=x1+1;
-
-		xNovo=distancia*2+pX+1;
-	}
-
-	else{
-
-		if(x1<0)
-			distancia=abs(pX)-abs(x1);
-		else if(x==0)
-			distancia=abs(pX);
-		else
-			distancia=abs(pX)+x1;
-				
-		xNovo=distancia*2+o;
-	}
-	int yNovo=y*2;
-
+		cout<<"Xnovo:"<<xNovo<<" Ynovo:"<<yNovo;
 	//calcula coordenadas do inicio da animacao (de onde a peça sai)
 	string tipos[5] = {"simples","ataque","defesa","expansao","salto"};
 	int i;
@@ -653,18 +637,21 @@ Animation*  ProjectScene::generateAnimation(int x, int y,bool color,string tipo,
 			break;
 	}
 	float xi,yi,zi;
+	float divisao=floor(float(this->board->getBoard().size())/2)*2;
 	if(color)
 	{
-		xi=(i*2)+2;
+
+		xi=(divisao-4)+(i*2);
 		yi=alturaPecas;
 		zi=-ditanciaPecas;
 	}
 	else{
-		xi=i*2+2;
+		xi=(divisao-4)+(i*2);
 		yi=alturaPecas;
 		zi=ditanciaPecas;
 
 	}
+
 	Animation* final;
 	if(insert)
 	final=getAnimation(xi,yi,zi,xNovo,0,yNovo,this->timeSpan);
@@ -675,7 +662,6 @@ Animation*  ProjectScene::generateAnimation(int x, int y,bool color,string tipo,
 	else
 	final=getAnimation(xNovo,0,yNovo,-posicaoLixo,0,posicaoLixo,this->timeSpan);
 	}
-	cout<<"xi####"<<xi<<endl;
 	return final;
 
 }
