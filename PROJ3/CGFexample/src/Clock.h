@@ -43,9 +43,10 @@ public:
 		this->appClockHand->setTexture(appClockHandText);
 		this->appClock->setTexture(appClockText);
 		this->appChrome->setTexture(appChromeText);
-		float spec[4]={0.8,0.67,0.5,1};
+		float spec[4]={1,1,1,1};
 		appdefault->setSpecular(spec);
-		appdefault->setShininess(50.f);
+		appdefault->setShininess(100.f);
+		appdefault->setDiffuse(spec);
 	}
 	void update(float t)
 	{

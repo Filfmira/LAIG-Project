@@ -71,6 +71,7 @@
     <ClCompile Include="src\Animation.cpp" />
     <ClCompile Include="src\Appearances.cpp" />
     <ClCompile Include="src\Board.cpp" />
+    <ClCompile Include="src\Evaluator.cpp" />
     <ClCompile Include="src\Jogada.cpp" />
     <ClCompile Include="src\Lights.cpp" />
     <ClCompile Include="src\main.cpp" />
@@ -88,6 +89,7 @@
     <ClInclude Include="src\Board.h" />
     <ClInclude Include="src\Cameras.h" />
     <ClInclude Include="src\Clock.h" />
+    <ClInclude Include="src\Evaluator.h" />
     <ClInclude Include="src\Jogada.h" />
     <ClInclude Include="src\Lights.h" />
     <ClInclude Include="src\MarcadorPontuacao.h" />

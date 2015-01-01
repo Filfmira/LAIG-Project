@@ -96,6 +96,13 @@ public:
 
 	}
 
+	void change(){
+		this->player=!player;
+			k=0;
+			ended=false;
+
+	}
+
 	void setZoom(float z)
 	{
 		zoom=z;
@@ -106,8 +113,9 @@ public:
 		return zoom;
 	}
 
-	void applyView() {
-		k++;
+void cameraUpdate()
+{
+	k++;
 		if(player)
 		{
 			if(k>=v.size())
@@ -116,9 +124,8 @@ public:
 				ended=true;
 				/*gluLookAt(0,15,-zoom,0,0,0,0.0,1.0,0.0);*/
 				}
-			/*
-			else*/
-				gluLookAt(v[k][0]*zoom,15,v[k][1]*zoom,0,0,0,0.0,1.0,0.0);
+			/*else*/
+				//gluLookAt(v[k][0]*zoom,15,v[k][1]*zoom,0,0,0,0.0,1.0,0.0);
 		}
 		else{
 			if(k>=v2.size())
@@ -128,11 +135,22 @@ public:
 				/*gluLookAt(0,15,zoom,0,0,0,0.0,1.0,0.0);*/
 			}
 			/*else*/
-			gluLookAt(v2[k][0]*zoom,15,v2[k][1]*zoom,0,0,0,0.0,1.0,0.0);
+			//gluLookAt(v2[k][0]*zoom,15,v2[k][1]*zoom,0,0,0,0.0,1.0,0.0);
 
 
 		}
-		//gluLookAt(pos[0],pos[1],pos[2],target[0],target[1],target[2],0.0,1.0,0.0);
+
+}
+
+void applyView() {
+		if(player)
+		{
+				gluLookAt(v[k][0]*zoom,15,v[k][1]*zoom,0,0,0,0.0,1.0,0.0);
+		}
+		else
+		{
+			gluLookAt(v2[k][0]*zoom,15,v2[k][1]*zoom,0,0,0,0.0,1.0,0.0);
+		}
 	};
 
 

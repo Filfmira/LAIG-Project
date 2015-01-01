@@ -9,7 +9,7 @@
 float Appearance::texlength_s = 1;
 float Appearance::texlength_t = 1;
 
-float globalAmbientLight[4]= {0.8,0.8,0.8,1.0};
+float globalAmbientLight[4]= {0,0,0,1.0};
 bool jogadaSimples;
 
 float alturaPecas=0;
@@ -23,7 +23,7 @@ void ProjectScene::init()
 {
 	animacoes=0;
 
-
+	camera=true;		//true é com a perspectiva e false com a defualt
 
 	appValues=new Appearance("appValues");
 	appDefaultValues=new Appearance("appValues");
@@ -55,6 +55,7 @@ void ProjectScene::init()
 	box=new Box();
 	clock=new Clock();
 	cylinder=new Cylinder(1,1,1,50,30);
+	plane=new Plane(20);
 
 	glPolygonMode(GL_FILL,GL_TRUE);
 	glShadeModel(GL_SMOOTH);
@@ -75,11 +76,32 @@ void ProjectScene::init()
 
 	glEnable (GL_NORMALIZE);
 
+
+	//lights
 	float light0_pos[4] = {4.0, 50.0, 5.0, 1.0};
 	light0 = new CGFlight(GL_LIGHT0, light0_pos);
 	light0->enable();
 
-	
+
+	float light1_pos[4] = {0.0, 10.0, 0.0, 1.0};
+	light1 = new CGFlight(GL_LIGHT1, light1_pos);
+	light1->enable();
+	float amb[4]= {1,1,1,1.0};
+	light1->setAmbient(amb);
+	light1->setSpecular(amb);
+	light1->setSpecular(amb);
+	//light1->setKl(0.9);
+	//light1->setKc(1);
+
+	float light2_pos[4] = {85.0, 10.0, 0.0, 1.0};
+	light2 = new CGFlight(GL_LIGHT2, light2_pos);
+	light2->enable();
+	float amb2[4]= {0.3,0.3,0.3,1.0};
+	light1->setAmbient(amb2);
+	float dif2[4]= {0.5,0.5,0.5,1.0};
+	light2->setDiffuse(dif2);
+	light2->setSpecular(dif2);
+
 
 	// Animation-related code
 	unsigned long updatePeriod=50;
@@ -141,11 +163,17 @@ void ProjectScene::display()
 	glLoadIdentity();
 	
 	////////////////////////////////////////////////////////////////camaras
+	this->perspective->cameraUpdate();
+	if(camera)
 	this->perspective->applyView();
-	//CGFscene::activeCamera->applyView();
+	else
+	CGFscene::activeCamera->applyView();
 	
-	light0->draw();
 
+	////////////////////////////////////////////////////////////////desenhar luzes
+	//light0->draw();
+	//light1->draw();
+	//light2->draw();
 
 	if (wireFrame)
 		setWireFrameMode();
@@ -167,8 +195,9 @@ void ProjectScene::display()
 	glPushMatrix();
 	appBoard[this->aparenciaActiva]->apply();
 	glTranslated(0,-0.5,0);
-	glScaled(60,0.01,60);
-	this->cubeTest->draw();
+	glScaled(60,1,60);
+	plane->draw();
+	//this->cubeTest->draw();
 	glPopMatrix();
 
 	////////////////////////////////////////////////////////////////desenhar tabuleiro base
@@ -185,6 +214,7 @@ void ProjectScene::display()
 	////////////////////////////////////////////////////////////////desenhar o relogio
 	glPushMatrix();
 	glTranslated(8,1,ditanciaPecas-0.5);
+		light1->draw();
 	glRotated(-20,0,1,0);
 	glRotated(-40,1,0,0);
 	this->clock->draw();
@@ -193,6 +223,7 @@ void ProjectScene::display()
 	glPushMatrix();
 	glRotated(180,0,1,0);
 	glTranslated(8,1,ditanciaPecas-0.5);
+		light1->draw();
 	glRotated(-20,0,1,0);
 	glRotated(-40,1,0,0);
 	this->clock->draw();
@@ -245,8 +276,8 @@ void ProjectScene::display()
 	glPushMatrix();
 	glTranslated(0,0.5,0);
 		glPushMatrix();
-		
 			glTranslated((this->board->getBoard().size())+4, 0.25, -2);
+
 			glRotated(90,0,0,1);
 			glTranslated(1.25,0,0);
 			this->appBoard[this->aparenciaActiva]->apply();
@@ -366,7 +397,7 @@ void ProjectScene::drawPecasBox()
     glPushMatrix();
     glTranslated(0,0,-1);
     glTranslatef(comprimento/2-1.5,alturaPecas,/*-9.5*/0);
-    appDefault[this->aparenciaActiva]->apply();
+	appDefault[this->aparenciaActiva]->apply();
     box->draw(largura,comprimento,altura,expessura);
     glPopMatrix();
    drawPecasLaterais(true);

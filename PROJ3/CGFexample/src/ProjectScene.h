@@ -13,6 +13,7 @@
 #include "Board.h"
 #include "MarcadorPontuacao.h"
 #include "Clock.h"
+#include "Evaluator.h"
 
 class ProjectScene : public CGFscene
 {
@@ -21,6 +22,8 @@ public:
 	void display();
 
 	CGFlight* light0;
+	CGFlight* light1;
+	CGFlight* light2;
 
 	std::vector<Texture *> textures;
 	std::vector<Texture *> texturesLabeling;
@@ -40,6 +43,7 @@ public:
 	Appearance* appValues;
 	Appearance* appDefaultValues;
 	
+	Plane *plane;
 	std::vector<PieceData> pecasLixo;
 	Cylinder* cylinder;
 	Camera* activeCamera;
@@ -57,6 +61,8 @@ public:
 	string gameOver; //winPreto, winBranco, draw ou NOT , ou restart (recomeçar o jogo com o modo definido)
 	bool jogadaSimples; //se um jogador jogar uma peça simples, isto passa a true, para o jogador poder jogar uma segunda peça simples
 	float timeSpan;
+
+	bool camera;
 	
 	MarcadorPontuacao* marcadorBranco;
 	MarcadorPontuacao* marcadorPreto;
