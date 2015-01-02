@@ -9,7 +9,7 @@
 float Appearance::texlength_s = 1;
 float Appearance::texlength_t = 1;
 
-float globalAmbientLight[4]= {0,0,0,1.0};
+float globalAmbientLight[4]= {0.1,0.1,0.1,1.0};
 bool jogadaSimples;
 
 float alturaPecas=0;
@@ -205,7 +205,7 @@ void ProjectScene::display()
 	glPushMatrix();
 	appBoard[this->aparenciaActiva]->apply();
 	glTranslated(0,-0.5,0);
-	glScaled(8,0.5,8);
+	glScaled(this->tamanhoTabuleiro+1,0.5,this->tamanhoTabuleiro+1);
 	glRotated(30,0,1,0);
 	this->pieceTest->drawBooard(false, "tabuleiro", false);
 	glPopMatrix();
