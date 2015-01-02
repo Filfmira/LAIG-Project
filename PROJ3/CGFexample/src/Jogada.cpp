@@ -2,10 +2,11 @@
 
 int Jogada::nextId = 0;
 
-Jogada::Jogada(vector<PieceData> adicionadas, vector<PieceData> removidas){
+Jogada::Jogada(vector<PieceData> adicionadas, vector<PieceData> removidas, bool jogador){
 	this->id = Jogada::nextId++;
 	this->pecasAdicionadas = adicionadas;
 	this->pecasRemovidas = removidas;
+	this->jogador = jogador;
 }
 
 int Jogada::getId(){

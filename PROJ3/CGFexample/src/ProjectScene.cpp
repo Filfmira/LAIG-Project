@@ -525,7 +525,7 @@ void ProjectScene::jogar(){
 				}
 				
 
-				Jogada jogadaParaHistorico(pecasAdicionadas, pecasRemovidas);
+				Jogada jogadaParaHistorico(pecasAdicionadas, pecasRemovidas, this->jogadorActivo);
 				this->board->addJogadaHistorico(jogadaParaHistorico);
 
 				cout << "Numero de jogadas: " << this->board->getHistorico().size() << endl;
@@ -581,7 +581,7 @@ void ProjectScene::jogar(){
 				this->board->addPiece(jogada);
 
 				pecasAdicionadas.push_back(jogada);
-				Jogada jogadaParaHistorico(pecasAdicionadas, pecasRemovidas);
+				Jogada jogadaParaHistorico(pecasAdicionadas, pecasRemovidas, this->jogadorActivo);
 				this->board->addJogadaHistorico(jogadaParaHistorico);
 				cout << "Numero de jogadas: " << this->board->getHistorico().size() << endl;
 
