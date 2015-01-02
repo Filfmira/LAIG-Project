@@ -38,7 +38,7 @@ void TPinterface::initGUI()
 
 	int increment = 8;
 	////////////VISUALIZATION MODE ////////////////
-	GLUI_Panel *visualizationMode= addPanel("Visualization", GLUI_PANEL_EMBOSSED);
+	GLUI_Panel *visualizationMode= addPanel("Visualização", GLUI_PANEL_EMBOSSED);
 	visualizationRadGroup = addRadioGroupToPanel (visualizationMode, &visualizationId, initialId+increment); increment++;// id = init+8
 	GLUI_RadioButton * 	wireMode = addRadioButtonToGroup (visualizationRadGroup, "WireFrame");
 	GLUI_RadioButton * 	textMode = addRadioButtonToGroup (visualizationRadGroup, "Fill");
@@ -66,25 +66,33 @@ void TPinterface::initGUI()
 	/////UNDO AND SPINNERS/////
 	addColumn();
 	GLUI_Panel *undoAndSpinnersPannel = addPanel("Undo",  GLUI_PANEL_NONE);
-	addButtonToPanel (undoAndSpinnersPannel, "UNDO", initialId+(increment++)); // id = init+13
-	animationSpinner = addSpinnerToPanel(undoAndSpinnersPannel, "animationSpeed", 2,NULL, initialId+(increment++)); // id = init+14
+	addButtonToPanel (undoAndSpinnersPannel, "Undo", initialId+(increment++)); // id = init+13
+	animationSpinner = addSpinnerToPanel(undoAndSpinnersPannel, "Vel. Anim.", 2,NULL, initialId+(increment++)); // id = init+14
 	animationSpinner->set_float_val(((ProjectScene*) scene)->timeSpan);
-	clockSpinner = addSpinnerToPanel(undoAndSpinnersPannel, "clock", 2,NULL, initialId+(increment++)); // id = init+15
+	clockSpinner = addSpinnerToPanel(undoAndSpinnersPannel, "Relógio", 2,NULL, initialId+(increment++)); // id = init+15
 	clockSpinner->set_float_val(((ProjectScene*) scene)->clock->getSpan());
-	zoomSpinner = addSpinnerToPanel(undoAndSpinnersPannel, "zoom", 2,NULL, initialId+(increment++)); // id = init+16
+	zoomSpinner = addSpinnerToPanel(undoAndSpinnersPannel, "Distância", 2,NULL, initialId+(increment++)); // id = init+16
 	zoomSpinner->set_float_val(((ProjectScene*) scene)->perspective->getZoom());
 
 
 
 	////////////TEXTURAS/////////////
 	addColumn();
-	GLUI_Panel *appearancesPanel= addPanel("Appearances", GLUI_PANEL_EMBOSSED);
+	GLUI_Panel *appearancesPanel= addPanel("Aparência", GLUI_PANEL_EMBOSSED);
 	GLUI_RadioGroup * appearancesRadGroup = addRadioGroupToPanel (appearancesPanel, &appearanceId, initialId+(increment++));// id = init+17
 	addRadioButtonToGroup(appearancesRadGroup, "0")->set_id(0);
 	addRadioButtonToGroup(appearancesRadGroup, "1")->set_id(1);
 	appearancesRadGroup->set_int_val(0);
+	GLUI_Panel *filmePanel= addPanel("Filme", GLUI_PANEL_NONE);
+	addButtonToPanel (filmePanel, "FILME", initialId+(increment++)); // id = init+18
 
-	addButtonToPanel (appearancesPanel, "FILME", initialId+(increment++)); // id = init+18
+	//////////TAMANHO TABULEIRO///////
+	addColumn();
+	GLUI_Panel *sizePanel= addPanel("Tamanho Tab", GLUI_PANEL_EMBOSSED);
+	GLUI_RadioGroup * sizeRadGroup = addRadioGroupToPanel(sizePanel, 0, initialId+(increment++));// id = init+19
+	addRadioButtonToGroup(sizeRadGroup, "5")->set_id(5);
+	addRadioButtonToGroup(sizeRadGroup, "7")->set_id(7);
+
 }
 
 
@@ -161,7 +169,11 @@ void TPinterface::processGUI(GLUI_Control *ctrl)
 
 	////FILME////
 	case(initialId+18): ((ProjectScene*) scene)->initFilme(); break;
-			
+
+	/////TAMANHO TABULEIRO/////
+	case(initialId+19): 
+		((ProjectScene*) scene)->tamanhoTabuleiro = ctrl->get_int_val();
+		break;
 	};
 }
 

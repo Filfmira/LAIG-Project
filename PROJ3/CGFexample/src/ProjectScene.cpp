@@ -145,11 +145,12 @@ void ProjectScene::init()
 	//////////////////////////////////
 
 
-
+	this->tamanhoTabuleiro = 7;
 	this->restartJogo("CvC");	
 	this->filmeEmCurso = false;
 	this->jogadaFilmeActual = 0;
 	jogadaSimples=false;
+	
 }
 
 void ProjectScene::display() 
@@ -629,7 +630,11 @@ void ProjectScene::restartJogo(string modo){
 	this->gameOver = "NOT";
 	this->jogadaSimples = false;
 
-	char *s = "novo-tabuleiro.\n";
+	ostringstream ss;
+	ss << "[novo-tabuleiro," << this->tamanhoTabuleiro << "].\n";
+	char s[64];
+	strcpy(s, (char*)ss.str().c_str());
+	printf("%s\n", s);
 	envia(s, strlen(s));
 	char ans[2048];
 	recebe(ans);
@@ -639,6 +644,8 @@ void ProjectScene::restartJogo(string modo){
 	this->board = new Board(tempBoard);
 	jogadaSimples=false;
 	cout << "Success restart\n";
+
+	this->changeTextures(this->aparenciaActiva);
 
 	int si=pecasLixo.size();
 	for(int i=0;i<si;i++)
@@ -821,7 +828,10 @@ void ProjectScene::playJogadaFilme(){
 
 
 void ProjectScene::initFilme(){
-	char *s = "novo-tabuleiro.\n";
+	ostringstream ss;
+	ss << "[novo-tabuleiro," << this->board->getBoard().size() << "].\n";
+	char s[64];
+	strcpy(s, (char*)ss.str().c_str());
 	envia(s, strlen(s));
 	char ans[2048];
 	recebe(ans);

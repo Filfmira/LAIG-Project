@@ -32,7 +32,7 @@ parse_input(comando(Arg1, Arg2), Answer) :-
 	comando(Arg1, Arg2, Answer).
 	
 parse_input(quit, ok-bye) :- !.
-parse_input(novo-tabuleiro, [ok,Tabuleiro, [],[],[]]) :- novoTabuleiro(7, Tabuleiro), /*tabuleiroExemplo1(Tabuleiro),*/ !.
+parse_input([novo-tabuleiro,Tamanho], [ok,Tabuleiro, [],[],[]]) :- novoTabuleiro(Tamanho, Tabuleiro), /*tabuleiroExemplo1(Tabuleiro),*/ !.
 
 parse_input([jogada, Jogada, Tabuleiro], [Msg,TabuleiroNovo,PecasAdicionadas, PecasRemovidas, []]):- 
 	(mesmaCorNaVizinhanca(Jogada, Tabuleiro); pecaSalto(Jogada)), 
