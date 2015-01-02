@@ -78,6 +78,7 @@ public:
 			final2.push_back(1);
 			v2.push_back(final2);
 		k=0;
+
 		player=false;
 		ended=true;
 	}
