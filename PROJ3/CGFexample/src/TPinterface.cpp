@@ -78,17 +78,17 @@ void TPinterface::initGUI()
 
 	////////////TEXTURAS/////////////
 	addColumn();
-	GLUI_Panel *appearancesPanel= addPanel("Aparência", GLUI_PANEL_EMBOSSED);
+	GLUI_Panel *appearancesPanel= addPanel("Aparencia", GLUI_PANEL_EMBOSSED);
 	GLUI_RadioGroup * appearancesRadGroup = addRadioGroupToPanel (appearancesPanel, &appearanceId, initialId+(increment++));// id = init+17
-	addRadioButtonToGroup(appearancesRadGroup, "0")->set_id(0);
-	addRadioButtonToGroup(appearancesRadGroup, "1")->set_id(1);
+	addRadioButtonToGroup(appearancesRadGroup, "Sala")->set_id(0);
+	addRadioButtonToGroup(appearancesRadGroup, "Espaco")->set_id(1);
 	appearancesRadGroup->set_int_val(0);
 	GLUI_Panel *filmePanel= addPanel("Filme", GLUI_PANEL_NONE);
 	addButtonToPanel (filmePanel, "FILME", initialId+(increment++)); // id = init+18
 
 	//////////TAMANHO TABULEIRO///////
 	addColumn();
-	GLUI_Panel *sizePanel= addPanel("Tamanho Tab", GLUI_PANEL_EMBOSSED);
+	GLUI_Panel *sizePanel= addPanel("Dificuldade", GLUI_PANEL_EMBOSSED);
 	GLUI_RadioGroup * sizeRadGroup = addRadioGroupToPanel(sizePanel, 0, initialId+(increment++));// id = init+19
 	addRadioButtonToGroup(sizeRadGroup, "5")->set_id(5);
 	addRadioButtonToGroup(sizeRadGroup, "7")->set_id(7);

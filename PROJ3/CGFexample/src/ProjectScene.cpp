@@ -24,6 +24,7 @@ void ProjectScene::init()
 	animacoes=0;
 
 	camera=true;		//true é com a perspectiva e false com a defualt
+	tamanhoTabuleiroActual=7;	//começa sempre a 7
 
 	appValues=new Appearance("appValues");
 	appDefaultValues=new Appearance("appValues");
@@ -180,7 +181,7 @@ void ProjectScene::display()
 		setWireFrameMode();
 	else setTextureMode();
 
-	axis.draw();
+	//axis.draw();
 
 
 	////////////////////////////////////////////////////////////////desenhar fundo
@@ -205,7 +206,7 @@ void ProjectScene::display()
 	glPushMatrix();
 	appBoard[this->aparenciaActiva]->apply();
 	glTranslated(0,-0.5,0);
-	glScaled(this->tamanhoTabuleiro+1,0.5,this->tamanhoTabuleiro+1);
+	glScaled(tamanhoTabuleiroActual+1,0.5,tamanhoTabuleiroActual+1);
 	glRotated(30,0,1,0);
 	this->pieceTest->drawBooard(false, "tabuleiro", false);
 	glPopMatrix();
@@ -651,6 +652,8 @@ void ProjectScene::restartJogo(string modo){
 	for(int i=0;i<si;i++)
 		pecasLixo.pop_back();
 	
+
+	tamanhoTabuleiroActual=this->tamanhoTabuleiro;
 }
 
 

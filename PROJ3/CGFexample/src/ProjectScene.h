@@ -62,6 +62,7 @@ public:
 	bool jogadaSimples; //se um jogador jogar uma peça simples, isto passa a true, para o jogador poder jogar uma segunda peça simples
 	float timeSpan;
 	int tamanhoTabuleiro;
+	int tamanhoTabuleiroActual;
 	bool camera;
 	
 	MarcadorPontuacao* marcadorBranco;
